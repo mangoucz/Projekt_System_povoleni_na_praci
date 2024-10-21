@@ -11,13 +11,11 @@
     <div class="container">
         <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
         <span class="separator">|</span>
-        <div>
-            <form action="uvod.php" method="post">
-                <h2>Přihlášení</h2>
-                <input type="text" name="uziv" placeholder="Přihlašovací jméno" required><br>
-                <input type="submit" value="Přihlásit se!" name="subLogin"><br>
-            </form>
-        </div>
+        <form action="uvod.php" method="post">
+            <h2>Přihlášení</h2>
+            <input type="text" name="uziv" placeholder="Přihlašovací jméno" required><br>
+            <input type="submit" value="Přihlásit se!" name="subLogin"><br>
+        </form>
     </div>
     <div class="footer">
         <img src="Indorama.png">
@@ -40,24 +38,28 @@
         align-items: center;
         justify-content: flex-start;
         width: 100%;
-        margin: 20% 0 0 20%;
+        margin: 15% 0 0 20%;
     }
     .footer{
         margin-top: auto;
-        padding: 10px 20px;
+        padding: 0.5%;
         background-color: #b6c7e2;
-        display: flex;
         align-items: center;
+        text-align: center;
         position: fixed;
         bottom: 0;
         width: 100%;
-        gap: 630px;
     }
     
     h1 {
         color: #003366; 
         font-size: 36px;
         margin-right: 20px;
+    }
+    h2 {
+        color: #003366;
+        margin-bottom: 20px;
+        font-size: 24px;
     }
 
     .separator {
@@ -72,15 +74,10 @@
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
         max-width: 400px;
-        width: 100%;
+        width: 200%;
         text-align: center;
     }
 
-    h2 {
-        color: #003366;
-        margin-bottom: 20px;
-        font-size: 24px;
-    }
 
     input[type="text"] {
         width: 80%;
@@ -109,7 +106,6 @@
 
     img {
         width: 10%;
-        margin-top: 20px;
     }
     @media (max-width: 600px) {
         .container {
