@@ -74,7 +74,7 @@
         h1 {
             color: #003366; 
             font-size: 36px;
-            margin-right: 20px;
+            margin: 0.9% 20px 0 0;
         }
         h2 {
             color: #003366;
@@ -115,20 +115,25 @@
 
         @media (max-width: 600px) {
             .container {
-                flex-direction: column;
-                align-items: center;
+                text-align: center;
+                display: block;
+                margin: 15% 0 0 0;
+                width: 90%;
             }
-
+            h1{
+                margin: 0 0 0 0;
+            }
             .separator {
                 display: none;
             }
 
             img {
-                width: 70%;
+                width: 45%;
             }
 
             form {
                 width: 90%;
+                margin-top: 30%;
             }
         }
     </style>
