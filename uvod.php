@@ -1,3 +1,22 @@
+<?php
+    session_start();
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['subLogin'])) {
+        $uziv = $_POST['uziv'];
+        $_SESSION['uziv'] = $uziv;
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    } 
+    else{
+        if (isset($_SESSION['uziv'])){ 
+            $uziv = $_SESSION['uziv'];
+        }
+        else{
+            header("Location: login.html");
+            exit();
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,27 +27,6 @@
     <script src="script.js"></script>
 </head>
 <body>
-    <?php
-        session_start();
-
-        require_once 'server.php';
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['subLogin'])) {
-            $uziv = $_POST['uziv'];
-            $_SESSION['uziv'] = $uziv;
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
-        } 
-        else{
-            if (isset($_SESSION['uziv'])){ 
-                $uziv = $_SESSION['uziv'];
-            }
-            else{
-                header("Location: login.html");
-                exit();
-            }
-        }
-        ?>
     <div class="container">
         <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
         <span class="separator">|</span>
@@ -100,10 +98,11 @@
             color: #FFFFFF;
             border: none;
             padding: 10px 20px;
+            margin: 2% 0;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            width: 60%;
+            width: 80%;
             transition: background-color 0.3s ease;
         }
         input[type="submit"]:hover {
