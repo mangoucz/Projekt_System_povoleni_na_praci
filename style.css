@@ -1,0 +1,22 @@
+body{
+    font-family: 'Arial', sans-serif;
+    background-color: #F0F8FF; 
+    color: #003366;
+    margin: 0;
+    padding: 0;
+}
+.footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #b6c7e2;
+    padding: 0.6%;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+.separator {
+    font-size: 100px;
+    color: #003366;
+    margin-right: 20px;
+}

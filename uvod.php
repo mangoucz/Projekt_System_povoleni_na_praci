@@ -16,6 +16,25 @@
             exit();
         }
     }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_POST['subNove']) {
+            header("Location: nove.php");
+            exit();
+        }
+        else if ($_POST['subPrehled']) {
+            header("Location: prehled.php");
+            exit();
+        }
+        else if ($_POST['subArchiv']) {
+            header("Location: archiv.php");
+            exit();
+        }
+        else {
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,21 +43,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Systém povolení na práci</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
         <span class="separator">|</span>
         <form action="" method="post">
-            <input type="submit" value="Nové povolení" name="subLogin"><br>
-            <input type="submit" value="Přehed a editace" name="subLogin"><br>
-            <input type="submit" value="Archiv" name="subLogin"><br>
+            <input type="submit" value="Nové povolení" name="subNove"><br>
+            <input type="submit" value="Přehed a editace" name="subPrehled"><br>
+            <input type="submit" value="Archiv" name="subArchiv"><br>
         </form>
     </div>
     <div class="footer">
         <p style="margin-left: 1%;">Přihlášený uživatel: <?php echo $uziv ?> </p>
-        <img src="Indorama.png" style="margin-right: 6%;">
+        <img src="Indorama.png" style="margin-right: 5.7%;">
         <a href="login.html" style="margin-right: 1%;">Odhlásit se</a>
     </div>
     <style>
@@ -46,44 +64,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Arial', sans-serif;
-            background-color: #F0F8FF; 
-            color: #003366;
-            margin: 0;
-            padding: 0;
         }
         .container {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             width: 100%;
-            margin: 15% 0 0 20%;
-        }
-        .footer{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #b6c7e2;
-            padding: 0.6%;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+            margin: 15% 0 0 0;
         }
         h1 {
             color: #003366; 
             font-size: 36px;
             margin: 0.9% 20px 0 0;
         }
-        h2 {
-            color: #003366;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        .separator {
-            font-size: 100px;
-            color: #003366;
-            margin-right: 20px;
-        }
+        
         form {
             background-color: #FFFFFF; 
             padding: 20px;
@@ -115,8 +109,7 @@
         @media (max-width: 600px) {
             .container {
                 text-align: center;
-                display: block;
-                margin: 15% 0 0 0;
+                flex-direction: column;
                 width: 90%;
             }
             h1{

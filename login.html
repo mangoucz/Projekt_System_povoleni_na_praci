@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Systém povolení na práci</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
 </head>
 <body>
     <div class="container">
@@ -26,29 +25,17 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-family: 'Arial', sans-serif;
-        background-color: #F0F8FF; 
-        color: #003366;
-        margin: 0;
-        padding: 0;
     }
     
     .container {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: center;
         width: 100%;
-        margin: 15% 0 0 20%;
+        margin: 15% 0 0 0;
     }
     .footer{
-        margin-top: auto;
-        padding: 0.5%;
-        background-color: #b6c7e2;
-        align-items: center;
-        text-align: center;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
+        justify-content: center;
     }
     
     h1 {
@@ -60,12 +47,6 @@
         color: #003366;
         margin-bottom: 20px;
         font-size: 24px;
-    }
-
-    .separator {
-        font-size: 100px;
-        color: #003366;
-        margin-right: 20px;
     }
 
     form {
@@ -110,8 +91,7 @@
     @media (max-width: 600px) {
         .container {
             text-align: center;
-            display: block;
-            margin: 15% 0 0 0;
+            flex-direction: column;
             width: 90%;
         }
         h1{
@@ -132,5 +112,5 @@
     }
 </style>
 </html>
-<!--Září: 1 + 3hod-->
-<!--Říjen: 1 -->
+<!--Září: 4hod-->
+<!--Říjen: 7hod-->
