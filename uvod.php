@@ -57,7 +57,9 @@
     <div class="footer">
         <p style="margin-left: 1%;">Přihlášený uživatel: <?php echo $uziv ?> </p>
         <img src="Indorama.png" style="margin-right: 5.7%;">
-        <a href="login.html" style="margin-right: 1%;">Odhlásit se</a>
+        <a href="login.html">
+            <img src="logout_icon.png" width="78%" style="cursor: pointer;">
+        </a>
     </div>
     <style>
         body {
@@ -75,7 +77,7 @@
         h1 {
             color: #003366; 
             font-size: 36px;
-            margin: 0.9% 20px 0 0;
+            margin: 1% 20px 0 0;
         }
         
         form {
@@ -102,9 +104,6 @@
         input[type="submit"]:hover {
             background-color: #d40000;
         }
-        img {
-            width: 10%;
-        }
 
         @media (max-width: 600px) {
             .container {
@@ -119,8 +118,8 @@
                 display: none;
             }
 
-            img {
-                width: 45%;
+            img:not([style="cursor: pointer;"]){ 
+                width: 40%;
             }
 
             form {

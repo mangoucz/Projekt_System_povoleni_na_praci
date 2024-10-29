@@ -10,7 +10,7 @@ body{
     justify-content: space-between;
     align-items: center;
     background-color: #b6c7e2;
-    padding: 0.6%;
+    padding: 0.6% 0;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -19,4 +19,7 @@ body{
     font-size: 100px;
     color: #003366;
     margin-right: 20px;
+}
+img:not([style="cursor: pointer;"]){
+    width: 10%;
 }
