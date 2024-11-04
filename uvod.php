@@ -56,7 +56,7 @@
     </div>
     <div class="footer">
         <p style="margin-left: 1%;">Přihlášený uživatel: <?php echo $uziv ?> </p>
-        <img src="Indorama.png" style="margin-right: 5.7%;">
+        <img src="Indorama.png" style="margin-right: 7.5%;">
         <a href="login.html">
             <img src="logout_icon.png" width="78%" style="cursor: pointer;">
         </a>
@@ -105,7 +105,7 @@
             background-color: #d40000;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 660px) {
             .container {
                 text-align: center;
                 flex-direction: column;
@@ -117,11 +117,6 @@
             .separator {
                 display: none;
             }
-
-            img:not([style="cursor: pointer;"]){ 
-                width: 40%;
-            }
-
             form {
                 width: 90%;
                 margin-top: 30%;

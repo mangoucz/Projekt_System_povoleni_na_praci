@@ -20,6 +20,6 @@ body{
     color: #003366;
     margin-right: 20px;
 }
-img:not([style="cursor: pointer;"]){
-    width: 10%;
+img:not([style="cursor: pointer;"]){ 
+    width: 170px;
 }

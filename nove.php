@@ -21,35 +21,74 @@
 <body>
     <div class="header">
         <h1>NOVÉ POVOLENÍ</h1>
-    </div>
-    <button class="accordion">Povolení k...</button>
-    <div class="panel"><br>
-        <label class="container">K práci na zařízení
-            <input type="checkbox">
-            <span class="checkmark"></span>
-        </label>
-        <label class="container">Ke svařování a práci s otevřeným ohněm
-            <input type="checkbox">
-            <span class="checkmark"></span>
-        </label>
-        <label class="container">Ke vstupu do zařízení nebo pod úroveň terénu
-            <input type="checkbox">
-            <span class="checkmark"></span>
-        </label>
-        <label class="container">K práci v prostředí s nebezpečím výbuchu
-            <input type="checkbox">
-            <span class="checkmark"></span>
-        </label>
-        <label class="container">K předání a převzetí zařízení do opravy a do provozu
-            <input type="checkbox">
-            <span class="checkmark"></span>
-        </label>
-        <!-- <input type="checkbox" name="povolení" value="zarizeni"><br>
-        <input type="checkbox" name="povolení" value="svarovani"><br>
-        <input type="checkbox" name="povolení" value="vstup"><br>
-        <input type="checkbox" name="povolení" value="vybuch"><br>
-        <input type="checkbox" name="povolení" value="oprava"><br> -->
-    </div>
+    </div><br>
+    <form action="" method="post">
+        <table>
+            <tr>
+                <th>Rizikovost</th>
+                <th>Interní</th>
+                <th>Externí</th>
+                <th>Počet osob</th>
+                <th>Od</th>
+                <th>Do</th>
+                <th>Povolení</th>
+            </tr>
+            <tr>
+                <td><input type="range" name="rizikovost"></td>
+                <td><input type="text" name="interni"></td>
+                <td><input type="text" name="externi"></td>
+                <td><input type="text" name="pocetOs"></td>
+                <td><input type="date" name="povolOd"></td>
+                <td><input type="date" name="povolDo"></td>
+                <td rowspan="5">
+                    <div class="panel">
+                        <label class="container">K práci na zařízení
+                            <input type="checkbox">
+                            <span class="checkbox"></span>
+                        </label>
+                        <label class="container">Ke svařování a práci s otevřeným ohněm
+                            <input type="checkbox">
+                            <span class="checkbox"></span>
+                        </label>
+                        <label class="container">Ke vstupu do zařízení nebo pod úroveň terénu
+                            <input type="checkbox">
+                            <span class="checkbox"></span>
+                        </label>
+                        <label class="container">K práci v prostředí s nebezpečím výbuchu
+                            <input type="checkbox">
+                            <span class="checkbox"></span>
+                        </label>
+                        <label class="container">K předání a převzetí zařízení do opravy a do provozu
+                            <input type="checkbox">
+                            <span class="checkbox"></span>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Provoz</th>
+                <td><input type="text" name="provoz"></td>
+                <th>Název(číslo) objektu</th>
+                <td><input type="text" name="objekt"></td>
+                <td><input type="time" name="hodOd"></td>
+                <td><input type="time" name="hodDo"></td>
+                <!--<th>Číslo zařízení</th>
+                <td><input type="text" name="CZarizeni"></td>-->
+            </tr>
+            <tr>
+                <th>Název zařízení</th>
+                <td colspan="5"><input type="text" name="NZarizeni"></td>
+            </tr>
+            <tr>
+                <th>Popis, druh a rozsah práce</th>
+                <td colspan="5"><input type="text" name="prace"></td>
+            </tr>
+            <tr>
+                <th>Seznámení s riziky pracoviště dle karty č.</th>
+                <td colspan="5"><input type="text" name="rizikaPrac"></td>
+            </tr>   
+        </table>
+    </form>
     <div class="footer">
         <p style="margin-left: 1%;">Přihlášený uživatel: <?php echo $uziv ?> </p>
         <img src="Indorama.png" style="margin-right: 5.7%;">
@@ -60,120 +99,73 @@
     <style>
         body {
             align-items: center;
-            text-align: center;
         }
         .header{
             background-color: #b6c7e2;
             width: 100%;
             padding: 0.5% 0;
+            text-align: center;
         }
-        /* Style the buttons that are used to open and close the accordion panel */
-        .accordion {
-            background-color: #eee;
-            color: #444;
-            cursor: pointer;
-            padding: 18px;
-            width: 100%;
-            text-align: left;
-            border: none;
-            outline: none;
-            transition: 0.4s;
+        table{
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #bcd4ef;
+            margin: 0 auto;
+            width: 95%;
         }
-
-        /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-        .active, .accordion:hover {
-            background-color: #ccc;
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        input[type="range"] {
+            width: 90%;
+            padding: 5px;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
         }
-
-        /* Style the accordion panel. Note: hidden by default */
         .panel {
             padding: 0 18px;
-            background-color: white;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.2s ease-out;
         }
-        /* Customize the label (the container) */
-            .container {
+        .container {
             display: block;
             position: relative;
             padding-left: 35px;
             margin-bottom: 12px;
             cursor: pointer;
             font-size: 22px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            }
-
-            /* Hide the browser's default checkbox */
-            .container input {
+        }
+        .container input {
+            display: none;
+        }
+        .checkbox {
             position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
-            }
-
-            /* Create a custom checkbox */
-            .checkmark {
-            position: absolute;
-            top: 0;
-            left: 28%;
+            left: 0;
             height: 25px;
             width: 25px;
             background-color: #eee;
-            }
-
-            /* On mouse-over, add a grey background color */
-            .container:hover input ~ .checkmark {
+        }
+        .container:hover input ~ .checkbox {
             background-color: #ccc;
-            }
-
-            /* When the checkbox is checked, add a blue background */
-            .container input:checked ~ .checkmark {
+        }
+        .container input:checked ~ .checkbox {
             background-color: #2196F3;
-            }
-
-            /* Create the checkmark/indicator (hidden when not checked) */
-            .checkmark:after {
+        }
+        .checkbox:after {
             content: "";
             position: absolute;
             display: none;
-            }
-
-            /* Show the checkmark when checked */
-            .container input:checked ~ .checkmark:after {
+        }
+        .container input:checked ~ .checkbox:after {
             display: block;
-            }
-
-            /* Style the checkmark/indicator */
-            .container .checkmark:after {
+        }
+        .container .checkbox:after {
             left: 9px;
             top: 5px;
             width: 5px;
             height: 10px;
             border: solid white;
             border-width: 0 3px 3px 0;
-            -webkit-transform: rotate(45deg);
-            -ms-transform: rotate(45deg);
             transform: rotate(45deg);
-            }
-    </style>
-    <script>
-        var acc = document.getElementsByClassName("accordion");
-
-        for (var i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var panel = this.nextElementSibling;
-                if (panel.style.maxHeight) 
-                    panel.style.maxHeight = null;
-                else 
-                    panel.style.maxHeight = panel.scrollHeight + "px";
-            });
         }
-    </script>
+    </style>
 </body>
 </html>
