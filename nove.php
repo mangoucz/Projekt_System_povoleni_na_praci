@@ -8,6 +8,14 @@
         exit();    
     }
     require_once 'server.php';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $sql = "";
+
+        if (isset($_POST['subOdeslat'])) {
+            
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +42,7 @@
                 <th>Povolení</th>
             </tr>
             <tr>
-                <td><input type="range" name="rizikovost"></td>
+                <td><input type="range" name="riziko"></td>
                 <td><input type="text" name="interni"></td>
                 <td><input type="text" name="externi"></td>
                 <td><input type="text" name="pocetOs"></td>
@@ -72,12 +80,12 @@
                 <td><input type="text" name="objekt"></td>
                 <td><input type="time" name="hodOd"></td>
                 <td><input type="time" name="hodDo"></td>
-                <!--<th>Číslo zařízení</th>
-                <td><input type="text" name="CZarizeni"></td>-->
             </tr>
             <tr>
                 <th>Název zařízení</th>
-                <td colspan="5"><input type="text" name="NZarizeni"></td>
+                <td colspan="2"><input type="text" name="NZarizeni"></td>
+                <th>Číslo zařízení</th>
+                <td colspan="2"><input type="text" name="CZarizeni"></td>
             </tr>
             <tr>
                 <th>Popis, druh a rozsah práce</th>
@@ -88,6 +96,9 @@
                 <td colspan="5"><input type="text" name="rizikaPrac"></td>
             </tr>   
         </table>
+        <div class="submit-container">
+            <input type="submit" value="Odeslat" name="subOdeslat">
+        </div>
     </form>
     <div class="footer">
         <p style="margin-left: 1%;">Přihlášený uživatel: <?php echo $uziv ?> </p>
@@ -113,17 +124,41 @@
             margin: 0 auto;
             width: 95%;
         }
-        input[type="text"],
-        input[type="date"],
-        input[type="time"],
-        input[type="range"] {
+        td input{
             width: 90%;
             padding: 5px;
             border: 1px solid #cccccc;
             border-radius: 3px;
         }
+        td[colspan="2"] input{
+            width: 95.3%;
+        }
+        td[colspan="5"] input{
+            width: 98.4%;
+        }
+
+        .submit-container {
+            margin: 10px 50px;
+            text-align: right;
+        }
+
+        .submit-container input {
+            background-color: #003366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-container input:hover {
+            background-color: #d40000;
+        }
+
         .panel {
             padding: 0 18px;
+            margin: 10px 0;
         }
         .container {
             display: block;
