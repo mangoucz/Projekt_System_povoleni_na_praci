@@ -13,7 +13,10 @@
         $sql = "";
 
         if (isset($_POST['subOdeslat'])) {
-            
+            echo '<script>
+                        alert("Žádost byla uspěšně odeslána");
+                        window.location.href = "' . $_SERVER['PHP_SELF'] . '";
+                  </script>';
         }
     }
 ?>
@@ -32,74 +35,186 @@
     </div><br>
     <form action="" method="post">
         <table>
-            <tr>
-                <th>Rizikovost</th>
-                <th>Interní</th>
-                <th>Externí</th>
-                <th>Počet osob</th>
-                <th>Od</th>
-                <th>Do</th>
-                <th>Povolení</th>
-            </tr>
-            <tr>
-                <td><input type="range" name="riziko"></td>
-                <td><input type="text" name="interni"></td>
-                <td><input type="text" name="externi"></td>
-                <td><input type="text" name="pocetOs"></td>
-                <td><input type="date" name="povolOd"></td>
-                <td><input type="date" name="povolDo"></td>
-                <td rowspan="5">
-                    <div class="panel">
-                        <label class="container">K práci na zařízení
-                            <input type="checkbox">
-                            <span class="checkbox"></span>
-                        </label>
-                        <label class="container">Ke svařování a práci s otevřeným ohněm
-                            <input type="checkbox">
-                            <span class="checkbox"></span>
-                        </label>
-                        <label class="container">Ke vstupu do zařízení nebo pod úroveň terénu
-                            <input type="checkbox">
-                            <span class="checkbox"></span>
-                        </label>
-                        <label class="container">K práci v prostředí s nebezpečím výbuchu
-                            <input type="checkbox">
-                            <span class="checkbox"></span>
-                        </label>
-                        <label class="container">K předání a převzetí zařízení do opravy a do provozu
-                            <input type="checkbox">
-                            <span class="checkbox"></span>
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th>Provoz</th>
-                <td><input type="text" name="provoz"></td>
-                <th>Název(číslo) objektu</th>
-                <td><input type="text" name="objekt"></td>
-                <td><input type="time" name="hodOd"></td>
-                <td><input type="time" name="hodDo"></td>
-            </tr>
-            <tr>
-                <th>Název zařízení</th>
-                <td colspan="2"><input type="text" name="NZarizeni"></td>
-                <th>Číslo zařízení</th>
-                <td colspan="2"><input type="text" name="CZarizeni"></td>
-            </tr>
-            <tr>
-                <th>Popis, druh a rozsah práce</th>
-                <td colspan="5"><input type="text" name="prace"></td>
-            </tr>
-            <tr>
-                <th>Seznámení s riziky pracoviště dle karty č.</th>
-                <td colspan="5"><input type="text" name="rizikaPrac"></td>
-            </tr>   
+            <thead>
+                <tr>
+                    <th>Rizikovost</th>
+                    <th>Interní</th>
+                    <th>Externí</th>
+                    <th>Počet osob</th>
+                    <th>Od</th>
+                    <th>Do</th>
+                    <th>Povolení</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="range" name="riziko"></td>
+                    <td><input type="text" name="interni"></td>
+                    <td><input type="text" name="externi"></td>
+                    <td><input type="text" name="pocetOs"></td>
+                    <td><input type="date" name="povolOd"></td>
+                    <td><input type="date" name="povolDo"></td>
+                    <td rowspan="5">
+                        <div class="panel">
+                            <label class="container">K práci na zařízení
+                                <input type="checkbox" name="prace_na_zarizeni" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">Ke svařování a práci s otevřeným ohněm
+                                <input type="checkbox" name="svarovani_ohen" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">Ke vstupu do zařízení nebo pod úroveň terénu
+                                <input type="checkbox" name="vstup_zarizeni_teren" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">K práci v prostředí s nebezpečím výbuchu
+                                <input type="checkbox" name="prostredi_vybuch" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">K předání a převzetí zařízení do opravy a do provozu
+                                <input type="checkbox" name="predani_prevzeti_zarizeni" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Provoz</th>
+                    <td><input type="text" name="provoz"></td>
+                    <th>Název(číslo) objektu</th>
+                    <td><input type="text" name="objekt"></td>
+                    <td><input type="time" name="hodOd"></td>
+                    <td><input type="time" name="hodDo"></td>
+                </tr>
+                <tr>
+                    <th>Název zařízení</th>
+                    <td colspan="2"><input type="text" name="NZarizeni"></td>
+                    <th>Číslo zařízení</th>
+                    <td colspan="2"><input type="text" name="CZarizeni"></td>
+                </tr>
+                <tr>
+                    <th>Popis, druh a rozsah práce</th>
+                    <td colspan="5"><input type="text" name="prace"></td>
+                </tr>
+                <tr>
+                    <th>Seznámení s riziky pracoviště dle karty č.</th>
+                    <td colspan="5"><input type="text" name="rizikaPrac"></td>
+                </tr>   
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="3">1. Příprava zařízení k opravě</th>
+                    <th colspan="6">Bližší určení</th>
+                </tr>
+                <tr>
+                    <th colspan="9">Zařízení bylo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan="10">
+                        <div class="panel">
+                            <label class="container">Vyčištění od zbytků
+                                <input type="checkbox" name="vycisteni" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">Vypařené
+                                <input type="checkbox" name="vyparene" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">Vypláchnuté vodou
+                                <input type="checkbox" name="vyplachnute" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">Plyn vytěsnen vodou
+                                <input type="checkbox" name="plyn_vytesnen" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">Vyvětrané
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">Profoukané dusíkem
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">Profoukané vzduchem
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">Odpojeno od elektrického proudu
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">Oddělené záslepkami
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">Jinak zapezpečené
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                        </div>
+                    </td>
+                    <td colspan="2"></td>
+                    <td colspan="6"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td>hodin:</td>
+                    <td><input type="time" name="" id=""></td>
+                    <td colspan="6"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td colspan="6"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td colspan="6"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td>hodin:</td>
+                    <td><input type="time" name="" id=""></td>
+                    <td colspan="6"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td>hodin:</td>
+                    <td><input type="time" name="" id=""></td>
+                    <td colspan="6"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td>hodin:</td>
+                    <td><input type="time" name="" id=""></td>
+                    <td colspan="6"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>Kým</td>
+                    <td colspan="3"><input type="text" name="" id=""></td>
+                    <td>Podpis</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>Kým</td>
+                    <td colspan="3"><input type="text" name="" id=""></td>
+                    <td>Podpis</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>Jak</td>
+                    <td colspan="5"><input type="text" name="" id=""></td>
+                </tr>
+            </tbody>
         </table>
         <div class="submit-container">
             <input type="submit" value="Odeslat" name="subOdeslat">
         </div>
-    </form>
+    </form><br><br><br><br><br>
     <div class="footer">
         <p style="margin-left: 1%;">Přihlášený uživatel: <?php echo $uziv ?> </p>
         <img src="Indorama.png" style="margin-right: 5.7%;">
@@ -124,17 +239,17 @@
             margin: 0 auto;
             width: 95%;
         }
+        td{
+            text-align: left;
+        }
+        th{
+            text-align: center;
+        }
         td input{
             width: 90%;
             padding: 5px;
             border: 1px solid #cccccc;
             border-radius: 3px;
-        }
-        td[colspan="2"] input{
-            width: 95.3%;
-        }
-        td[colspan="5"] input{
-            width: 98.4%;
         }
 
         .submit-container {
