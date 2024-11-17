@@ -34,7 +34,7 @@
         <h1>NOVÉ POVOLENÍ</h1>
     </div><br>
     <form action="" method="post">
-        <table>
+        <table class="intro">
             <thead>
                 <tr>
                     <th>Rizikovost</th>
@@ -103,57 +103,57 @@
                 </tr>   
             </tbody>
         </table>
-        <table>
+        <table class="first">
             <thead>
                 <tr>
                     <th colspan="3">1. Příprava zařízení k opravě</th>
                     <th colspan="6">Bližší určení</th>
                 </tr>
-                <tr>
-                    <th colspan="9">Zařízení bylo</th>
-                </tr>
             </thead>
             <tbody>
                 <tr>
+                    <td class="podnadpis" colspan="9">Zařízení bylo</td>
+                </tr>
+                <tr>
                     <td rowspan="10">
                         <div class="panel">
-                            <label class="container">Vyčištění od zbytků
+                            <label class="container">1.1 Vyčištění od zbytků
                                 <input type="checkbox" name="vycisteni" value="1">
                                 <span class="checkbox"></span>
                             </label>
-                            <label class="container">Vypařené
+                            <label class="container">1.2 Vypařené
                                 <input type="checkbox" name="vyparene" value="1">
                                 <span class="checkbox"></span>
                             </label>
-                            <label class="container">Vypláchnuté vodou
+                            <label class="container">1.3 Vypláchnuté vodou
                                 <input type="checkbox" name="vyplachnute" value="1">
                                 <span class="checkbox"></span>
                             </label>
-                            <label class="container">Plyn vytěsnen vodou
+                            <label class="container">1.4 Plyn vytěsnen vodou
                                 <input type="checkbox" name="plyn_vytesnen" value="1">
                                 <span class="checkbox"></span>
                             </label>
-                            <label class="container">Vyvětrané
+                            <label class="container">1.5 Vyvětrané
                                 <input type="checkbox" name="vyvetrane" value="1">
                                 <span class="checkbox"></span>
                             </label>
-                            <label class="container">Profoukané dusíkem
+                            <label class="container">1.6 Profoukané dusíkem
                                 <input type="checkbox" name="vyvetrane" value="1">
                                 <span class="checkbox"></span>
                             </label>
-                            <label class="container">Profoukané vzduchem
+                            <label class="container">1.7 Profoukané vzduchem
                                 <input type="checkbox" name="vyvetrane" value="1">
                                 <span class="checkbox"></span>
                             </label>
-                            <label class="container">Odpojeno od elektrického proudu
+                            <label class="container">1.8 Odpojeno od elektrického proudu
                                 <input type="checkbox" name="vyvetrane" value="1">
                                 <span class="checkbox"></span>
                             </label>
-                            <label class="container">Oddělené záslepkami
+                            <label class="container">1.9 Oddělené záslepkami
                                 <input type="checkbox" name="vyvetrane" value="1">
                                 <span class="checkbox"></span>
                             </label>
-                            <label class="container">Jinak zapezpečené
+                            <label class="container">1.10 Jinak zapezpečené
                                 <input type="checkbox" name="vyvetrane" value="1">
                                 <span class="checkbox"></span>
                             </label>
@@ -209,6 +209,134 @@
                     <td>Jak</td>
                     <td colspan="5"><input type="text" name="" id=""></td>
                 </tr>
+                <tr>
+                    <td class="podnadpis"colspan="9">Podmínky BP a PO</td>
+                </tr>
+                <tr>
+                    <td rowspan="7">
+                        <div class="panel">
+                            <label class="container">1.11 Použít nejiskřivého nářadí
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">1.12 Po dobu oprav - zkrápět, větrat
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">1.13 Provést rozbor ovzduší
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">1.14 Zabezpečit dozor dalšími osobami
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">1.15 Požární hlídka provozu
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">1.16 Hasící přístroj
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">1.17 Jiné zabezpečení požární ochrany
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                        </div>
+                    </td>
+                    <td colspan="2"></td>
+                    <td colspan="6"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td style="display: flex; align-items: center;"><input type="text" name="" id="">Krát za</td>
+                    <td><input type="text" name="" id=""></td>
+                    <td>Hodin</td>
+                    <td>V místě</td>
+                    <td colspan="2"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>Místo</td>
+                    <td><input type="text" name="" id=""></td>
+                    <td>Čas</td>
+                    <td><input type="text" name="" id=""></td>
+                    <td>Výsledek</td>
+                    <td><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>Počet</td>
+                    <td><input type="text" name="" id=""></td>
+                    <td colspan="4">Jména uvést v bodě 7</td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>Počet</td>
+                    <td><input type="text" name="" id=""></td>
+                    <td>Jméno</td>
+                    <td colspan="3"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>Počet</td>
+                    <td><input type="text" name="" id=""></td>
+                    <td>Druh</td>
+                    <td><input type="text" name="" id=""></td>
+                    <td>Typ</td>
+                    <td><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td colspan="6"><input type="text" name="" id=""></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="sec">
+            <thead>
+                <tr>
+                    <th colspan="9">2. Vlastní zabezpečení prováděné práce</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="podnadpis" colspan="9">Osobní ochranné pracovní prostředky</td>
+                </tr>
+                <tr>
+                    <td rowspan="7">
+                        <div class="panel">
+                            <label class="container">2.1 Ochrana nohou - jaká
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">2.2 Ochrana těla - jaká
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">2.3 Ochrana hlavy - jaká
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">2.4 Ochrana oči - jaká - druh
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">2.5 Ochrana dýchadel - jaká
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">2.6 Ochranný pás - druh
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">2.7 Ochranné rukavice - druh
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <div class="submit-container">
@@ -244,6 +372,12 @@
         }
         th{
             text-align: center;
+            padding: 0.5% 0;
+        }
+        .podnadpis{
+            font-weight: bold;
+            padding: 1% 0;
+            background-color: #eee;
         }
         td input{
             width: 90%;
