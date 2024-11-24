@@ -5,6 +5,12 @@ body{
     margin: 0;
     padding: 0;
 }
+.header{
+    background-color: #b6c7e2;
+    width: 100%;
+    padding: 0.5% 0;
+    text-align: center;
+}
 .footer{
     display: flex;
     justify-content: space-between;
@@ -20,6 +26,6 @@ body{
     color: #003366;
     margin-right: 20px;
 }
-img:not([style="cursor: pointer;"]){ 
+.footer img:not([style="cursor: pointer;"]){ 
     width: 170px;
 }

@@ -296,12 +296,12 @@
         <table class="sec">
             <thead>
                 <tr>
-                    <th colspan="9">2. Vlastní zabezpečení prováděné práce</th>
+                    <th colspan="6">2. Vlastní zabezpečení prováděné práce</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="podnadpis" colspan="9">Osobní ochranné pracovní prostředky</td>
+                    <td class="podnadpis" colspan="6">Osobní ochranné pracovní prostředky</td>
                 </tr>
                 <tr>
                     <td rowspan="7">
@@ -336,6 +336,151 @@
                             </label>
                         </div>
                     </td>
+                    <td colspan="5">
+                        <input type="text" name="" id="">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <input type="text" name="" id="">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <input type="text" name="" id="">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <input type="text" name="" id="">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <input type="text" name="" id="">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <input type="text" name="" id="">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <input type="text" name="" id="">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 22px;">Dozor jmenovitě</td>
+                    <td colspan="5">
+                        <input type="text" name="" id="">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="podnadpis" colspan="6">Jiné příkazy</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 22px;">2.9 Jiné</td>
+                    <td colspan="5"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td rowspan="2">
+                        <div class="panel">
+                            <label class="container">2.10 Napětí 220 V
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">2.11 Napětí 24 V
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                        </div>
+                    </td>
+                    <td rowspan="2">
+                        <div class="panel">
+                            <label class="container">S krytem
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                            <label class="container">Bez krytu
+                                <input type="checkbox" name="vyvetrane" value="1">
+                                <span class="checkbox"></span>
+                            </label>
+                        </div>
+                    </td>
+                    <td style="font-size: 22px;">Bez krytu</td>
+                    <td colspan="3"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td style="font-size: 22px;">Bez krytu</td>
+                    <td colspan="3"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td rowspan="3" colspan="2">
+                        2.12 Prohlášení: Prohlašuji, že zajistím dodržení výše uvedených <br>
+                        podmínek, jakož i bezpečný provoz a postup práce, mně podřízených <br>
+                        pracovníků. Při jakékoliv změně podmínek práci přeruším a požádám <br>
+                        o okamžité prověření prostředí. Po skončení práce s otevřeným ohněm <br>
+                        zabezpečím pracoviště ve smyslu ČSN 05 06 10.
+                    </td>
+                    <td>Za práci čety odpovídá:</td>
+                    <td colspan="3"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td>Datum:</td>
+                    <td><input type="date" name="" id=""></td>
+                    <td><input type="time" name="" id=""></td>
+                    <td>hodin</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Podpis vedoucího čety:</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="6">2.13 Sváření provedou:</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Jméno</td>
+                    <td colspan="2">Č. svář. průkazu</td>
+                    <td colspan="2">Podpis</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="text" name="" id=""></td>
+                    <td colspan="2"><input type="text" name="" id=""></td>
+                    <td colspan="2"><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td colspan="4">2.14 Osvědčení o způsobilosti k práci a sváření na plynové zařízení má pracovník:</td>
+                    <td colspan="2"><input type="text" name="" id=""></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="third">
+            <thead>
+                <tr>
+                    <th colspan="6">3. Prohlašuji, že jsem se přesvědčil, že výše uvededené zajištění je provedeno.</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Datum</td>
+                    <td><input type="date" name="" id=""></td>
+                    <td>Datum</td>
+                    <td><input type="date" name="" id=""></td>
+                    <td>Vyjádření přilehlého obvodu:</td>
+                    <td><input type="text" name="" id=""></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Podpis odpovědného pracovníka provozu:</td>
+                    <td colspan="2">Podpis odpovědného pracovníka provádějícího útvaru GB nebo externí firmy:</td>
+                    <td>Podpis vedoucího přilehlého obvodu</td>
+                    <td>Datum</td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td colspan="2"></td>
+                    <td></td>
+                    <td><input type="date" name="" id=""></td>
                 </tr>
             </tbody>
         </table>
@@ -346,7 +491,7 @@
     <div class="footer">
         <p style="margin-left: 1%;">Přihlášený uživatel: <?php echo $uziv ?> </p>
         <img src="Indorama.png" style="margin-right: 5.7%;">
-        <a href="login.html">
+        <a href="login.php">
             <img src="logout_icon.png" width="78%" style="cursor: pointer;">
         </a>
     </div>
@@ -354,12 +499,7 @@
         body {
             align-items: center;
         }
-        .header{
-            background-color: #b6c7e2;
-            width: 100%;
-            padding: 0.5% 0;
-            text-align: center;
-        }
+        
         table{
             background-color: #ffffff;
             padding: 20px;
@@ -376,7 +516,7 @@
         }
         .podnadpis{
             font-weight: bold;
-            padding: 1% 0;
+            padding: 1% 0 1% 1% ;
             background-color: #eee;
         }
         td input{

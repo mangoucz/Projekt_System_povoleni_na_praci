@@ -1,3 +1,29 @@
+<?php
+    session_start();
+    require_once 'server.php';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+        $sql = "";
+        if (isset($_POST['subLogin'])) {
+            $uziv = $_POST['uziv'];
+            $sql = "SELECT z.uziv_jmeno FROM Zamestnanci AS z WHERE z.uziv_jmeno = '$uziv';";
+            $result = sqlsrv_query($conn, $sql);    
+            if ($result === FALSE)
+                die(print_r(sqlsrv_errors(), true));
+            
+            if (sqlsrv_fetch($result)) {
+                $_SESSION['uziv'] = $uziv;
+                header("Location: uvod.php");
+                exit();
+            } else {
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+            sqlsrv_free_stmt($result);
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +36,7 @@
     <div class="container">
         <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
         <span class="separator">|</span>
-        <form action="uvod.php" method="post">
+        <form action="" method="post">
             <h2>Přihlášení</h2>
             <input type="text" name="uziv" placeholder="Přihlašovací jméno" required><br>
             <input type="submit" value="Přihlásit se!" name="subLogin"><br>

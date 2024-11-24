@@ -1,21 +1,34 @@
 <?php
     session_start();
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['subLogin'])) {
-        $uziv = $_POST['uziv'];
-        $_SESSION['uziv'] = $uziv;
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit();
-    } 
+    if (isset($_SESSION['uziv']))
+        $uziv = $_SESSION['uziv'];
     else{
-        if (isset($_SESSION['uziv'])){ 
-            $uziv = $_SESSION['uziv'];
-        }
-        else{
-            header("Location: login.html");
-            exit();
-        }
+        header("Location: login.html");
+        exit();    
     }
+    require_once 'server.php';
+
+    $sql = "SELECT 
+                CONCAT(z.jmeno, ' ', z.prijmeni) AS jmeno,
+                z.funkce,
+                z.stredisko,
+                z.telefon,
+                z.mobil
+            FROM Zamestnanci AS z
+            WHERE uziv_jmeno = '$uziv';";
+    
+    $result = sqlsrv_query($conn, $sql);
+    if ($result === FALSE)
+        die(print_r(sqlsrv_errors(), true));
+
+    $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+    sqlsrv_free_stmt($result);
+
+    $jmeno = $zaznam['jmeno'];
+    $funkce = $zaznam['funkce'];
+    $stredisko = $zaznam['stredisko'];
+    $tel = $zaznam['telefon'];
+    $mobil = $zaznam['mobil'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($_POST['subNove']) {
@@ -45,9 +58,26 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="header">
         <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
-        <span class="separator">|</span>
+    </div>
+    <div class="subHeader">
+        <div class="uziv">
+            <img src="user_icon.png" width="25%" style="margin-right: 2%;">
+            <div class="uziv_inf">
+                <p><?php echo $jmeno; ?></p>
+                <p style="font-size: 12px; margin-left: 2px;"><?php echo $funkce; ?></p>
+            </div>
+        </div>
+    </div>
+    <div class="uzivCont">
+        <div class="uzivMore">
+            <p>Středisko: <?php echo $stredisko; ?></p>
+            <p>Telefon: <?php echo $tel; ?></p>
+            <p>Mobil: <?php echo $mobil ?></p>
+        </div>
+    </div>
+    <div class="container">
         <form action="" method="post">
             <input type="submit" value="Nové povolení" name="subNove"><br>
             <input type="submit" value="Přehed a editace" name="subPrehled"><br>
@@ -57,29 +87,46 @@
     <div class="footer">
         <p style="margin-left: 1%;">Přihlášený uživatel: <?php echo $uziv ?> </p>
         <img src="Indorama.png" style="margin-right: 7.5%;">
-        <a href="login.html">
+        <a href="login.php">
             <img src="logout_icon.png" width="78%" style="cursor: pointer;">
         </a>
     </div>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
         .container {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
-            margin: 15% 0 0 0;
+        }   
+        .subHeader{
+            background-color: #ffffff;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            flex-direction: column;
+        }    
+        .uziv{
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 1% 2% 1% 0;
+            cursor: pointer;    
         }
-        h1 {
-            color: #003366; 
-            font-size: 36px;
-            margin: 1% 20px 0 0;
+        .uziv_inf p{
+            margin: 0;
+            padding: 1% 0;
         }
-        
+        .uzivMore{
+            display: inline-flex;
+            background-color: #FFFFFF; 
+            align-items: flex-start;
+            flex-direction: column;
+        }
+        .uzivCont{
+            display: flex;
+            justify-content: flex-end;
+        }
         form {
             background-color: #FFFFFF; 
             padding: 20px;
@@ -113,9 +160,6 @@
             }
             h1{
                 margin: 0 0 0 0;
-            }
-            .separator {
-                display: none;
             }
             form {
                 width: 90%;
