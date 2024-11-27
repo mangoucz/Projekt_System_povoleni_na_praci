@@ -11,9 +11,6 @@
     $sql = "SELECT 
                 CONCAT(z.jmeno, ' ', z.prijmeni) AS jmeno,
                 z.funkce,
-                z.stredisko,
-                z.telefon,
-                z.mobil
             FROM Zamestnanci AS z
             WHERE uziv_jmeno = '$uziv';";
     
@@ -26,9 +23,6 @@
 
     $jmeno = $zaznam['jmeno'];
     $funkce = $zaznam['funkce'];
-    $stredisko = $zaznam['stredisko'];
-    $tel = $zaznam['telefon'];
-    $mobil = $zaznam['mobil'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($_POST['subNove']) {
@@ -59,38 +53,33 @@
 </head>
 <body>
     <div class="header">
+        <img src="Indorama.png" class="logo">
         <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
-    </div>
-    <div class="subHeader">
-        <div class="uziv">
-            <img src="user_icon.png" width="25%" style="margin-right: 2%;">
-            <div class="uziv_inf">
-                <p><?php echo $jmeno; ?></p>
-                <p style="font-size: 12px; margin-left: 2px;"><?php echo $funkce; ?></p>
+        <div class="headerB">
+            <form action="" method="post">
+                <input type="submit" value="Nové povolení" name="subNove">
+            </form>
+            <div class="uziv">
+                <img src="user_icon.png" width="28%" style="margin-right: 2%;">
+                <div class="uziv_inf">
+                    <p><?php echo $jmeno; ?></p>
+                    <p style="font-size: 12px; margin-left: 2px;"><?php echo $funkce; ?></p>
+                </div>
             </div>
+            <a href="login.php">
+                <img src="logout_icon.png" width="78%" style="cursor: pointer;">
+            </a>
         </div>
     </div>
-    <div class="uzivCont">
-        <div class="uzivMore">
-            <p>Středisko: <?php echo $stredisko; ?></p>
-            <p>Telefon: <?php echo $tel; ?></p>
-            <p>Mobil: <?php echo $mobil ?></p>
-        </div>
+    <div class="footer">
+        <img src="Indorama.png">
     </div>
-    <div class="container">
+    <!-- <div class="container">
         <form action="" method="post">
-            <input type="submit" value="Nové povolení" name="subNove"><br>
             <input type="submit" value="Přehed a editace" name="subPrehled"><br>
             <input type="submit" value="Archiv" name="subArchiv"><br>
         </form>
-    </div>
-    <div class="footer">
-        <p style="margin-left: 1%;">Přihlášený uživatel: <?php echo $uziv ?> </p>
-        <img src="Indorama.png" style="margin-right: 7.5%;">
-        <a href="login.php">
-            <img src="logout_icon.png" width="78%" style="cursor: pointer;">
-        </a>
-    </div>
+    </div> -->
     <style>
         .container {
             display: flex;
@@ -98,42 +87,44 @@
             justify-content: center;
             width: 100%;
         }   
-        .subHeader{
+        .header{
             background-color: #ffffff;
             display: flex;
-            justify-content: flex-end;
-            align-items: flex-end;
-            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: row;
+            flex-wrap: wrap;
         }    
+        .headerB{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .footer{
+            display: none;
+            justify-content: center;
+            padding: 0.75% 0;
+        }
         .uziv{
             display: inline-flex;
-            align-items: center;
-            justify-content: flex-end;
             align-items: center;
             padding: 1% 2% 1% 0;
             cursor: pointer;    
         }
         .uziv_inf p{
+            white-space: nowrap;
+            text-align: left;
             margin: 0;
             padding: 1% 0;
         }
-        .uzivMore{
-            display: inline-flex;
-            background-color: #FFFFFF; 
-            align-items: flex-start;
-            flex-direction: column;
-        }
-        .uzivCont{
-            display: flex;
-            justify-content: flex-end;
+        .logo{
+            margin-left: 1%; 
+            max-width: 10%;
         }
         form {
             background-color: #FFFFFF; 
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-            max-width: 400px;
-            width: 200%;
+            width: 60%;
             text-align: center;
         }
         input[type="submit"] {
@@ -153,17 +144,19 @@
         }
 
         @media (max-width: 660px) {
-            .container {
-                text-align: center;
+            .header {
                 flex-direction: column;
-                width: 90%;
+                align-items: center;
             }
-            h1{
-                margin: 0 0 0 0;
+            .footer{
+                display: flex;  
             }
-            form {
-                width: 90%;
-                margin-top: 30%;
+            .logo {
+                display: none;
+            }
+            h1 {
+                margin: 5% 0;
+                font-size: 1.5em;
             }
         }
     </style>
