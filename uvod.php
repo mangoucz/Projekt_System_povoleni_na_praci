@@ -10,7 +10,7 @@
 
     $sql = "SELECT 
                 CONCAT(z.jmeno, ' ', z.prijmeni) AS jmeno,
-                z.funkce,
+                z.funkce
             FROM Zamestnanci AS z
             WHERE uziv_jmeno = '$uziv';";
     
