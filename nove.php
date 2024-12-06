@@ -438,7 +438,7 @@
                     <tr>
                         <td colspan="2"><input type="text" name="" id=""></td>
                         <td colspan="2"><input type="text" name="" id=""></td>
-                        <td colspan="2"><input type="text" name="" id=""></td>
+                        <td colspan="2"></td>
                     </tr>
                     <tr>
                         <td colspan="4">2.14 Osvědčení o způsobilosti k práci a sváření na plynové zařízení má pracovník:</td>
@@ -492,7 +492,7 @@
                         <td>4.2 Výše uvedené podmínky stanovil - jméno:</td>
                         <td colspan="2"><input type="text" name="" id=""></td>
                         <td>Podpis</td>
-                        <td><input type="text" name="" id=""></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>4.3 Pracoviště připraveno pro práci s otevřeným ohněm:</td>
@@ -505,7 +505,208 @@
                         <td>4.4 Osobně zkontroloval - jméno</td>
                         <td colspan="2"><input type="text" name="" id=""></td>
                         <td>Podpis</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="fifth">
+                <thead>
+                    <tr>
+                        <th>5. Rozbor obzduší</th>
+                        <td>Datum</td>
+                        <td>Čas</td>
+                        <td>Místo odběru vzorku ovzduší</td>
+                        <td>Naměřená hodnota</td>
+                        <td>Podpis</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
                         <td><input type="text" name="" id=""></td>
+                        <td><input type="date" name="" id=""></td>
+                        <td><input type="time" name="" id=""></td>
+                        <td><input type="text" name="" id=""></td>
+                        <td><input type="text" name="" id=""></td>
+                        <td><input type="text" name="" id=""></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="sixth">
+                <thead>
+                    <tr>
+                        <th colspan="5">6. Další jiné podmínky práce na zařízení</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="podnadpis">Vystavovatel nebo kontrolní orgán</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4"><textarea name="" id="" rows="4" style="resize: none; width: 100%;"></textarea></td>
+                        <td>Stanovil</td>
+                        <td colspan="3"><input type="text" name="" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>Jméno</td>
+                        <td colspan="3"><input type="text" name="" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>Dne</td>
+                        <td><input type="text" name="" id=""></td>
+                        <td>Hodin</td>
+                        <td><input type="text" name="" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>Podpis</td>
+                        <td colspan="3"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="seventh">
+                <thead>
+                    <tr>
+                        <th>7. Další nutná opatření - případně viz protokol ze dne</th>
+                        <th><input type="date" name="" id=""></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2"><textarea name="" id="" rows="4" style="resize: none; width: 100%;"></textarea></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="eighth">
+                <thead>
+                    <tr>
+                        <th colspan="3">8. Předání do opravy - protokol č.</th>
+                        <th><input type="text" name="" id=""></th>
+                        <th colspan="6">10. Práce svářečské ukončeny</th>
+                        <th colspan="4">12. Kontrola BT, PO, jiného orgánu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Dne</td>
+                        <td><input type="date" name="" id=""></td>
+                        <td>Hodina</td>
+                        <td><input type="time" name="" id=""></td>
+                        <td>Dne</td>
+                        <td colspan="2"><input type="date" name="" id=""></td>
+                        <td>Hodina</td>
+                        <td colspan="2"><input type="time" name="" id=""></td>
+                        <td>Kontrola dne</td>
+                        <td><input type="date" name="" id=""></td>
+                        <td>Hodina</td>
+                        <td><input type="time" name="" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>Předal</td>
+                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td>Předal</td>
+                        <td colspan="5"><input type="text" name="" id=""></td>
+                        <td>Zjištěno</td>
+                        <td colspan="3" rowspan="4"><textarea name="" id="" rows="4" style="resize: none; width: 100%;"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Převzal</td>
+                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td>Převzal</td>
+                        <td colspan="5"><input type="text" name="" id=""></td>
+                    </tr>
+                    <tr>
+                        <th colspan="4">9. Převzání z opravy</th>
+                        <th colspan="6">11. Následný dozor</th>
+                        <th colspan="4"></th>
+                    </tr>
+                    <tr>
+                        <td>Dne</td>
+                        <td><input type="date" name="" id=""></td>
+                        <td>Hodina</td>
+                        <td><input type="time" name="" id=""></td>
+                        <td>Od</td>
+                        <td><input type="time" name="" id=""></td>
+                        <td>hodin</td>
+                        <td>Do</td>
+                        <td><input type="time" name="" id=""></td>
+                        <td>hodin</td>
+                    </tr>
+                    <tr>
+                        <td>Předal</td>
+                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td>Jméno</td>
+                        <td colspan="5"><input type="text" name="" id=""></td>
+                        <td>Jméno</td>
+                        <td colspan="3"><input type="text" name="" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>Předal</td>
+                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td>Podpis</td>
+                        <td colspan="5"></td>
+                        <td>Podpis</td>
+                        <td colspan></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="thirteenth">
+                <thead>
+                    <tr>
+                        <th colspan="6">13. Prodloužených za podmínek stanovených tímto povolením</th>
+                    </tr>
+                    <tr>
+                        <th class="podnadpis" colspan="6">Prodlužuje provozovatel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>13.1 Pro práci na zařízení</td>
+                        <td colspan="5"><input type="text" name="" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>Datum</td>
+                        <td>Od - Do</td>
+                        <td>Přestávka</td>
+                        <td>Počet osob</td>
+                        <td>Podpis odpovědného prac. provozu</td>
+                        <td>Podpis odpovědného prac. prov. útvaru</td>
+                    </tr>
+                    <tr>
+                        <td><input type="date" name="" id=""></td>
+                        <td><input type="text" name="" id=""></td>
+                        <td><input type="text" name="" id=""></td>
+                        <td><input type="text" name="" id=""></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>13.2 Pro práci s otevřeným ohněm</td>
+                        <td colspan="5"><input type="text" name="" id=""></td>
+                    </tr>
+                    <tr>
+                        <td>Datum</td>
+                        <td>Od - Do</td>
+                        <td>Přestávka</td>
+                        <td>Počet osob</td>
+                        <td>Podpis Vystavovatele</td>
+                    </tr>
+                    <tr>
+                        <td><input type="date" name="" id=""></td>
+                        <td><input type="text" name="" id=""></td>
+                        <td><input type="text" name="" id=""></td>
+                        <td><input type="text" name="" id=""></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="fourteenth">
+                <thead>
+                    <tr>
+                        <th>14. Doplňky, poznámky</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="5"><textarea name="" id="" rows="5" style="resize: none; width: 100%;"></textarea></td>
                     </tr>
                 </tbody>
             </table>
@@ -533,6 +734,7 @@
             justify-content: space-between;
             flex-direction: row;
             flex-wrap: wrap;
+            margin-bottom: 1%;
         }    
         .headerB{
             display: flex;

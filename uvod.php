@@ -110,7 +110,6 @@
             display: inline-flex;
             align-items: center;
             padding: 1% 2% 1% 0;
-            cursor: pointer;    
         }
         .uziv_inf p{
             white-space: nowrap;
