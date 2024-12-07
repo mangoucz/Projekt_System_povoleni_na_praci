@@ -441,6 +441,9 @@
                         <td colspan="2"></td>
                     </tr>
                     <tr>
+                        <td colspan="6"><button type="button">Přidat svářeče</button></td>
+                    </tr>
+                    <tr>
                         <td colspan="4">2.14 Osvědčení o způsobilosti k práci a sváření na plynové zařízení má pracovník:</td>
                         <td colspan="2"><input type="text" name="" id=""></td>
                     </tr>
@@ -716,89 +719,66 @@
         </div>
     </form>
     <style>
-        body {
-            align-items: center;
-        }
-        
         table{
             background-color: #ffffff;
             padding: 20px;
             border: 1px solid #bcd4ef;
-            margin: 0 auto;
-            width: 95%;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            border-collapse: collapse;
         }
-        .header{
-            background-color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-direction: row;
-            flex-wrap: wrap;
-            margin-bottom: 1%;
-        }    
-        .headerB{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-        .uziv{
-            display: inline-flex;
-            align-items: center;
-            padding: 1% 2% 1% 0;
-            cursor: pointer;    
-        }
-        .uziv_inf p{
-            white-space: nowrap;
-            text-align: left;
-            margin: 0;
-            padding: 1% 0;
-        }
-        .logo{
-            margin-left: 1%; 
-            max-width: 10%;
-        }
-        td{
-            text-align: left;
-        }
-        th{
+        thead th {
+            background-color: #eaf3ff;
+            color: #333;
             text-align: center;
-            padding: 0.5% 0;
+            font-weight: bold;
+            padding: 10px;
+            border-bottom: 2px solid #bcd4ef;
+        }
+        tbody th {
+            background-color: #f7faff;
+            font-weight: bold;
+            text-align: left;
+            padding: 10px;
+        }
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e6ecf2;
         }
         .podnadpis{
             font-weight: bold;
             padding: 1% 0 1% 1% ;
             background-color: #eee;
         }
-        td input{
-            width: 90%;
-            padding: 5px;
-            border: 1px solid #cccccc;
-            border-radius: 3px;
-        }
-
-        .submit-container {
-            margin: 10px 50px;
-            text-align: right;
-        }
-
-        .submit-container input {
-            background-color: #003366;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        input[type="range"] {
+            width: 100%;
+            padding: 8px;
+            margin: 2px 0;
+            box-sizing: border-box;
+            border: 1px solid #bcd4ef;
+            border-radius: 4px;
             font-size: 14px;
-            transition: background-color 0.3s ease;
+            outline: none;
+        }  
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="time"]:focus,
+        input[type="range"]:focus {
+            border-color: #2196F3;
+            box-shadow: 0 0 4px rgba(33, 150, 243, 0.5);
         }
-
-        .submit-container input:hover {
-            background-color: #d40000;
-        }
-
         .panel {
-            padding: 0 18px;
-            margin: 10px 0;
+            padding: 18px 18px;
+            background-color: #f9fcff;
+            border: 1px solid #e6ecf2;
+            border-radius: 8px;
         }
         .container {
             display: block;
@@ -806,7 +786,8 @@
             padding-left: 35px;
             margin-bottom: 12px;
             cursor: pointer;
-            font-size: 22px;
+            font-size: 16px;
+            color: #333;
         }
         .container input {
             display: none;
@@ -814,15 +795,19 @@
         .checkbox {
             position: absolute;
             left: 0;
-            height: 25px;
-            width: 25px;
+            top: 25%;
+            height: 20px;
+            width: 20px;
             background-color: #eee;
+            border-radius: 4px;
+            border: 1px solid #bcd4ef;
         }
         .container:hover input ~ .checkbox {
             background-color: #ccc;
         }
         .container input:checked ~ .checkbox {
             background-color: #2196F3;
+            border-color: #2196F3;
         }
         .checkbox:after {
             content: "";
@@ -833,14 +818,31 @@
             display: block;
         }
         .container .checkbox:after {
-            left: 9px;
-            top: 5px;
+            left: 6px;
+            top: 3px;
             width: 5px;
             height: 10px;
             border: solid white;
             border-width: 0 3px 3px 0;
             transform: rotate(45deg);
         }
-    </style>
+
+        .submit-container {
+            margin: 10px 50px;
+            text-align: right;
+        }
+        .submit-container input {
+            background-color: #003366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        .submit-container input:hover {
+            background-color: #d40000;
+        }
+        </style>
 </body>
 </html>

@@ -87,39 +87,10 @@
             justify-content: center;
             width: 100%;
         }   
-        .header{
-            background-color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }    
-        .headerB{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
         .footer{
             display: none;
             justify-content: center;
             padding: 0.75% 0;
-        }
-        .uziv{
-            display: inline-flex;
-            align-items: center;
-            padding: 1% 2% 1% 0;
-        }
-        .uziv_inf p{
-            white-space: nowrap;
-            text-align: left;
-            margin: 0;
-            padding: 1% 0;
-        }
-        .logo{
-            margin-left: 1%; 
-            max-width: 10%;
         }
         form {
             background-color: #FFFFFF; 

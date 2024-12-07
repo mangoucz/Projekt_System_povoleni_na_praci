@@ -59,9 +59,10 @@
         width: 100%;
         margin: 15% 0 0 0;
     }
-    .footer{
-        justify-content: center;
-        padding: 0.75% 0;
+    .separator {
+        font-size: 100px;
+        color: #003366;
+        margin-right: 20px;
     }
     h1 {
         color: #003366; 
@@ -124,5 +125,3 @@
     }
 </style>
 </html>
-<!--Září: 4hod-->
-<!--Říjen: 7hod-->

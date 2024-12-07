@@ -5,27 +5,49 @@ body{
     margin: 0;
     padding: 0;
 }
+
 .header{
-    background-color: #b6c7e2;
-    width: 100%;
-    padding: 0.5% 0;
-    text-align: center;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 1%;
 }
+.headerB{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.uziv{
+    display: inline-flex;
+    align-items: center;
+    padding: 1% 2% 1% 0;
+}
+.uziv_inf p{
+    white-space: nowrap;
+    text-align: left;
+    margin: 0;
+    padding: 1% 0;
+}
+.logo{
+    margin-left: 1%; 
+    max-width: 10%;
+}  
+
 .footer{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     background-color: #b6c7e2;
-    padding: 0.6% 0;
+    padding: 0.75% 0;
     position: fixed;
     bottom: 0;
     width: 100%;
 }
-.separator {
-    font-size: 100px;
-    color: #003366;
-    margin-right: 20px;
-}
-.footer img:not([style="cursor: pointer;"]){ 
+
+.footer img{ 
     width: 170px;
 }
