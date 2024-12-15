@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <td><input type="text" name="svarec_jmeno"></td>
             <td colspan="2"><input type="text" name="svarec_prukaz"></td>
             <td colspan="2"></td>
-            <td><button type="button" class="svarec_odebrat">-</button></td>
+            <td><button type="button" class="del">-</button></td>
         `;
         buttSvareci.parentNode.insertBefore(radek, buttSvareci);
     };
@@ -23,16 +23,13 @@ document.addEventListener('DOMContentLoaded', function() {
             <td><input type="text" name="rozbor_misto"></td>
             <td><input type="text" name="rozbor_hodn"></td>
             <td></td>
-            <td><button type="button" class="rozbor_odebrat">-</button></td>
+            <td><button type="button" class="del">-</button></td>
         `;
         buttRozbory.parentNode.insertBefore(radek, buttRozbory);
     };
 
     document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('svarec_odebrat')) {
-            event.target.closest('tr').remove();
-        }
-        if (event.target.classList.contains('rozbor_odebrat')) {
+        if (event.target.classList.contains('del')) {
             event.target.closest('tr').remove();
         }
     });

@@ -453,11 +453,11 @@
                         <td colspan="2"></td>
                     </tr>
                     <tr id="buttSvareci">
-                        <td colspan="6"><button type="button" id="svarec_pridat">+</button></td>
+                        <td colspan="6"><button type="button" id="svarec_pridat" class="add">+</button></td>
                     </tr>
                     <tr>
-                        <th colspan="4">2.14 Osvědčení o způsobilosti k práci a sváření na plynové zařízení má pracovník:</th>
-                        <td colspan="2"><input type="text" name="" id=""></td>
+                        <th colspan="3">2.14 Osvědčení o způsobilosti k práci a sváření na plynové zařízení má pracovník:</th>
+                        <td colspan="3"><input type="text" name="" id=""></td>
                     </tr>
                 </tbody>
             </table>
@@ -535,7 +535,8 @@
                         <th>Čas</th>
                         <th>Místo odběru vzorku ovzduší</th>
                         <th>Naměřená hodnota</th>
-                        <th colspan="2">Podpis</th>
+                        <th>Podpis</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -549,7 +550,7 @@
                         <td></td>
                     </tr>
                     <tr id="buttRozbory">
-                        <td colspan="6"><button type="button" id="rozbor_pridat">+</button></td>
+                        <td colspan="6"><button type="button" id="rozbor_pridat" class="add">+</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -785,14 +786,47 @@
         }  
         input[type="text"]:focus,
         input[type="date"]:focus,
-        input[type="time"]:focus,
-        input[type="range"]:focus {
+        input[type="time"]:focus{
             border-color: #2196F3;
             box-shadow: 0 0 4px rgba(33, 150, 243, 0.5);
         }
         button{
-
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px; 
+            font-size: 20px; 
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+            transition: all 0.3s ease;
         }
+        button:hover{
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
+        }
+        button:active{
+            box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
+        }
+        .add {
+            background-color: #39B54A;
+        }
+        .del {
+            background-color: #FF2C55;
+        }
+        .add:hover {
+            background-color: #34A343;
+        }
+        .add:active {
+            background-color: #2E8E3B;
+        }
+        .del:hover {
+            background-color: #E62A4E;
+        }
+        .del:active {
+            background-color: #CC2444;
+        }
+
+
         td:has(button), th:has(button){
             text-align: center;
         }
