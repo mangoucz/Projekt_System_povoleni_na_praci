@@ -1,10 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
-    var svarec_pridat = document.getElementById("svarec_pridat");
-    var buttSvareci = document.getElementById("buttSvareci");
-    var rozbor_pridat = document.getElementById("rozbor_pridat");
-    var buttRozbory = document.getElementById("buttRozbory");
+    var svarecAdd = document.getElementById("svarecAdd");
+    var svareciTR = document.getElementById("svareciTR");
+    var rozborAdd = document.getElementById("rozborAdd");
+    var rozboryTR = document.getElementById("rozboryTR");
+    var zarizeniAdd = document.getElementById("zarizeniAdd");
+    var zarizeniTR = document.getElementById("zarizeniTR");
+    var ohenAdd = document.getElementById("ohenAdd");
+    var ohenTR = document.getElementById("ohenTR");
 
-    svarec_pridat.onclick = function () {
+    svarecAdd.onclick = function () {
         var radek = document.createElement("tr");
         radek.innerHTML = `
             <td><input type="text" name="svarec_jmeno"></td>
@@ -12,9 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
             <td colspan="2"></td>
             <td><button type="button" class="del">-</button></td>
         `;
-        buttSvareci.parentNode.insertBefore(radek, buttSvareci);
+        svareciTR.parentNode.insertBefore(radek, svareciTR);
     };
-    rozbor_pridat.onclick = function (){
+    rozborAdd.onclick = function (){
         var radek = document.createElement("tr");
         radek.innerHTML = `
             <td><input type="text" name="rozbor_nazev"></td>
@@ -25,7 +29,35 @@ document.addEventListener('DOMContentLoaded', function() {
             <td></td>
             <td><button type="button" class="del">-</button></td>
         `;
-        buttRozbory.parentNode.insertBefore(radek, buttRozbory);
+        rozboryTR.parentNode.insertBefore(radek, rozboryTR);
+    };
+    zarizeniAdd.onclick = function(){
+        var radek = document.createElement("tr");
+        radek.innerHTML = `
+        <tr>
+            <td><input type="date" name="prodluz_zar_dat" id=""></td>
+            <td><input type="text" name="prodluz_zar_oddo" id=""></td>
+            <td><input type="text" name="prodluz_zar_prestavka" id=""></td>
+            <td><input type="text" name="prodluz_zar_os" id=""></td>
+            <td colspan="2"></td>
+            <td><button type="button" class="del">-</button></td>
+        </tr>
+        `;
+        zarizeniTR.parentNode.insertBefore(radek, zarizeniTR);
+    };
+    ohenAdd.onclick = function(){
+        var radek = document.createElement("tr");
+        radek.innerHTML = `
+        <tr>
+            <td><input type="date" name="prodluz_oh_dat" id=""></td>
+            <td><input type="text" name="prodluz_oh_oddo" id=""></td>
+            <td><input type="text" name="prodluz_oh_prestavka" id=""></td>
+            <td><input type="text" name="prodluz_oh_os" id=""></td>
+            <td colspan="2"></td>
+            <td><button type="button" class="del">-</button></td>
+        </tr>
+        `;
+        ohenTR.parentNode.insertBefore(radek, ohenTR);
     };
 
     document.addEventListener('click', function(event) {

@@ -377,14 +377,14 @@
                     </tr>
                     <tr>
                         <th>2.8 Dozor jmenovitě</th>
-                        <td colspan="5"><input type="text" name="" id=""></td>
+                        <td colspan="5"><input type="text" name="ochran_dozor" id=""></td>
                     </tr>
                     <tr>
                         <td class="podnadpis" colspan="6">Jiné příkazy</td>
                     </tr>
                     <tr>
                         <th>2.9 Jiné</th>
-                        <td colspan="5"><input type="text" name="" id=""></td>
+                        <td colspan="5"><input type="text" name="jine_prikazy" id=""></td>
                     </tr>
                     <tr>
                         <td rowspan="2">
@@ -412,11 +412,11 @@
                             </div>
                         </td>
                         <th>Bez krytu</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="bez_krytu1" id=""></td>
                     </tr>
                     <tr>
                         <th>Bez krytu</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="bez_krytu2" id=""></td>
                     </tr>
                     <tr>
                         <td rowspan="3" colspan="2">
@@ -427,12 +427,12 @@
                             zabezpečím pracoviště ve smyslu ČSN 05 06 10.
                         </td>
                         <th>Za práci čety odpovídá</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="za_praci_odpovida" id=""></td>
                     </tr>
                     <tr>
                         <th>Datum</th>
-                        <td><input type="date" name="" id=""></td>
-                        <td><input type="time" name="" id=""></td>
+                        <td><input type="date" name="odpovednost_dat" id=""></td>
+                        <td><input type="time" name="odpovednost_cas" id=""></td>
                         <th>Hodin</th>
                     </tr>
                     <tr>
@@ -452,12 +452,12 @@
                         <td colspan="2"><input type="text" name="svarec_prukaz"></td>
                         <td colspan="2"></td>
                     </tr>
-                    <tr id="buttSvareci">
-                        <td colspan="6"><button type="button" id="svarec_pridat" class="add">+</button></td>
+                    <tr id="svareciTR">
+                        <td colspan="6"><button type="button" id="svarecAdd" class="add">+</button></td>
                     </tr>
                     <tr>
                         <th colspan="3">2.14 Osvědčení o způsobilosti k práci a sváření na plynové zařízení má pracovník:</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="osvedceny_prac" id=""></td>
                     </tr>
                 </tbody>
             </table>
@@ -470,18 +470,18 @@
                 <tbody>
                     <tr>
                         <th>Datum</th>
-                        <td><input type="date" name="" id=""></td>
+                        <td><input type="date" name="prohlaseni_dat" id=""></td>
                         <th>Datum</th>
-                        <td><input type="date" name="" id=""></td>
+                        <td><input type="date" name="prohlaseni_cas" id=""></td>
                         <th>Vyjádření přilehlého obvodu </th>
-                        <td colspan="2"><input type="text" name="" id=""></td>
+                        <td colspan="2"><input type="text" name="prohlaseni_obvodu" id=""></td>
                     </tr>
                     <tr>
                         <th rowspan="2" colspan="2">Podpis odpovědného pracovníka provozu: </th>
                         <th rowspan="2" colspan="2">Podpis odpovědného pracovníka provádějícího útvaru GB nebo externí firmy:</th>
                         <th rowspan="2">Podpis vedoucího přilehlého obvodu:</th>
                         <th>Datum</th>
-                        <td><input type="date" name="" id=""></td>
+                        <td><input type="date" name="prohl_popis_dat" id=""></td>
                     </tr>
                     <tr>
                         <th colspan="5"></th>
@@ -504,24 +504,24 @@
                         <th colspan="5">4.1 Podmínky (doplňující bod č. 1)</th>
                     </tr>
                     <tr>
-                        <td colspan="5"><textarea name="" id="" rows="5" style="resize: none; width: 100%;"></textarea></td>
+                        <td colspan="5"><textarea name="podminky" id="" rows="5" style="resize: none; width: 100%;"></textarea></td>
                     </tr>
                     <tr>
                         <th>4.2 Výše uvedené podmínky stanovil - jméno:</th>
-                        <td colspan="2"><input type="text" name="" id=""></td>
+                        <td colspan="2"><input type="text" name="podminky_jm" id=""></td>
                         <th>Podpis</th>
                         <td></td>
                     </tr>
                     <tr>
                         <th>4.3 Pracoviště připraveno pro práci s otevřeným ohněm:</th>
                         <th>Dne</th>
-                        <td><input type="date" name="" id=""></td>
+                        <td><input type="date" name="ohen_dat" id=""></td>
                         <th>Hodin</th>
-                        <td><input type="time" name="" id=""></td>
+                        <td><input type="time" name="ohen_cas" id=""></td>
                     </tr>
                     <tr>
                         <th>4.4 Osobně zkontroloval - jméno</th>
-                        <td colspan="2"><input type="text" name="" id=""></td>
+                        <td colspan="2"><input type="text" name="zkontroloval_jm" id=""></td>
                         <th>Podpis</th>
                         <td></td>
                     </tr>
@@ -549,8 +549,8 @@
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr id="buttRozbory">
-                        <td colspan="6"><button type="button" id="rozbor_pridat" class="add">+</button></td>
+                    <tr id="rozboryTR">
+                        <td colspan="6"><button type="button" id="rozborAdd" class="add">+</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -565,19 +565,19 @@
                         <td colspan="5" class="podnadpis">Vystavovatel nebo kontrolní orgán</td>
                     </tr>
                     <tr>
-                        <td rowspan="4"><textarea name="" id="" rows="10" style="resize: none; width: 95%;"></textarea></td>
+                        <td rowspan="4"><textarea name="dalsi_jine" id="" rows="10" style="resize: none; width: 95%;"></textarea></td>
                         <th>Stanovil</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="dalsi_jine_stanovil" id=""></td>
                     </tr>
                     <tr>
                         <th>Jméno</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="dalsi_jine_jm" id=""></td>
                     </tr>
                     <tr>
                         <th>Dne</th>
-                        <td><input type="date" name="" id=""></td>
+                        <td><input type="date" name="dalsi_jine_dat" id=""></td>
                         <th>Hodin</th>
-                        <td><input type="time" name="" id=""></td>
+                        <td><input type="time" name="dalsi_jine_cas" id=""></td>
                     </tr>
                     <tr>
                         <th>Podpis</th>
@@ -589,12 +589,12 @@
                 <thead>
                     <tr>
                         <th>7. Další nutná opatření - případně viz protokol ze dne</th>
-                        <th><input type="date" name="" id=""></th>
+                        <th><input type="date" name="nutna_dat" id=""></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="2"><textarea name="" id="" rows="4" style="resize: none; width: 100%;"></textarea></td>
+                        <td colspan="2"><textarea name="nutna_opatreni" id="" rows="4" style="resize: none; width: 100%;"></textarea></td>
                     </tr>
                 </tbody>
             </table>
@@ -602,7 +602,7 @@
                 <thead>
                     <tr>
                         <th colspan="3">8. Předání do opravy - protokol č.</th>
-                        <th><input type="text" name="" id=""></th>
+                        <th><input type="text" name="oprava_protokol" id=""></th>
                         <th colspan="4">10. Práce svářečské ukončeny</th>
                         <th colspan="4">12. Kontrola BT, PO, jiného orgánu</th>
                     </tr>
@@ -610,31 +610,31 @@
                 <tbody>
                     <tr>
                         <th>Dne</th>
-                        <td><input type="date" name="" id=""></td>
+                        <td><input type="date" name="oprava_dat" id=""></td>
                         <th>Hodina</th>
-                        <td><input type="time" name="" id=""></td>
+                        <td><input type="time" name="oprava_cas" id=""></td>
                         <th>Dne</th>
-                        <td><input type="date" name="" id=""></td>
+                        <td><input type="date" name="svarec_ukon_dat" id=""></td>
                         <th>Hodina</th>
-                        <td><input type="time" name="" id=""></td>
+                        <td><input type="time" name="scarec_ukon_cas" id=""></td>
                         <th>Kontrola dne</th>
-                        <td><input type="date" name="" id=""></td>
+                        <td><input type="date" name="kontrola_dat" id=""></td>
                         <th>Hodina</th>
-                        <td><input type="time" name="" id=""></td>
+                        <td><input type="time" name="kontrola_cas" id=""></td>
                     </tr>
                     <tr>
                         <th>Předal</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="oprava_predal" id=""></td>
                         <th>Předal</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="svarec_predal" id=""></td>
                         <th rowspan="4">Zjištěno</th>
-                        <td colspan="3" rowspan="4"><textarea name="" id="" rows="10" style="resize: none; width: 100%; padding: 5% 0;"></textarea></td>
+                        <td colspan="3" rowspan="4"><textarea name="kontrola_zjisteno" id="" rows="10" style="resize: none; width: 100%; padding: 5% 0;"></textarea></td>
                     </tr>
                     <tr>
                         <th>Převzal</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="oprava_prevzal" id=""></td>
                         <th>Převzal</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="svarec_prevzal" id=""></td>
                     </tr>
                     <tr>
                         <th colspan="4">9. Převzání z opravy</th>
@@ -642,25 +642,25 @@
                     </tr>
                     <tr>
                         <th>Dne</th>
-                        <td><input type="date" name="" id=""></td>
+                        <td><input type="date" name="z_opravy_dat" id=""></td>
                         <th>Hodina</th>
-                        <td><input type="time" name="" id=""></td>
+                        <td><input type="time" name="z_opravy_cas" id=""></td>
                         <th>Od</th>
-                        <td><input type="time" name="" id=""></td>
+                        <td><input type="time" name="dozor_od" id=""></td>
                         <th>Do</th>
-                        <td><input type="time" name="" id=""></td>
+                        <td><input type="time" name="dozor_do" id=""></td>
                     </tr>
                     <tr>
                         <th>Předal</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="z_opravy_predal" id=""></td>
                         <th>Jméno</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="dozor_jm" id=""></td>
                         <th>Jméno</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <td colspan="3"><input type="text" name="kontrola_jm" id=""></td>
                     </tr>
                     <tr>
-                        <th>Předal</th>
-                        <td colspan="3"><input type="text" name="" id=""></td>
+                        <th>Převzal</th>
+                        <td colspan="3"><input type="text" name="z_opravy_prevzal" id=""></td>
                         <th>Podpis</th>
                         <td colspan="3"></td>
                         <th>Podpis</th>
@@ -671,16 +671,16 @@
             <table class="ninth">
                 <thead>
                     <tr>
-                        <th colspan="6">13. Prodloužených za podmínek stanovených tímto povolením</th>
+                        <th colspan="7">13. Prodloužených za podmínek stanovených tímto povolením</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th class="podnadpis" colspan="6">Prodlužuje provozovatel</th>
+                        <th class="podnadpis" colspan="7">Prodlužuje provozovatel</th>
                     </tr>
                     <tr>
                         <th>13.1 Pro práci na zařízení</th>
-                        <td colspan="5"><input type="text" name="" id=""></td>
+                        <td colspan="6"><input type="text" name="prodluz_zarizeni" id=""></td>
                     </tr>
                     <tr>
                         <th>Datum</th>
@@ -689,32 +689,38 @@
                         <th>Počet osob</th>
                         <th>Podpis odpovědného prac. provozu</th>
                         <th>Podpis odpovědného prac. prov. útvaru</th>
+                        <th></th>
                     </tr>
                     <tr>
-                        <td><input type="date" name="" id=""></td>
-                        <td><input type="text" name="" id=""></td>
-                        <td><input type="text" name="" id=""></td>
-                        <td><input type="text" name="" id=""></td>
-                        <td></td>
-                        <td></td>
+                        <td><input type="date" name="prodluz_zar_dat" id=""></td>
+                        <td><input type="text" name="prodluz_zar_oddo" id=""></td>
+                        <td><input type="text" name="prodluz_zar_prestavka" id=""></td>
+                        <td><input type="text" name="prodluz_zar_os" id=""></td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr id="zarizeniTR">
+                        <td colspan="7"><button type="button" id="zarizeniAdd" class="add">+</button></td>
                     </tr>
                     <tr>
                         <th>13.2 Pro práci s otevřeným ohněm</th>
-                        <td colspan="5"><input type="text" name="" id=""></td>
+                        <td colspan="6"><input type="text" name="prodluz_ohen" id=""></td>
                     </tr>
                     <tr>
                         <th>Datum</th>
                         <th>Od - Do</th>
                         <th>Přestávka</th>
                         <th>Počet osob</th>
-                        <th colspan="2">Podpis Vystavovatele</th>
+                        <th colspan="3">Podpis Vystavovatele</th>
                     </tr>
                     <tr>
-                        <td><input type="date" name="" id=""></td>
-                        <td><input type="text" name="" id=""></td>
-                        <td><input type="text" name="" id=""></td>
-                        <td><input type="text" name="" id=""></td>
-                        <td colspan="2"></td>
+                        <td><input type="date" name="prodluz_oh_dat" id=""></td>
+                        <td><input type="text" name="prodluz_oh_oddo" id=""></td>
+                        <td><input type="text" name="prodluz_oh_prestavka" id=""></td>
+                        <td><input type="text" name="prodluz_oh_os" id=""></td>
+                        <td colspan="3"></td>
+                    </tr>
+                    <tr id="ohenTR">
+                        <td colspan="7"><button type="button" id="ohenAdd" class="add">+</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -726,7 +732,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td rowspan="5"><textarea name="" id="" rows="5" style="resize: none; width: 100%;"></textarea></td>
+                        <td rowspan="5"><textarea name="doplnky" id="" rows="5" style="resize: none; width: 100%;"></textarea></td>
                     </tr>
                 </tbody>
             </table>
