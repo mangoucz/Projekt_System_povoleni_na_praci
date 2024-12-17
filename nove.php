@@ -738,12 +738,12 @@
             </table>
         </div>
         <div class="submit-container">
-            <input type="submit" value="Odeslat" name="subOdeslat">
+            <input type="submit" class="add" value="Odeslat" name="subOdeslat" style="font-size: 16px;">
         </div>
     </form>
     <style>
         table{
-            background-color: #ffffff;
+            background-color: white;
             padding: 20px;
             border: 1px solid #bcd4ef;
             border-radius: 8px;
@@ -754,7 +754,6 @@
         }
         thead th {
             background-color: #eaf3ff;
-            color: #333;
             text-align: center;
             font-weight: bold;
             padding: 10px;
@@ -775,7 +774,7 @@
         .podnadpis{
             font-weight: bold;
             padding: 1% 0 1% 1%;
-            background-color: #eee;
+            background-color: #eeeeee;
         }
         input[type="text"],
         input[type="date"],
@@ -796,7 +795,7 @@
             border-color: #2196F3;
             box-shadow: 0 0 4px rgba(33, 150, 243, 0.5);
         }
-        button{
+        button, input[type="submit"]{
             color: white;
             border: none;
             border-radius: 50px;
@@ -807,10 +806,10 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
             transition: all 0.3s ease;
         }
-        button:hover{
+        button:hover, input[type="submit"]:hover{
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
         }
-        button:active{
+        button:active, input[type="submit"]:active{
             box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
         }
         .add {
@@ -852,7 +851,6 @@
             margin-bottom: 16px;
             cursor: pointer;
             font-size: 16px;
-            color: #333;
         }
         .container input {
             position: absolute;
@@ -867,12 +865,12 @@
             top: 0;
             height: 20px;
             width: 20px;
-            background-color: #eee;
+            background-color: #eeeeee;
             border-radius: 4px;
             border: 1px solid #bcd4ef;
         }
         .container:hover input ~ .checkbox {
-            background-color: #ccc;
+            background-color: #cccccc;
         }
         .container input:checked ~ .checkbox {
             background-color: #2196F3;
@@ -897,20 +895,9 @@
         }
 
         .submit-container {
-            margin: 10px 50px;
-            text-align: right;
-        }
-        .submit-container input {
-            background-color: #003366;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-        .submit-container input:hover {
-            background-color: #d40000;
+            display: flex;
+            justify-content: center; 
+            margin: 20px 0; 
         }
         </style>
 </body>
