@@ -3,7 +3,7 @@
     if (isset($_SESSION['uziv']))
         $uziv = $_SESSION['uziv'];
     else{
-        header("Location: login.html");
+        header("Location: login.php");
         exit();    
     }
     require_once 'server.php';
@@ -27,14 +27,6 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($_POST['subNove']) {
             header("Location: nove.php");
-            exit();
-        }
-        else if ($_POST['subPrehled']) {
-            header("Location: prehled.php");
-            exit();
-        }
-        else if ($_POST['subArchiv']) {
-            header("Location: archiv.php");
             exit();
         }
         else {
@@ -73,16 +65,9 @@
     </div>
     <div class="container">
         <?php
-            function getDaysInMonth($month, $year)
-            {
-                return cal_days_in_month(CAL_GREGORIAN, $month, $year);
-            }
-            
-            $dnyVTydnu = ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'];
-            $month = isset($_GET['month']) ? (int) $_GET['month'] : date('n');
-            $year = isset($_GET['year']) ? (int) $_GET['year'] : date('Y');
-            $daysInMonth = getDaysInMonth($month, $year);
-            $monthsCzech = [
+            $mesic = isset($_GET['mesic']) ? $_GET['mesic'] : date('n');
+            $rok = isset($_GET['rok']) ? $_GET['rok'] : date('Y');
+            $mesicCZ = [
                 1 => 'Leden',
                 2 => 'Únor',
                 3 => 'Březen',
@@ -96,23 +81,22 @@
                 11 => 'Listopad',
                 12 => 'Prosinec'
             ];
-            $monthName = isset($monthsCzech[$month]) ? $monthsCzech[$month] : '';
         ?>
         <fieldset class="prehled-field">
-            <legend>Povolenky:</legend>
+            <legend>Moje povolení:</legend>
             <form method="get">
                 <div class="form-container">
                     <div class="date-selection">
-                        <select name="month" id="month" class="custom-select">
+                        <select name="mesic" id="mesic" class="custom-select">
                             <?php for ($m = 1; $m <= 12; $m++): ?>
-                                <option value="<?= $m ?>" <?= ($m == $month) ? 'selected' : '' ?>>
-                                    <?= $monthsCzech[$m] ?>
+                                <option value="<?= $m ?>" <?= ($m == $mesic) ? 'selected' : '' ?>>
+                                    <?= $mesicCZ[$m] ?>
                                 </option>
                             <?php endfor; ?>
                         </select>
-                        <select name="year" id="year" class="custom-select">
+                        <select name="rok" id="rok" class="custom-select">
                             <?php for ($y = date('Y') - 1; $y <= date('Y') + 1; $y++): ?>
-                                <option value="<?= $y ?>" <?= ($y == $year) ? 'selected' : '' ?>>
+                                <option value="<?= $y ?>" <?= ($y == $rok) ? 'selected' : '' ?>>
                                     <?= $y ?>
                                 </option>
                             <?php endfor; ?>
@@ -123,17 +107,61 @@
                     </div>
                 </div>
             </form>
-            <div class="prehled">
-                <div class="prehled-head">
-                    <p>Datum: <strong>18. 12. 2024</strong></p>
-                </div>
-                <div class="prehled-body">
-                    <div>
-                        <p>Ev. č. 33868</p>
-                        <p>Stav: <span class="status">Čeká na schválení</span></p>
+            <div class="prehledy"  style="max-height: 380px; overflow-y: auto;">
+                <div class="prehled">
+                    <div class="prehled-head">
+                        <p>Datum: <strong>18. 12. 2024</strong></p>
                     </div>
-                    <div>
-                        <a href="#" class="link">Podrobnosti &gt;</a>
+                    <div class="prehled-body">
+                        <div>
+                            <p>Ev. č. 33868</p>
+                            <p>Stav: <span class="status">Čeká na schválení</span></p>
+                        </div>
+                        <div>
+                            <a href="#" class="link">Podrobnosti &gt;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="prehled">
+                    <div class="prehled-head">
+                        <p>Datum: <strong>18. 12. 2024</strong></p>
+                    </div>
+                    <div class="prehled-body">
+                        <div>
+                            <p>Ev. č. 33868</p>
+                            <p>Stav: <span class="status">Čeká na schválení</span></p>
+                        </div>
+                        <div>
+                            <a href="#" class="link">Podrobnosti &gt;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="prehled">
+                    <div class="prehled-head">
+                        <p>Datum: <strong>18. 12. 2024</strong></p>
+                    </div>
+                    <div class="prehled-body">
+                        <div>
+                            <p>Ev. č. 33868</p>
+                            <p>Stav: <span class="status">Čeká na schválení</span></p>
+                        </div>
+                        <div>
+                            <a href="#" class="link">Podrobnosti &gt;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="prehled">
+                    <div class="prehled-head">
+                        <p>Datum: <strong>18. 12. 2024</strong></p>
+                    </div>
+                    <div class="prehled-body">
+                        <div>
+                            <p>Ev. č. 33868</p>
+                            <p>Stav: <span class="status">Čeká na schválení</span></p>
+                        </div>
+                        <div>
+                            <a href="#" class="link">Podrobnosti &gt;</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -179,6 +207,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
+            margin-top: 3%;
             background-color: #fefefe;
         }
 

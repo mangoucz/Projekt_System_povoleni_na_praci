@@ -1,17 +1,17 @@
 <?php
-    session_start();
-    require_once 'server.php';
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-        $sql = "";
         if (isset($_POST['subLogin'])) {
             $uziv = $_POST['uziv'];
+            $sql = "";
+            
+            require_once 'server.php';
             $sql = "SELECT z.uziv_jmeno FROM Zamestnanci AS z WHERE z.uziv_jmeno = '$uziv';";
             $result = sqlsrv_query($conn, $sql);    
             if ($result === FALSE)
                 die(print_r(sqlsrv_errors(), true));
-            
+        
             if (sqlsrv_fetch($result)) {
+                session_start();      
                 $_SESSION['uziv'] = $uziv;
                 header("Location: uvod.php");
                 exit();

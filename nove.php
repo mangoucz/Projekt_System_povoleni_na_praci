@@ -29,6 +29,25 @@
         $sql = "";
 
         if (isset($_POST['subOdeslat'])) {
+            $svareciPocet = $_POST['svareciPocet'];
+            
+            $sql = "INSERT INTO Svareci (jmeno, c_prukazu) VALUES (?, ?)";
+            $stmt = sqlsrv_prepare($conn, $sql);
+            if ($stmt === FALSE) 
+                die(print_r(sqlsrv_errors(), true));
+
+            for ($i = 0; $i < $svareciPocet; $i++) { 
+                $svarecJmeno = $_POST['svarec[' . $i . ']jmeno'];
+                $svarecPrukaz = $_POST['svarec[' . $i . ']prukaz'];
+                
+                $params = [$svarecJmeno, $svarecPrukaz];
+                $result = sqlsrv_execute($stmt, $params);
+                if ($result === FALSE)
+                    die(print_r(sqlsrv_errors(), true));
+            }
+            sqlsrv_free_stmt($stmt);
+
+
             echo '<script>
                         alert("Žádost byla uspěšně odeslána");
                         window.location.href = "' . $_SERVER['PHP_SELF'] . '";
@@ -43,6 +62,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Systém povolení na práci</title>
     <link rel="stylesheet" href="style.css">
+    <script src="jquery-3.7.1.min.js"></script>
     <script src="script.js"></script>
 </head>
 <body>
@@ -447,13 +467,14 @@
                         <th colspan="2">Č. svář. průkazu</th>
                         <th colspan="3">Podpis</th>
                     </tr>
-                    <tr>
-                        <td><input type="text" name="svarec_jmeno"></td>
-                        <td colspan="2"><input type="text" name="svarec_prukaz"></td>
+                    <tr class="svareciTR" data-index="0">
+                        <td><input type="text" name="svarec[0]jmeno"></td>
+                        <td colspan="2"><input type="text" name="svarec[0]prukaz"></td>
                         <td colspan="2"></td>
                     </tr>
-                    <tr id="svareciTR">
+                    <tr id="svarecAdd">
                         <td colspan="6"><button type="button" id="svarecAdd" class="add">+</button></td>
+                        <input type="hidden" name="svareciPocet" value="1">
                     </tr>
                     <tr>
                         <th colspan="3">2.14 Osvědčení o způsobilosti k práci a sváření na plynové zařízení má pracovník:</th>
@@ -540,16 +561,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><input type="text" name="rozbor_nazev"></td>
-                        <td><input type="date" name="rozbor_dat"></td>
-                        <td><input type="time" name="rozbor_cas"></td>
-                        <td><input type="text" name="rozbor_misto"></td>
-                        <td><input type="text" name="rozbor_hodn"></td>
+                    <tr class="rozboryTR" data-index="0">
+                        <td><input type="text" name="rozbor[0][nazev]"></td>
+                        <td><input type="date" name="rozbor[0][dat]"></td>
+                        <td><input type="time" name="rozbor[0][cas]"></td>
+                        <td><input type="text" name="rozbor[0][misto]"></td>
+                        <td><input type="text" name="rozbor[0][hodn]"></td>
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr id="rozboryTR">
+                    <tr id="rozborAdd">
                         <td colspan="6"><button type="button" id="rozborAdd" class="add">+</button></td>
                     </tr>
                 </tbody>
@@ -698,9 +719,6 @@
                         <td><input type="text" name="prodluz_zar_os" id=""></td>
                         <td colspan="3"></td>
                     </tr>
-                    <tr id="zarizeniTR">
-                        <td colspan="7"><button type="button" id="zarizeniAdd" class="add">+</button></td>
-                    </tr>
                     <tr>
                         <th>13.2 Pro práci s otevřeným ohněm</th>
                         <td colspan="6"><input type="text" name="prodluz_ohen" id=""></td>
@@ -718,9 +736,6 @@
                         <td><input type="text" name="prodluz_oh_prestavka" id=""></td>
                         <td><input type="text" name="prodluz_oh_os" id=""></td>
                         <td colspan="3"></td>
-                    </tr>
-                    <tr id="ohenTR">
-                        <td colspan="7"><button type="button" id="ohenAdd" class="add">+</button></td>
                     </tr>
                 </tbody>
             </table>
