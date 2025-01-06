@@ -1,4 +1,21 @@
 <?php
+    function GenEvCislo($conn) : int {
+        $ev_cislo = (int)date("y") * 1000;
+
+        $sql = "SELECT MAX(ev_cislo) AS max_evcislo FROM Povolenka WHERE ev_cislo >= ? AND ev_cislo < ?";
+        $params = [$ev_cislo, $ev_cislo + 1000];
+        $result = sqlsrv_query($conn, $sql, $params);
+        if ($result === FALSE)
+            die(print_r(sqlsrv_errors(), true));
+        $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);         
+        sqlsrv_free_stmt($result);
+            
+        if ($zaznam['max_evcislo'] !== null) {
+            return $ev_cislo = $zaznam['max_evcislo'] + 1;   
+        }
+        
+        return $ev_cislo + 1;
+    }
     session_start();
 
     if (isset($_SESSION['uziv']))
@@ -13,9 +30,9 @@
                 CONCAT(z.jmeno, ' ', z.prijmeni) AS jmeno,
                 z.funkce
             FROM Zamestnanci AS z
-            WHERE uziv_jmeno = '$uziv';";
-
-    $result = sqlsrv_query($conn, $sql);
+            WHERE uziv_jmeno = ?;";
+    $params = [$uziv];
+    $result = sqlsrv_query($conn, $sql, $params);
     if ($result === FALSE)
         die(print_r(sqlsrv_errors(), true));
 
@@ -27,26 +44,122 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "";
+        $params = [];
 
         if (isset($_POST['subOdeslat'])) {
             $svareciPocet = $_POST['svareciPocet'];
+            $rozboryPocet = $_POST['rozboryPocet'];
             
-            $sql = "INSERT INTO Svareci (jmeno, c_prukazu) VALUES (?, ?)";
-            $stmt = sqlsrv_prepare($conn, $sql);
-            if ($stmt === FALSE) 
-                die(print_r(sqlsrv_errors(), true));
+            if (isset($_POST['svarec'][0]['prukaz'])) {
+                for ($i = 0; $i < $svareciPocet; $i++) { 
+                    $svarecJmeno = $_POST['svarec'][$i]['jmeno'];
+                    $svarecPrukaz = $_POST['svarec'][$i]['prukaz'];
 
-            for ($i = 0; $i < $svareciPocet; $i++) { 
-                $svarecJmeno = $_POST['svarec[' . $i . ']jmeno'];
-                $svarecPrukaz = $_POST['svarec[' . $i . ']prukaz'];
-                
-                $params = [$svarecJmeno, $svarecPrukaz];
-                $result = sqlsrv_execute($stmt, $params);
-                if ($result === FALSE)
-                    die(print_r(sqlsrv_errors(), true));
+                    $sql = "SELECT * FROM Svareci AS s WHERE s.c_prukazu = ?;";
+                    $params = [$svarecPrukaz];
+                    $result = sqlsrv_query($conn, $sql, $params);
+                    if ($result === FALSE)
+                        die(print_r(sqlsrv_errors(), true));
+
+                    if (sqlsrv_has_rows($result)) {
+                        $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+                        sqlsrv_free_stmt($result);
+                        $svarecID = $zaznam['id_svar'];
+                        
+                        
+                    }
+                    else {
+                        sqlsrv_free_stmt($result);
+                        $sql = "INSERT INTO Svareci (jmeno, c_prukazu) VALUES (?, ?);";
+                        $params = [$svarecJmeno, $svarecPrukaz];
+                        $result = sqlsrv_query($conn, $sql, $params);
+                        if ($result === FALSE)
+                            die(print_r(sqlsrv_errors(), true));
+                        sqlsrv_free_stmt($result);
+
+                        $sql = "SELECT SCOPE_IDENTITY() AS id_svar";
+                        $result = sqlsrv_query($conn, $sql);
+                        if ($result === FALSE)
+                            die(print_r(sqlsrv_errors(), true));
+
+                        $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+                        sqlsrv_free_stmt($result);
+                        $svarecID = $zaznam['id_svar'];
+
+                    }    
+                }
             }
-            sqlsrv_free_stmt($stmt);
+            if (isset($_POST['rozbor'][0]['hodn'])) {
+                for ($i = 0; $i < $rozboryPocet; $i++) { 
+                    $rozborNazev = $_POST['rozbor'][$i]['nazev'];
+                    $rozborDat = $_POST['rozbor'][$i]['dat'];
+                    $rozborCas = $_POST['rozbor'][$i]['cas'];
+                    $rozborMisto = $_POST['rozbor'][$i]['misto'];
+                    $rozborHodn = $_POST['rozbor'][$i]['hodn'];
 
+                    $sql = "SELECT * FROM Rozbory AS r WHERE r.nazev = ? AND r.dat = ? AND r.cas = ? AND r.misto = ? AND r.hodn = ?;";
+                    $params = [$rozborNazev, $rozborDat, $rozborCas, $rozborMisto, $rozborHodn];
+                    $result = sqlsrv_query($conn, $sql, $params);
+                        if ($result === FALSE)
+                            die(print_r(sqlsrv_errors(), true));
+                    
+                    if (sqlsrv_has_rows($result)) {
+                        $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+                        sqlsrv_free_stmt($result);
+                        $rozborID = $zaznam['id_roz'];
+
+                    }
+                    else {
+                        sqlsrv_free_stmt($result);
+                        $sql = "INSERT INTO Rozbory (nazev, dat, cas, misto, hodn) VALUES (?, ?, ?, ?, ?);";
+                        $params = [$rozborNazev, $rozborDat, $rozborCas, $rozborMisto, $rozborHodn];
+                        $result = sqlsrv_query($conn, $sql, $params);
+                        if ($result === FALSE)
+                            die(print_r(sqlsrv_errors(), true));
+                        sqlsrv_free_stmt($result);  
+                        
+                        $sql = "SELECT SCOPE_IDENTITY() AS id_roz";
+                        $result = sqlsrv_query($conn, $sql);
+                        if ($result === FALSE)
+                            die(print_r(sqlsrv_errors(), true));
+
+                        $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+                        sqlsrv_free_stmt($result);
+                        $rozborID = $zaznam['id_roz'];
+                    }        
+                }
+            }
+            $ev_cislo = GenEvCislo($conn);
+            $riziko = $_POST['riziko'];
+            $interni = $_POST['interni'];
+            $externi = $_POST['externi'];
+            $pocetOs = $_POST['pocetOs'];
+            $povolOd = $_POST['povolOd'];
+            $povolDo = $_POST['povolDo'];
+            /*$prace_na_zarizeni = $_POST['prace_na_zarizeni'];
+            $svarovani_ohen = $_POST['svarovani_ohen'];
+            $vstup_zarizeni_teren = $_POST['vstup_zarizeni_teren'];
+            $prostredi_vybuch = $_POST['prostredi_vybuch'];
+            $predani_prevzeti_zarizeni = $_POST['predani_prevzeti_zarizeni'];*/
+            $provoz = $_POST['provoz'];
+            $objekt = $_POST['objekt'];
+            $hodOd = $_POST['hodOd'];
+            $hodDo = $_POST['hodDo'];
+            $NZarizeni = $_POST['NZarizeni'];
+            $CZarizeni = $_POST['CZarizeni'];
+            $prace = $_POST['prace'];
+            $rizikaPrac = $_POST['rizikaPrac'];
+
+            $povolOd = $povolOd . ' ' . $hodOd;
+            $povolDo = $povolDo . ' ' . $hodDo;
+
+            $sql = "INSERT INTO Povolenka (ev_cislo, rizikovost, interni, externi, pocet_osob, povol_od, povol_do, prace_na_zarizeni, svarovani_ohen, vstup_zarizeni_teren, prostredi_vybuch, predani_prevzeti_zarizeni, provoz, objekt, c_zarizeni, nazev_zarizeni, popis_prace, c_karty) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            $params = [$ev_cislo, $riziko, $interni, $externi, $pocetOs, $povolOd, $povolDo, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $provoz, $objekt, $CZarizeni, $NZarizeni, $prace, $rizikaPrac];
+            $result = sqlsrv_query($conn, $sql, $params);
+            if ($result === FALSE)
+                die(print_r(sqlsrv_errors(), true));
+            sqlsrv_free_stmt($result);  
 
             echo '<script>
                         alert("Žádost byla uspěšně odeslána");
@@ -98,7 +211,10 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="range" name="riziko"></td>
+                        <td>
+                            <input type="range" id="riziko" name="riziko" min="1" max="10" step="1" value="5">
+                            <span id="rizikoValue"><b>5</b></span>
+                        </td>
                         <td><input type="text" name="interni"></td>
                         <td><input type="text" name="externi"></td>
                         <td><input type="text" name="pocetOs"></td>
@@ -468,12 +584,12 @@
                         <th colspan="3">Podpis</th>
                     </tr>
                     <tr class="svareciTR" data-index="0">
-                        <td><input type="text" name="svarec[0]jmeno"></td>
-                        <td colspan="2"><input type="text" name="svarec[0]prukaz"></td>
+                        <td><input type="text" name="svarec[0][jmeno]" /></td>
+                        <td colspan="2"><input type="text" name="svarec[0][prukaz]" /></td>
                         <td colspan="2"></td>
                     </tr>
                     <tr id="svarecAdd">
-                        <td colspan="6"><button type="button" id="svarecAdd" class="add">+</button></td>
+                        <td colspan="6"><button type="button" id="svarecAddBut" class="add">+</button></td>
                         <input type="hidden" name="svareciPocet" value="1">
                     </tr>
                     <tr>
@@ -572,6 +688,7 @@
                     </tr>
                     <tr id="rozborAdd">
                         <td colspan="6"><button type="button" id="rozborAdd" class="add">+</button></td>
+                        <input type="hidden" name="rozboryPocet" value="1">
                     </tr>
                 </tbody>
             </table>
@@ -803,6 +920,20 @@
             border-radius: 4px;
             font-size: 14px;
             outline: none;
+        }
+        input[type="range"] {
+            width: 85%; /* Šířka posuvníku */
+            height: 5px; /* Výška posuvníku */
+            background-color:#eeeeee; /* Barva pozadí */
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px; /* Šířka "táhla" */
+            height: 20px; /* Výška "táhla" */
+            background-color: #2196f3; /* Barva "táhla" */
+            border-radius: 50%; /* Kulaté "táhlo" */
+            cursor: pointer; /* Změna kurzoru */
         }  
         input[type="text"]:focus,
         input[type="date"]:focus,
