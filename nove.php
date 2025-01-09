@@ -51,24 +51,207 @@
         if (isset($_POST['subOdeslat'])) {
             $svareciPocet = $_POST['svareciPocet'];
             $rozboryPocet = $_POST['rozboryPocet'];
+            //INTRO
+            $ev_cislo = GenEvCislo($conn);
+            $riziko = $_POST['riziko'];
+            $interni = $_POST['interni'];
+            $externi = $_POST['externi'];
+            $pocetOs = $_POST['pocetOs'];
+            $povolOd = $_POST['povolOd'] . ' ' . $_POST['hodOd'];
+            $povolDo = $_POST['povolDo'] . ' ' . $_POST['hodDo'];
+            $prace_na_zarizeni = $_POST['prace_na_zarizeni'] ?? 0;
+            $svarovani_ohen = $_POST['svarovani_ohen'] ?? 0;
+            $vstup_zarizeni_teren = $_POST['vstup_zarizeni_teren'] ?? 0;
+            $prostredi_vybuch = $_POST['prostredi_vybuch'] ?? 0;
+            $predani_prevzeti_zarizeni = $_POST['predani_prevzeti_zarizeni']?? 0;
+            $provoz = $_POST['provoz'];
+            $objekt = $_POST['objekt'];
+            $NZarizeni = $_POST['NZarizeni'];
+            $CZarizeni = $_POST['CZarizeni'];
+            $prace = $_POST['prace'];
+            $rizikaPrac = $_POST['rizikaPrac'];
+            //TAB 1 1-10 Zařízení bylo
+            $vycisteni = $_POST['vycisteni'] ?? 0;
+            $vycisteni_kom = $_POST['vycisteni_kom'] ?? null;
+            $vyparene = $_POST['vyparene'] ?? 0;
+            $vyparene_hod = $_POST['vyparene_hod'] ?? null;
+            $vyparene_kom = $_POST['vyparene_kom'] ?? null;
+            $vyplachnute = $_POST['vyplachnute'] ?? 0;
+            $vyplachnute_kom = $_POST['vyplachnute_kom'] ?? null;
+            $plyn_vytesnen = $_POST['plyn_vytesnen'] ?? 0;
+            $plyn_vytesnen_kom = $_POST['plyn_vytesnen_kom'] ?? null;
+            $vyvetrane = $_POST['vyvetrane'] ?? 0;
+            $vyvetrane_hod = $_POST['vyvetrane_hod'] ?? null;
+            $vyvetrane_kom = $_POST['vyvetrane_kom'] ?? null;
+            $profouk_dusik = $_POST['profouk_dusik'] ?? 0;
+            $profouk_dusik_hod = $_POST['profouk_dusik_hod'] ?? null;
+            $profouk_dusik_kom = $_POST['profouk_dusik_kom'] ?? null;
+            $profouk_vzd = $_POST['profouk_vzd'] ?? 0;
+            $profouk_vzd_hod = $_POST['profouk_vzd_hod'] ?? null;
+            $profouk_vzd_kom = $_POST['profouk_vzd_kom'] ?? null;
+            $odpojeno_od_el = $_POST['odpojeno_od_el'] ?? 0;
+            $odpojeno_od_el_kym = $_POST['odpojeno_od_el_kym'] ?? null;
+            $oddelene_zaslep = $_POST['oddelene_zaslep'] ?? 0;
+            $oddelene_zaslep_kym = $_POST['oddelene_zaslep_kym'] ?? null;
+            $jinak_zab = $_POST['jinak_zab'] ?? 0;
+            $jinak_zab_jak = $_POST['jinak_zab_jak'] ?? null;
+            // TAB 1 11-17 Podmínky BP a PO
+            $nejiskrive_naradi = $_POST['nejiskrive_naradi'] ?? 0;
+            $nejiskrive_naradi_kom = $_POST['nejiskrive_naradi_kom'] ?? null;
+            $zkrapet_vetrat = $_POST['zkrapet_vetrat'] ?? 0;
+            $zkrapet_vetrat_pocet = $_POST['zkrapet_vetrat_pocet'] ?? null;
+            $zkrapet_vetrat_hod = $_POST['zkrapet_vetrat_hod'] ?? null;
+            $zkrapet_vetrat_misto = $_POST['zkrapet_vetrat_misto'] ?? null;
+            $rozbor_ovzdusi = $_POST['rozbor_ovzdusi'] ?? 0;
+            $rozbor_ovzdusi_misto = $_POST['rozbor_ovzdusi_misto'] ?? null;
+            $rozbor_ovzdusi_cas = $_POST['rozbor_ovzdusi_cas'] ?? null;
+            $rozbor_ovzdusi_vysl = $_POST['rozbor_ovzdusi_vysl'] ?? null;
+            $zab_dozor = $_POST['zab_dozor'] ?? 0;
+            $zab_dozor_pocet = $_POST['zab_dozor_pocet'] ?? null;
+            $pozar_hlidka = $_POST['pozar_hlidka'] ?? 0;
+            $pozar_hlidka_pocet = $_POST['pozar_hlidka_pocet'] ?? null;
+            $pozar_hlidka_jmeno = $_POST['pozar_hlidka_jmeno'] ?? null;
+            $hasici_pristroj = $_POST['hasici_pristroj'] ?? 0;
+            $hasici_pristroj_pocet = $_POST['hasici_pristroj_pocet'] ?? null;
+            $hasici_pristroj_druh = $_POST['hasici_pristroj_druh'] ?? null;
+            $hasici_pristroj_typ = $_POST['hasici_pristroj_typ'] ?? null;
+            $jine_zab_pozar = $_POST['jine_zab_pozar'] ?? 0;
+            $jine_zab_pozar_kom = $_POST['jine_zab_pozar_kom'] ?? null;
+            // TAB 2 1-8 Osobní ochranné pracovní prostředky
+            $ochran_nohy = $_POST['ochran_nohy'];
+            $ochran_telo = $_POST['ochran_telo'];
+            $ochran_hlava = $_POST['ochran_hlava'];
+            $ochran_oci = $_POST['ochran_oci'];
+            $ochran_dychadel = $_POST['ochran_dychadel'];
+            $ochran_pas = $_POST['ochran_pas'];
+            $ochran_rukavice = $_POST['ochran_rukavice'];
+            $ochran_dozor = $_POST['ochran_dozor'];
+            // TAB 2 9-14 Jiné příkazy
+            $jine_prikazy = $_POST['jine_prikazy'];
+            $U_220 = $_POST['U_220'] ?? 0;
+            $U_24 = $_POST['U_24'] ?? 0;
+            $kryt = $_POST['kryt'] ?? 0;
+            $bez_krytu = $_POST['bez_krytu'] ?? 0;
+            $bez_krytu_kom = $_POST['bez_krytu1'];
+            $bez_krytu_kom2 = $_POST['bez_krytu2'];
+            $za_praci_odpovida = $_POST['za_praci_odpovida'];
+            $odpovednost_dat = $_POST['odpovednost_dat'] . ' ' . $_POST['odpovednost_cas'];
+            $osvedceny_prac = $_POST['osvedceny_prac'];
+            // TAB 3
+            $prohl_prac_dat = $_POST['prohl_prac_dat'];
+            $prohl_exter_dat = $_POST['prohl_exter_dat'];
+            $prohl_obvod = $_POST['prohl_obvod'];
+            $prohl_vedouci_dat = $_POST['prohl_vedouci_dat'];
+            // TAB 4
+            $podminky = $_POST['podminky'];
+            $podminky_jm = $_POST['podminky_jm'];
+            $ohen_dat = $_POST['ohen_dat'] . ' ' . $_POST['ohen_cas'];
+            $zkontroloval_jm = $_POST['zkontroloval_jm'];
+            // TAB 6 (5 jsou rozbory)
+            $dalsi_jine = $_POST['dalsi_jine'];
+            $dalsi_jine_stanovil = $_POST['dalsi_jine_stanovil'];
+            $dalsi_jine_jm = $_POST['dalsi_jine_jm'];
+            $dalsi_jine_dat = $_POST['dalsi_jine_dat'] . ' ' . $_POST['dalsi_jine_cas'];
+            // TAB 7
+            $nutna_dat = $_POST['nutna_dat'];
+            $nutna_opatreni = $_POST['nutna_opatreni'];
+            // TAB 8
+            $oprava_protokol = $_POST['oprava_protokol'];
+            $oprava_dat = $_POST['oprava_dat'] . ' ' . $_POST['oprava_cas'];
+            $oprava_predal = $_POST['oprava_predal'];
+            $oprava_prevzal = $_POST['oprava_prevzal'];
+            // TAB 9
+            $z_opravy_dat = $_POST['z_opravy_dat'] . ' ' . $_POST['z_opravy_cas'];
+            $z_opravy_predal = $_POST['z_opravy_predal'];
+            $z_opravy_prevzal = $_POST['z_opravy_prevzal'];
+            // TAB 10
+            $svarec_ukon_dat = $_POST['svarec_ukon_dat'] . ' ' . $_POST['svarec_ukon_cas'];
+            $svarec_ukon_predal = $_POST['svarec_predal'];
+            $svarec_ukon_prevzal = $_POST['svarec_prevzal'];
+            // TAB 11
+            $dozor_od = $_POST['dozor_od'];
+            $dozor_do = $_POST['dozor_do'];
+            $dozor_jm = $_POST['dozor_jm'];
+            // TAB 12
+            $kontrola_dat = $_POST['kontrola_dat'] . ' ' . $_POST['kontrola_cas'];
+            $kontrola_zjisteno = $_POST['kontrola_zjisteno'];
+            $kontrola_jm = $_POST['kontrola_jm'];
+            // TAB 14 (13 vyjmuto)
+            $doplnky = $_POST['doplnky'];
             
+            $sql = "INSERT INTO Povolenka (id_zam, ev_cislo, rizikovost, interni, externi, pocet_osob, povol_od, povol_do, prace_na_zarizeni, svarovani_ohen, vstup_zarizeni_teren, prostredi_vybuch, predani_prevzeti_zarizeni, provoz, objekt, c_zarizeni, nazev_zarizeni, popis_prace, c_karty,
+                                            vycisteni, vycisteni_kom, vyparene, vyparene_hod, vyparene_kom, vyplachnute, vyplachnute_kom, plyn_vytesnen, plyn_vytesnen_kom, vyvetrane, vyvetrane_hod, vyvetrane_kom, profouk_dusik, profouk_dusik_hod, profouk_dusik_kom, profouk_vzd, profouk_vzd_hod, profouk_vzd_kom, odpojeno_od_el, odpojeno_od_el_kym, oddelene_zaslep, oddelene_zaslep_kym, jinak_zab, jinak_zab_jak,
+                                            nejiskrive_naradi, nejiskrive_naradi_kom, zkrapet_vetrat, zkrapet_vetrat_pocet, zkrapet_vetrat_hod, zkrapet_vetrat_misto, rozbor_ovzdusi, rozbor_ovzdusi_misto, rozbor_ovzdusi_cas, rozbor_ovzdusi_vysl, zab_dozor, zab_dozor_pocet, pozar_hlidka, pozar_hlidka_pocet, pozar_hlidka_jmeno, hasici_pristroj, hasici_pristroj_pocet, hasici_pristroj_druh, hasici_pristroj_typ, jine_zab_pozar, jine_zab_pozar_kom,
+                                            ochran_nohy, ochran_telo, ochran_hlava, ochran_oci, ochran_dychadel, ochran_pas, ochran_rukavice, dozor,
+                                            jine_prikazy, U_220V, U_24V, kryt, bez_krytu, bez_krytu_kom, bez_krytu_kom2, odpovida, dat_odpovedny, osvedceni_ma,
+                                            podminky_ohen, ohen_jmeno, dat_ohen, zkontroloval,
+                                            dalsi_jine, dalsi_jine_stanovil, dalsi_jine_jm, dalsi_jine_dat,
+                                            nutna_dat, nutna_opatreni,
+                                            oprava_protokol, oprava_dat, oprava_predal, oprava_prevzal,
+                                            z_opravy_dat, z_opravy_predal, z_opravy_prevzal,
+                                            svarec_ukon_dat, svarec_ukon_predal, svarec_ukon_prevzal,
+                                            dozor_od, dozor_do, dozor_jm,
+                                            kontrola_dat, kontrola_zjisteno, kontrola_jm,
+                                            doplnky) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                            ?, ?, ?, ?, ?, ?, ?, ?,
+                            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                            ?, ?, ?, ?,
+                            ?, ?, ?, ?,
+                            ?, ?,
+                            ?, ?, ?, ?,
+                            ?, ?, ?,
+                            ?, ?, ?, 
+                            ?, ?, ?,
+                            ?, ?, ?,
+                            ?);";
+            $params = [$id_zam, $ev_cislo, $riziko, $interni, $externi, $pocetOs, $povolOd, $povolDo, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $provoz, $objekt, $CZarizeni, $NZarizeni, $prace, $rizikaPrac,
+                $vycisteni, $vycisteni_kom, $vyparene, $vyparene_hod, $vyparene_kom, $vyplachnute, $vyplachnute_kom, $plyn_vytesnen, $plyn_vytesnen_kom, $vyvetrane, $vyvetrane_hod, $vyvetrane_kom, $profouk_dusik, $profouk_dusik_hod, $profouk_dusik_kom, $profouk_vzd, $profouk_vzd_hod, $profouk_vzd_kom, $odpojeno_od_el, $odpojeno_od_el_kym, $oddelene_zaslep, $oddelene_zaslep_kym, $jinak_zab, $jinak_zab_jak,
+                $nejiskrive_naradi, $nejiskrive_naradi_kom, $zkrapet_vetrat, $zkrapet_vetrat_pocet, $zkrapet_vetrat_hod, $zkrapet_vetrat_misto, $rozbor_ovzdusi, $rozbor_ovzdusi_misto, $rozbor_ovzdusi_cas, $rozbor_ovzdusi_vysl, $zab_dozor, $zab_dozor_pocet, $pozar_hlidka, $pozar_hlidka_pocet, $pozar_hlidka_jmeno, $hasici_pristroj, $hasici_pristroj_pocet, $hasici_pristroj_druh, $hasici_pristroj_typ, $jine_zab_pozar, $jine_zab_pozar_kom,
+                $ochran_nohy, $ochran_telo, $ochran_hlava, $ochran_oci, $ochran_dychadel, $ochran_pas, $ochran_rukavice, $ochran_dozor,
+                $jine_prikazy, $U_220, $U_24, $kryt, $bez_krytu, $bez_krytu_kom, $bez_krytu_kom2, $za_praci_odpovida, $odpovednost_dat, $osvedceny_prac,
+                $podminky, $podminky_jm, $ohen_dat, $zkontroloval_jm,
+                $dalsi_jine, $dalsi_jine_stanovil, $dalsi_jine_jm, $dalsi_jine_dat,
+                $nutna_dat, $nutna_opatreni,
+                $oprava_protokol, $oprava_dat, $oprava_predal, $oprava_prevzal,
+                $z_opravy_dat, $z_opravy_predal, $z_opravy_prevzal,
+                $svarec_ukon_dat, $svarec_ukon_predal, $svarec_ukon_prevzal,
+                $dozor_od, $dozor_do, $dozor_jm,
+                $kontrola_dat, $kontrola_zjisteno, $kontrola_jm,
+                $doplnky];
+
+            $result = sqlsrv_query($conn, $sql, $params);
+            if ($result === FALSE)
+                die(print_r(sqlsrv_errors(), true));
+            sqlsrv_free_stmt($result);  
+
+            $sql = "SELECT SCOPE_IDENTITY() AS id_pov";
+            $result = sqlsrv_query($conn, $sql);
+            if ($result === FALSE)
+                die(print_r(sqlsrv_errors(), true));
+        
+            $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+            sqlsrv_free_stmt($result);
+            $povID = $zaznam['id_pov'];
+
+            //TAB 2
             if (isset($_POST['svarec'][0]['prukaz'])) {
                 for ($i = 0; $i < $svareciPocet; $i++) { 
                     $svarecJmeno = $_POST['svarec'][$i]['jmeno'];
                     $svarecPrukaz = $_POST['svarec'][$i]['prukaz'];
-
+        
                     $sql = "SELECT * FROM Svareci AS s WHERE s.c_prukazu = ?;";
                     $params = [$svarecPrukaz];
                     $result = sqlsrv_query($conn, $sql, $params);
                     if ($result === FALSE)
                         die(print_r(sqlsrv_errors(), true));
-
+        
                     if (sqlsrv_has_rows($result)) {
                         $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
                         sqlsrv_free_stmt($result);
                         $svarecID = $zaznam['id_svar'];
-                        
-                        
                     }
                     else {
                         sqlsrv_free_stmt($result);
@@ -78,19 +261,26 @@
                         if ($result === FALSE)
                             die(print_r(sqlsrv_errors(), true));
                         sqlsrv_free_stmt($result);
-
+        
                         $sql = "SELECT SCOPE_IDENTITY() AS id_svar";
                         $result = sqlsrv_query($conn, $sql);
                         if ($result === FALSE)
                             die(print_r(sqlsrv_errors(), true));
-
+        
                         $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
                         sqlsrv_free_stmt($result);
                         $svarecID = $zaznam['id_svar'];
-
-                    }    
+                    }
+                    
+                    $sql = "INSERT INTO Pov_Svar (id_pov, id_svar) VALUES (?, ?);";
+                    $params = [$povID, $svarecID];
+                    $result = sqlsrv_query($conn, $sql, $params);
+                        if ($result === FALSE)
+                            die(print_r(sqlsrv_errors(), true));
+                    sqlsrv_free_stmt($result);
                 }
             }
+            //TAB 5
             if (isset($_POST['rozbor'][0]['hodn'])) {
                 for ($i = 0; $i < $rozboryPocet; $i++) { 
                     $rozborNazev = $_POST['rozbor'][$i]['nazev'];
@@ -98,18 +288,17 @@
                     $rozborCas = $_POST['rozbor'][$i]['cas'];
                     $rozborMisto = $_POST['rozbor'][$i]['misto'];
                     $rozborHodn = $_POST['rozbor'][$i]['hodn'];
-
+        
                     $sql = "SELECT * FROM Rozbory AS r WHERE r.nazev = ? AND r.dat = ? AND r.cas = ? AND r.misto = ? AND r.hodn = ?;";
                     $params = [$rozborNazev, $rozborDat, $rozborCas, $rozborMisto, $rozborHodn];
                     $result = sqlsrv_query($conn, $sql, $params);
-                        if ($result === FALSE)
-                            die(print_r(sqlsrv_errors(), true));
-                    
+                    if ($result === FALSE)
+                        die(print_r(sqlsrv_errors(), true));
+                            
                     if (sqlsrv_has_rows($result)) {
                         $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
                         sqlsrv_free_stmt($result);
                         $rozborID = $zaznam['id_roz'];
-
                     }
                     else {
                         sqlsrv_free_stmt($result);
@@ -119,83 +308,27 @@
                         if ($result === FALSE)
                             die(print_r(sqlsrv_errors(), true));
                         sqlsrv_free_stmt($result);  
-                        
+                                
                         $sql = "SELECT SCOPE_IDENTITY() AS id_roz";
                         $result = sqlsrv_query($conn, $sql);
                         if ($result === FALSE)
                             die(print_r(sqlsrv_errors(), true));
-
+    
                         $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
                         sqlsrv_free_stmt($result);
                         $rozborID = $zaznam['id_roz'];
-                    }        
+                    }
+                    $sql = "INSERT INTO Pov_Roz (id_pov, id_roz) VALUES (?, ?);";
+                    $params = [$povID, $rozborID];
+                    $result = sqlsrv_query($conn, $sql, $params);
+                        if ($result === FALSE)
+                            die(print_r(sqlsrv_errors(), true));
+                    sqlsrv_free_stmt($result);        
                 }
             }
-            //INTRO
-            $ev_cislo = GenEvCislo($conn);
-            $riziko = $_POST['riziko'];
-            $interni = $_POST['interni'];
-            $externi = $_POST['externi'];
-            $pocetOs = $_POST['pocetOs'];
-            $povolOd = $_POST['povolOd'];
-            $povolDo = $_POST['povolDo'];
-            $prace_na_zarizeni = $_POST['prace_na_zarizeni'] ?? 0;
-            $svarovani_ohen = $_POST['svarovani_ohen'] ?? 0;
-            $vstup_zarizeni_teren = $_POST['vstup_zarizeni_teren'] ?? 0;
-            $prostredi_vybuch = $_POST['prostredi_vybuch'] ?? 0;
-            $predani_prevzeti_zarizeni = $_POST['predani_prevzeti_zarizeni']?? 0;
-            $provoz = $_POST['provoz'];
-            $objekt = $_POST['objekt'];
-            $hodOd = $_POST['hodOd'];
-            $hodDo = $_POST['hodDo'];
-            $NZarizeni = $_POST['NZarizeni'];
-            $CZarizeni = $_POST['CZarizeni'];
-            $prace = $_POST['prace'];
-            $rizikaPrac = $_POST['rizikaPrac'];
-            //TAB 1
-            $vycisteni = $_POST['vycisteni'] ?? 0;
-            $vycisteni_kom = $_POST['vycisteni_kom'];
-            $vyparene = $_POST['vyparene'] ?? 0;
-            $vyparene_hod = $_POST['vyparene_hod'];
-            $vyparene_kom = $_POST['vyparene_kom'];
-            $vyplachnute = $_POST['vyplachnute'] ?? 0;
-            $vyplachnute_kom = $_POST['vyplachnute_kom'];
-            $plyn_vytesnen = $_POST['plyn_vytesnen'] ?? 0;
-            $plyn_vytesnen_kom = $_POST['plyn_vytesnen_kom'];
-            $vyvetrane = $_POST['vyvetrane'] ?? 0;
-            $vyvetrane_hod = $_POST['vyvetrane_hod'];
-            $vyvetrane_kom = $_POST['vyvetrane_kom'];
-            $profouk_dusik = $_POST['profouk_dusik'] ?? 0;
-            $profouk_dusik_hod = $_POST['profouk_dusik_hod'];
-            $profouk_dusik_kom = $_POST['profouk_dusik_kom'];
-            $profouk_vzd = $_POST['profouk_vzd'] ?? 0;
-            $profouk_vzd_hod = $_POST['profouk_vzd_hod'];
-            $profouk_vzd_kom = $_POST['profouk_vzd_kom'];
-            $odpojeno_od_el = $_POST['odpojeno_od_el'] ?? 0;
-            $odpojeno_od_el_kym = $_POST['odpojeno_od_el_kym'];
-            $oddelene_zaslep = $_POST['oddelene_zaslep'] ?? 0;
-            $oddelene_zaslep_kym = $_POST['oddelene_zaslep_kym'];
-            $jinak_zab = $_POST['jinak_zab'] ?? 0;
-            $jinak_zab_jak = $_POST['jinak_zab_jak'];
-
-
-            $povolOd = $povolOd . ' ' . $hodOd;
-            $povolDo = $povolDo . ' ' . $hodDo;
-
-            $sql = "INSERT INTO Povolenka (id_zam, ev_cislo, rizikovost, interni, externi, pocet_osob, povol_od, povol_do, prace_na_zarizeni, svarovani_ohen, vstup_zarizeni_teren, prostredi_vybuch, predani_prevzeti_zarizeni, provoz, objekt, c_zarizeni, nazev_zarizeni, popis_prace, c_karty,
-                                            vycisteni, vycisteni_kom, vyparene, vyparene_hod, vyparene_kom, vyplachnute, vyplachnute_kom, plyn_vytesnen, plyn_vytesnen_kom, vyvetrane, vyvetrane_hod, vyvetrane_kom, profouk_dusik, profouk_dusik_hod, profouk_dusik_kom, profouk_vzd, profouk_vzd_hod, profouk_vzd_kom, odpojeno_od_el, odpojeno_od_el_kym, oddelene_zaslep, oddelene_zaslep_kym, jinak_zab, jinak_zab_jak) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-            $params = [$id_zam, $ev_cislo, $riziko, $interni, $externi, $pocetOs, $povolOd, $povolDo, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $provoz, $objekt, $CZarizeni, $NZarizeni, $prace, $rizikaPrac,
-                        $vycisteni, $vycisteni_kom, $vyparene, $vyparene_hod, $vyparene_kom, $vyplachnute, $vyplachnute_kom, $plyn_vytesnen, $plyn_vytesnen_kom, $vyvetrane, $vyvetrane_hod, $vyvetrane_kom, $profouk_dusik, $profouk_dusik_hod, $profouk_dusik_kom, $profouk_vzd, $profouk_vzd_hod, $profouk_vzd_kom, $odpojeno_od_el, $odpojeno_od_el_kym, $oddelene_zaslep, $oddelene_zaslep_kym, $jinak_zab, $jinak_zab_jak];
-            $result = sqlsrv_query($conn, $sql, $params);
-            if ($result === FALSE)
-                die(print_r(sqlsrv_errors(), true));
-            sqlsrv_free_stmt($result);  
-
             echo '<script>
-                        alert("Žádost byla uspěšně odeslána");
-                        window.location.href = "' . $_SERVER['PHP_SELF'] . '";
+                    alert("Žádost byla uspěšně odeslána");
+                    window.location.href = "' . $_SERVER['PHP_SELF'] . '";
                   </script>';
         }
     }
@@ -315,11 +448,11 @@
                     <tr>
                         <td>
                             <label class="container">1.1 Vyčištění od zbytků
-                                <input type="checkbox" name="vycisteni" value="1">
+                                <input type="checkbox" class="inputCheckbox" name="vycisteni" value="1">
                                 <span class="checkbox"></span>
                             </label>
                         </td>
-                        <td colspan="6"><input type="text" name="vycisteni_kom"></td>
+                        <td colspan="6"><input type="text" name="vycisteni_kom" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -329,8 +462,8 @@
                             </label>
                         </td>
                         <th>Hodin</th>
-                        <td><input type="time" name="vyparene_hod"></td>
-                        <td colspan="4"><input type="text" name="vyparene_kom"></td>
+                        <td><input type="time" name="vyparene_hod" disabled></td>
+                        <td colspan="4"><input type="text" name="vyparene_kom" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -339,7 +472,7 @@
                                     <span class="checkbox"></span>
                             </label>
                         </td>
-                        <td colspan="6"><input type="text" name="vyplachnute_kom"></td>
+                        <td colspan="6"><input type="text" name="vyplachnute_kom" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -348,7 +481,7 @@
                                 <span class="checkbox"></span>
                             </label>
                         </td>
-                        <td colspan="6"><input type="text" name="plyn_vytesnen_kom"></td>
+                        <td colspan="6"><input type="text" name="plyn_vytesnen_kom" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -358,8 +491,8 @@
                             </label>
                         </td>
                         <th>Hodin</th>
-                        <td><input type="time" name="vyvetrane_hod"></td>
-                        <td colspan="4"><input type="text" name="vyvetrane_kom"></td>
+                        <td><input type="time" name="vyvetrane_hod" disabled></td>
+                        <td colspan="4"><input type="text" name="vyvetrane_kom" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -369,8 +502,8 @@
                             </label>
                         </td>
                         <th>Hodin</th>
-                        <td><input type="time" name="profouk_dusik_hod"></td>
-                        <td colspan="4"><input type="text" name="profouk_dusik_kom"></td>
+                        <td><input type="time" name="profouk_dusik_hod" disabled></td>
+                        <td colspan="4"><input type="text" name="profouk_dusik_kom" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -380,8 +513,8 @@
                             </label>
                         </td>
                         <th>Hodin</th>
-                        <td><input type="time" name="profouk_vzd_hod"></td>
-                        <td colspan="4"><input type="text" name="profouk_vzd_kom"></td>
+                        <td><input type="time" name="profouk_vzd_hod" disabled></td>
+                        <td colspan="4"><input type="text" name="profouk_vzd_kom" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -391,7 +524,7 @@
                             </label>
                         </td>
                         <th>Kým</th>
-                        <td colspan="3"><input type="text" name="odpojeno_od_el_kym"></td>
+                        <td colspan="3"><input type="text" name="odpojeno_od_el_kym" disabled></td>
                         <th>Podpis</th>
                         <td></td>
                     </tr>
@@ -403,7 +536,7 @@
                             </label>
                         </td>
                         <th>Kým</th>
-                        <td colspan="3"><input type="text" name="oddelene_zaslep_kym"></td>
+                        <td colspan="3"><input type="text" name="oddelene_zaslep_kym" disabled></td>
                         <th>Podpis</th>
                         <td></td>
                     </tr>
@@ -415,7 +548,7 @@
                             </label>
                         </td>
                         <th>Jak</th>
-                        <td colspan="6"><input type="text" name="jinak_zab_jak"></td>
+                        <td colspan="6"><input type="text" name="jinak_zab_jak" disabled></td>
                     </tr>
                     <tr>
                         <td class="podnadpis"colspan="7">Podmínky BP a PO</td>
@@ -427,7 +560,7 @@
                                 <span class="checkbox"></span>
                             </label>
                         </td>
-                        <td colspan="6"><input type="text" name="nejiskrive_naradi_kom"></td>
+                        <td colspan="6"><input type="text" name="nejiskrive_naradi_kom" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -436,12 +569,12 @@
                                 <span class="checkbox"></span>
                             </label>
                         </td>
-                        <td><input type="text" name="zkrapet_vetrat_pocet"></td>
+                        <td><input type="text" name="zkrapet_vetrat_pocet" disabled></td>
                         <th>Krát za</th>
-                        <td><input type="text" name="zkrapet_vetrat_hod"></td>
+                        <td><input type="text" name="zkrapet_vetrat_hod" disabled></td>
                         <th>Hodin</th>
                         <th>V místě</th>
-                        <td><input type="text" name="zkrapet_vetrat_misto"></td>
+                        <td><input type="text" name="zkrapet_vetrat_misto" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -451,11 +584,11 @@
                             </label>
                         </td>
                         <th>Místo</th>
-                        <td><input type="text" name="rozbor_ovzdusi_misto"></td>
+                        <td><input type="text" name="rozbor_ovzdusi_misto" disabled></td>
                         <th>Čas</th>
-                        <td><input type="text" name="rozbor_ovzdusi_cas"></td>
+                        <td><input type="text" name="rozbor_ovzdusi_cas" disabled></td>
                         <th>Výsledek</th>
-                        <td><input type="text" name="rozbor_ovzdusi_vysl"></td>
+                        <td><input type="text" name="rozbor_ovzdusi_vysl" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -465,7 +598,7 @@
                             </label>
                         </td>
                         <th>Počet</th>
-                        <td><input type="text" name="zab_dozor_pocet"></td>
+                        <td><input type="text" name="zab_dozor_pocet" disabled></td>
                         <th colspan="4">Jména uvést v bodě 7</th>
                     </tr>
                     <tr>
@@ -476,9 +609,9 @@
                             </label>
                         </td>
                         <th>Počet</th>
-                        <td><input type="text" name="pozar_hlidka_pocet"></td>
+                        <td><input type="text" name="pozar_hlidka_pocet" disabled></td>
                         <th>Jméno</th>
-                        <td colspan="3"><input type="text" name="pozar_hlidka_jmeno"></td>
+                        <td colspan="3"><input type="text" name="pozar_hlidka_jmeno" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -488,11 +621,11 @@
                             </label>
                         </td>
                         <th>Počet</th>
-                        <td><input type="text" name="hasici_pristroj_pocet"></td>
+                        <td><input type="text" name="hasici_pristroj_pocet" disabled></td>
                         <th>Druh</th>
-                        <td><input type="text" name="hasici_pristroj_druh"></td>
+                        <td><input type="text" name="hasici_pristroj_druh" disabled></td>
                         <th>Typ</th>
-                        <td><input type="text" name="hasici_pristroj_typ"></td>
+                        <td><input type="text" name="hasici_pristroj_typ" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -501,7 +634,7 @@
                                 <span class="checkbox"></span>
                             </label>
                         </td>
-                        <td colspan="6"><input type="text" name="jine_zab_pozar_kom"></td>
+                        <td colspan="6"><input type="text" name="jine_zab_pozar_kom" disabled></td>
                     </tr>
                 </tbody>
             </table>
@@ -558,11 +691,11 @@
                         <td rowspan="2">
                             <div class="panel">
                                 <label class="container">2.10 Napětí 220 V
-                                    <input type="checkbox" name="vyvetrane" value="1">
+                                    <input type="checkbox" name="U_220" value="1">
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="container">2.11 Napětí 24 V
-                                    <input type="checkbox" name="vyvetrane" value="1">
+                                    <input type="checkbox" name="U_24" value="1">
                                     <span class="checkbox"></span>
                                 </label>
                             </div>
@@ -570,11 +703,11 @@
                         <td rowspan="2">
                             <div class="panel">
                                 <label class="container">S krytem
-                                    <input type="checkbox" name="vyvetrane" value="1">
+                                    <input type="checkbox" name="kryt" value="1">
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="container">Bez krytu
-                                    <input type="checkbox" name="vyvetrane" value="1">
+                                    <input type="checkbox" name="bez_krytu" value="1">
                                     <span class="checkbox"></span>
                                 </label>
                             </div>
@@ -639,18 +772,18 @@
                 <tbody>
                     <tr>
                         <th>Datum</th>
-                        <td><input type="date" name="prohlaseni_dat"></td>
+                        <td><input type="date" name="prohl_prac_dat"></td>
                         <th>Datum</th>
-                        <td><input type="date" name="prohlaseni_cas"></td>
+                        <td><input type="date" name="prohl_exter_dat"></td>
                         <th>Vyjádření přilehlého obvodu </th>
-                        <td colspan="2"><input type="text" name="prohlaseni_obvodu"></td>
+                        <td colspan="2"><input type="text" name="prohl_obvod"></td>
                     </tr>
                     <tr>
                         <th rowspan="2" colspan="2">Podpis odpovědného pracovníka provozu: </th>
                         <th rowspan="2" colspan="2">Podpis odpovědného pracovníka provádějícího útvaru GB nebo externí firmy:</th>
                         <th rowspan="2">Podpis vedoucího přilehlého obvodu:</th>
                         <th>Datum</th>
-                        <td><input type="date" name="prohl_popis_dat"></td>
+                        <td><input type="date" name="prohl_vedouci_dat"></td>
                     </tr>
                     <tr>
                         <th colspan="5"></th>
@@ -676,8 +809,8 @@
                         <td colspan="5"><textarea name="podminky" rows="5" style="resize: none; width: 100%;"></textarea></td>
                     </tr>
                     <tr>
-                        <th>4.2 Výše uvedené podmínky stanovil - jméno:</th>
-                        <td colspan="2"><input type="text" name="podminky_jm"></td>
+                        <th colspan="2">4.2 Výše uvedené podmínky stanovil - jméno:</th>
+                        <td><input type="text" name="podminky_jm"></td>
                         <th>Podpis</th>
                         <td></td>
                     </tr>
@@ -689,8 +822,8 @@
                         <td><input type="time" name="ohen_cas"></td>
                     </tr>
                     <tr>
-                        <th>4.4 Osobně zkontroloval - jméno</th>
-                        <td colspan="2"><input type="text" name="zkontroloval_jm"></td>
+                        <th colspan="2">4.4 Osobně zkontroloval - jméno</th>
+                        <td><input type="text" name="zkontroloval_jm"></td>
                         <th>Podpis</th>
                         <td></td>
                     </tr>
@@ -786,7 +919,7 @@
                         <th>Dne</th>
                         <td><input type="date" name="svarec_ukon_dat"></td>
                         <th>Hodina</th>
-                        <td><input type="time" name="scarec_ukon_cas"></td>
+                        <td><input type="time" name="svarec_ukon_cas"></td>
                         <th>Kontrola dne</th>
                         <td><input type="date" name="kontrola_dat"></td>
                         <th>Hodina</th>

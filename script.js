@@ -4,9 +4,9 @@ $(document).ready(function() {
     });
 
     $("#svarecAddBut").on('click', function() {
-        var index = $("tr.svareciTR[data-index]").length;
+        let index = $("tr.svareciTR[data-index]").length;
 
-        var $radek = $("<tr>")
+        const $radek = $("<tr>")
             .addClass('svareciTR')
             .attr("data-index", index)
             .html(`
@@ -21,9 +21,9 @@ $(document).ready(function() {
     });
 
     $("#rozborAdd").on('click', function() {
-        var index = $("tr.rozboryTR[data-index]").length;
+        let index = $("tr.rozboryTR[data-index]").length;
 
-        var $radek = $("<tr>")
+        const $radek = $("<tr>")
             .addClass('rozboryTR')
             .attr("data-index", index)
             .html(`
@@ -39,6 +39,15 @@ $(document).ready(function() {
         $("#rozborAdd input[type=hidden]").attr("value", index + 1);
     });
 
+    $(document).on('click', 'input[type="checkbox"]', function() {
+        const tr = $(this).closest('tr'); 
+        const inputs = tr.find('input[type="text"], input[type="time"]'); 
+
+        if ($(this).is(':checked')) 
+            inputs.removeAttr("disabled"); 
+        else 
+            inputs.attr("disabled", true);
+    });
     $(document).on('click', '.svarecDel', function() {
         $(this).closest('tr').remove();
         updateIndex("tr.svareciTR[data-index]");
@@ -50,19 +59,19 @@ $(document).ready(function() {
         updateValue("#rozborAdd input[type=hidden]");
     });
 
-
+    
+    function updateValue(selector) {
+        $(selector).each(function(i) {
+            $(this).attr("value", i);
+        });
+    }
     function updateIndex(selector) {
         $(selector).each(function(i) {
             $(this).attr("data-index", i);
             $(this).find("input").each(function() {
-                var name = $(this).attr("name");
+                let name = $(this).attr("name");
                 $(this).attr("name", name.replace(/\[\d+\]/, `[${i}]`));
             });
-        });
-    }
-    function updateValue(selector) {
-        $(selector).each(function(i) {
-            $(this).attr("value", i);
         });
     }
 });
