@@ -8,13 +8,13 @@
     }
     require_once 'server.php';
 
-    $sql = "SELECT 
+    $sql = "SELECT
                 CONCAT(z.jmeno, ' ', z.prijmeni) AS jmeno,
                 z.funkce
             FROM Zamestnanci AS z
-            WHERE uziv_jmeno = '$uziv';";
-    
-    $result = sqlsrv_query($conn, $sql);
+            WHERE z.id_zam = ?;";
+    $params = [$uziv];
+    $result = sqlsrv_query($conn, $sql, $params);
     if ($result === FALSE)
         die(print_r(sqlsrv_errors(), true));
 
@@ -82,92 +82,88 @@
                 12 => 'Prosinec'
             ];
         ?>
+        <h2>Moje povolení</h2>
         <fieldset class="prehled-field">
-            <legend>Moje povolení:</legend>
             <form method="get">
-                <div class="form-container">
-                    <div class="date-selection">
-                        <select name="mesic" id="mesic" class="custom-select">
-                            <?php for ($m = 1; $m <= 12; $m++): ?>
-                                <option value="<?= $m ?>" <?= ($m == $mesic) ? 'selected' : '' ?>>
-                                    <?= $mesicCZ[$m] ?>
-                                </option>
-                            <?php endfor; ?>
-                        </select>
-                        <select name="rok" id="rok" class="custom-select">
-                            <?php for ($y = date('Y') - 1; $y <= date('Y') + 1; $y++): ?>
-                                <option value="<?= $y ?>" <?= ($y == $rok) ? 'selected' : '' ?>>
-                                    <?= $y ?>
-                                </option>
-                            <?php endfor; ?>
-                        </select>
-                        <div class="button-container">
-                            <input type="submit" value="Zobrazit" class="submit-button">
-                        </div>
-                    </div>
+                <div class="date-selection">
+                    <select name="mesic" id="mesic" class="custom-select">
+                        <?php for ($m = 1; $m <= 12; $m++): ?>
+                            <option value="<?= $m ?>" <?= ($m == $mesic) ? 'selected' : '' ?>>
+                                <?= $mesicCZ[$m] ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                    <select name="rok" id="rok" class="custom-select">
+                        <?php for ($y = date('Y') - 5; $y <= date('Y'); $y++): ?>
+                            <option value="<?= $y ?>" <?= ($y == $rok) ? 'selected' : '' ?>>
+                                <?= $y ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                    <input type="submit" value="Zobrazit" class="submit-button">
                 </div>
             </form>
-            <div class="prehledy"  style="max-height: 380px; overflow-y: auto;">
-                <div class="prehled">
-                    <div class="prehled-head">
-                        <p>Datum: <strong>18. 12. 2024</strong></p>
-                    </div>
-                    <div class="prehled-body">
-                        <div>
-                            <p>Ev. č. 33868</p>
-                            <p>Stav: <span class="status">Čeká na schválení</span></p>
-                        </div>
-                        <div>
-                            <a href="#" class="link">Podrobnosti &gt;</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="prehled">
-                    <div class="prehled-head">
-                        <p>Datum: <strong>18. 12. 2024</strong></p>
-                    </div>
-                    <div class="prehled-body">
-                        <div>
-                            <p>Ev. č. 33868</p>
-                            <p>Stav: <span class="status">Čeká na schválení</span></p>
-                        </div>
-                        <div>
-                            <a href="#" class="link">Podrobnosti &gt;</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="prehled">
-                    <div class="prehled-head">
-                        <p>Datum: <strong>18. 12. 2024</strong></p>
-                    </div>
-                    <div class="prehled-body">
-                        <div>
-                            <p>Ev. č. 33868</p>
-                            <p>Stav: <span class="status">Čeká na schválení</span></p>
-                        </div>
-                        <div>
-                            <a href="#" class="link">Podrobnosti &gt;</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="prehled">
-                    <div class="prehled-head">
-                        <p>Datum: <strong>18. 12. 2024</strong></p>
-                    </div>
-                    <div class="prehled-body">
-                        <div>
-                            <p>Ev. č. 33868</p>
-                            <p>Stav: <span class="status">Čeká na schválení</span></p>
-                        </div>
-                        <div>
-                            <a href="#" class="link">Podrobnosti &gt;</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="prehledy">
+                <?php 
+                    $sql = "SELECT 
+                                p.id_pov,
+                                p.ev_cislo,
+                                p.odeslano
+                            FROM Povolenka as p 
+                            WHERE p.id_zam = ? AND MONTH(p.odeslano) = ? AND YEAR(p.odeslano) = ?
+                            ORDER BY p.odeslano ASC;";
+                    $params = [$uziv, $mesic, $rok];
+                    $result = sqlsrv_query($conn, $sql, $params);
+                    if ($result === FALSE)
+                        die(print_r(sqlsrv_errors(), true));
+                ?>
+                <?php 
+                    if (!sqlsrv_has_rows($result)) 
+                        echo '<p style="font-style: italic;">Nebyl nalezen žádný záznam!</p>';
+                    else {
+                        while ($zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+                            echo'<div class="prehled">';
+                            echo '<div class="prehled-head">';
+                            echo '<p>Datum: <strong>' . $zaznam['odeslano']->format('d.m.Y') . '</strong></p>';
+                            echo '</div>';
+                            echo '<div class="prehled-body">';
+                            echo '<div>';
+                            echo '<p>Ev. č. ' . $zaznam['ev_cislo'] . '</p>';
+                            echo '<div class="stav">';
+                            echo '<p>Stav: <span class="status">Odesláno</span></p>';
+                            echo '<span class="icon"></span>';
+                            echo '</div>';
+                            echo '</div>';
+                            echo '<div>';
+                            echo '<a href="#" class="link" id="' . $zaznam['id_pov'] . '">Podrobnosti &gt;</a>';
+                            echo '</div>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
+                    }
+                    sqlsrv_free_stmt($result);
+                ?>
             </div>
         </fieldset>
     </div>
     <style>
+        h2 {
+            font-size: 24px; 
+            font-weight: bold; 
+            color: #003366; 
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        h2::after {
+            content: "";
+            display: block;
+            width: 25%;
+            height: 3px; 
+            background-color: #d40000; 
+            margin-top: 5px;
+            border-radius: 2px;
+        }
+
         .container {
             padding: 20px;
             background-color: #edf4fb;
@@ -175,77 +171,117 @@
             margin: 20px auto;
             max-width: 900px;
         }
+        .prehled-field {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
         .date-selection {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
         }
         .custom-select {
             background-color: #ffffff;
-            border: 1px solid #808080;
+            border: 1px solid #cccccc;
             border-radius: 5px;
             padding: 10px;
             font-size: 14px;
             color: #2C3E50;
             cursor: pointer;
             margin-right: 20px;
+            transition: border-color 0.3s ease;
         }
-        .prehled-field {
-            border: 2px solid #003366;
-            border-radius: 8px;
-            padding: 20px;
-            background-color: #ffffff;
+        .custom-select:hover {
+            border-color: #003366;
         }
 
-        legend {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #003366;
+        .prehledy {
+            margin-top: 20px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+            padding: 10px;
+            max-height: 380px;
+            overflow-y: auto;
         }
 
         .prehled {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 3%;
-            background-color: #fefefe;
+            border-bottom: 1px solid #dddddd;
+            padding: 10px 0;
+            transition: background-color 0.3s ease;
         }
-
-        .prehled-head {
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 8px;
-            margin-bottom: 8px;
+        .prehled:hover {
+            background-color: #f1f1f1;
+        }
+        .prehled:last-child {
+            border-bottom: none;
         }
 
         .prehled-head p {
             margin: 0;
-            font-size: 0.9em;
-            color: #555555;
+            font-size: 16px;
+            font-weight: bold;
         }
 
         .prehled-body {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: 8px;
         }
-
         .prehled-body p {
             margin: 0;
-            font-weight: bold;
+        }
+        .prehled-body img {
+            margin-left: 10px;
+            margin-bottom: -10px;
+            width: 30px;
         }
 
-        .prehled-body .status {
-            color: #ff9900;
-            font-weight: bold;
+        .stav{
+            display: flex;
+            align-items: center;
+        }
+        .icon {
+            width: 16px;
+            height: 16px;
+            background-color: #39B54A;
+            border-radius: 50%;
+            position: relative;
+            margin-left: 5px;
+        }
+        .icon::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
         }
 
+        .status {
+            color: #28a745;
+            font-weight: bold;
+        }
         .link {
-            color: #003366;
+            color: #007BFF;
             text-decoration: none;
             font-weight: bold;
+            transition: color 0.3s ease;
         }
+        .link:hover {
+            color: #0056b3;
+        }
+        
         form {
-            background-color: #FFFFFF; 
             width: 60%;
             text-align: center;
         }

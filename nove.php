@@ -21,17 +21,16 @@
     if (isset($_SESSION['uziv']))
         $uziv = $_SESSION['uziv'];
     else{
-        header("Location: login.html");
+        header("Location: login.php");
         exit();    
     }
     require_once 'server.php';
 
     $sql = "SELECT
-                z.id_zam, 
                 CONCAT(z.jmeno, ' ', z.prijmeni) AS jmeno,
                 z.funkce
             FROM Zamestnanci AS z
-            WHERE uziv_jmeno = ?;";
+            WHERE z.id_zam = ?;";
     $params = [$uziv];
     $result = sqlsrv_query($conn, $sql, $params);
     if ($result === FALSE)
@@ -40,7 +39,6 @@
     $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
     sqlsrv_free_stmt($result);
 
-    $id_zam = $zaznam['id_zam']; 
     $jmeno = $zaznam['jmeno'];
     $funkce = $zaznam['funkce'];
 
@@ -178,6 +176,7 @@
             $kontrola_jm = $_POST['kontrola_jm'];
             // TAB 14 (13 vyjmuto)
             $doplnky = $_POST['doplnky'];
+            $odeslano = DATE("Y-m-d H:i:s");
             
             $sql = "INSERT INTO Povolenka (id_zam, ev_cislo, rizikovost, interni, externi, pocet_osob, povol_od, povol_do, prace_na_zarizeni, svarovani_ohen, vstup_zarizeni_teren, prostredi_vybuch, predani_prevzeti_zarizeni, provoz, objekt, c_zarizeni, nazev_zarizeni, popis_prace, c_karty,
                                             vycisteni, vycisteni_kom, vyparene, vyparene_hod, vyparene_kom, vyplachnute, vyplachnute_kom, plyn_vytesnen, plyn_vytesnen_kom, vyvetrane, vyvetrane_hod, vyvetrane_kom, profouk_dusik, profouk_dusik_hod, profouk_dusik_kom, profouk_vzd, profouk_vzd_hod, profouk_vzd_kom, odpojeno_od_el, odpojeno_od_el_kym, oddelene_zaslep, oddelene_zaslep_kym, jinak_zab, jinak_zab_jak,
@@ -192,7 +191,8 @@
                                             svarec_ukon_dat, svarec_ukon_predal, svarec_ukon_prevzal,
                                             dozor_od, dozor_do, dozor_jm,
                                             kontrola_dat, kontrola_zjisteno, kontrola_jm,
-                                            doplnky) 
+                                            doplnky,
+                                            odeslano) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
@@ -206,8 +206,9 @@
                             ?, ?, ?, 
                             ?, ?, ?,
                             ?, ?, ?,
+                            ?,
                             ?);";
-            $params = [$id_zam, $ev_cislo, $riziko, $interni, $externi, $pocetOs, $povolOd, $povolDo, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $provoz, $objekt, $CZarizeni, $NZarizeni, $prace, $rizikaPrac,
+            $params = [$uziv, $ev_cislo, $riziko, $interni, $externi, $pocetOs, $povolOd, $povolDo, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $provoz, $objekt, $CZarizeni, $NZarizeni, $prace, $rizikaPrac,
                 $vycisteni, $vycisteni_kom, $vyparene, $vyparene_hod, $vyparene_kom, $vyplachnute, $vyplachnute_kom, $plyn_vytesnen, $plyn_vytesnen_kom, $vyvetrane, $vyvetrane_hod, $vyvetrane_kom, $profouk_dusik, $profouk_dusik_hod, $profouk_dusik_kom, $profouk_vzd, $profouk_vzd_hod, $profouk_vzd_kom, $odpojeno_od_el, $odpojeno_od_el_kym, $oddelene_zaslep, $oddelene_zaslep_kym, $jinak_zab, $jinak_zab_jak,
                 $nejiskrive_naradi, $nejiskrive_naradi_kom, $zkrapet_vetrat, $zkrapet_vetrat_pocet, $zkrapet_vetrat_hod, $zkrapet_vetrat_misto, $rozbor_ovzdusi, $rozbor_ovzdusi_misto, $rozbor_ovzdusi_cas, $rozbor_ovzdusi_vysl, $zab_dozor, $zab_dozor_pocet, $pozar_hlidka, $pozar_hlidka_pocet, $pozar_hlidka_jmeno, $hasici_pristroj, $hasici_pristroj_pocet, $hasici_pristroj_druh, $hasici_pristroj_typ, $jine_zab_pozar, $jine_zab_pozar_kom,
                 $ochran_nohy, $ochran_telo, $ochran_hlava, $ochran_oci, $ochran_dychadel, $ochran_pas, $ochran_rukavice, $ochran_dozor,
@@ -220,14 +221,14 @@
                 $svarec_ukon_dat, $svarec_ukon_predal, $svarec_ukon_prevzal,
                 $dozor_od, $dozor_do, $dozor_jm,
                 $kontrola_dat, $kontrola_zjisteno, $kontrola_jm,
-                $doplnky];
+                $doplnky,
+                $odeslano];
 
             $result = sqlsrv_query($conn, $sql, $params);
             if ($result === FALSE)
                 die(print_r(sqlsrv_errors(), true));
-            sqlsrv_free_stmt($result);  
 
-            $sql = "SELECT SCOPE_IDENTITY() AS id_pov";
+            $sql = "SELECT @@identity AS id_pov";
             $result = sqlsrv_query($conn, $sql);
             if ($result === FALSE)
                 die(print_r(sqlsrv_errors(), true));
@@ -235,9 +236,9 @@
             $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
             sqlsrv_free_stmt($result);
             $povID = $zaznam['id_pov'];
-
+            
             //TAB 2
-            if (isset($_POST['svarec'][0]['prukaz'])) {
+            if (!empty($_POST['svarec'][0]['prukaz'])) {
                 for ($i = 0; $i < $svareciPocet; $i++) { 
                     $svarecJmeno = $_POST['svarec'][$i]['jmeno'];
                     $svarecPrukaz = $_POST['svarec'][$i]['prukaz'];
@@ -260,9 +261,8 @@
                         $result = sqlsrv_query($conn, $sql, $params);
                         if ($result === FALSE)
                             die(print_r(sqlsrv_errors(), true));
-                        sqlsrv_free_stmt($result);
         
-                        $sql = "SELECT SCOPE_IDENTITY() AS id_svar";
+                        $sql = "SELECT @@identity AS id_svar";
                         $result = sqlsrv_query($conn, $sql);
                         if ($result === FALSE)
                             die(print_r(sqlsrv_errors(), true));
@@ -281,7 +281,7 @@
                 }
             }
             //TAB 5
-            if (isset($_POST['rozbor'][0]['hodn'])) {
+            if (!empty($_POST['rozbor'][0]['hodn'])) {
                 for ($i = 0; $i < $rozboryPocet; $i++) { 
                     $rozborNazev = $_POST['rozbor'][$i]['nazev'];
                     $rozborDat = $_POST['rozbor'][$i]['dat'];
@@ -307,9 +307,8 @@
                         $result = sqlsrv_query($conn, $sql, $params);
                         if ($result === FALSE)
                             die(print_r(sqlsrv_errors(), true));
-                        sqlsrv_free_stmt($result);  
                                 
-                        $sql = "SELECT SCOPE_IDENTITY() AS id_roz";
+                        $sql = "SELECT @@identity AS id_roz";
                         $result = sqlsrv_query($conn, $sql);
                         if ($result === FALSE)
                             die(print_r(sqlsrv_errors(), true));
@@ -328,7 +327,7 @@
             }
             echo '<script>
                     alert("Žádost byla uspěšně odeslána");
-                    window.location.href = "' . $_SERVER['PHP_SELF'] . '";
+                    window.location.href = "uvod.php";
                   </script>';
         }
     }
@@ -1091,15 +1090,6 @@
             height: 5px; 
             background-color:#eeeeee; 
         }
-        /*input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px; 
-            background-color: #2196f3; 
-            border-radius: 50%; 
-            cursor: pointer; 
-        }  */
         input[type="text"]:focus,
         input[type="date"]:focus,
         input[type="time"]:focus{
@@ -1191,11 +1181,6 @@
             content: "";
             position: absolute;
             display: none;
-        }
-        .container input:checked ~ .checkbox:after {
-            display: block;
-        }
-        .container .checkbox:after {
             left: 6px;
             top: 3px;
             width: 5px;
@@ -1203,6 +1188,9 @@
             border: solid white;
             border-width: 0 3px 3px 0;
             transform: rotate(45deg);
+        }
+        .container input:checked ~ .checkbox:after {
+            display: block;
         }
 
         .submit-container {

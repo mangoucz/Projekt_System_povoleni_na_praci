@@ -39,7 +39,7 @@ $(document).ready(function() {
         $("#rozborAdd input[type=hidden]").attr("value", index + 1);
     });
 
-    $(document).on('click', 'input[type="checkbox"]', function() {
+    $(document).on('click', '.first input[type="checkbox"]', function() {
         const tr = $(this).closest('tr'); 
         const inputs = tr.find('input[type="text"], input[type="time"]'); 
 

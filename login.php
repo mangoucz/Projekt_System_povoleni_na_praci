@@ -3,27 +3,30 @@
         if (isset($_POST['subLogin'])) {
             $uziv = $_POST['uziv'];
             $sql = "";
+            $params = [];
+            $error = "";        
             
             require_once 'server.php';
-            $sql = "SELECT z.uziv_jmeno FROM Zamestnanci AS z WHERE z.uziv_jmeno = '$uziv';";
-            $result = sqlsrv_query($conn, $sql);    
+
+            $sql = "SELECT z.id_zam FROM Zamestnanci AS z WHERE z.uziv_jmeno = ?;";
+            $params = [$uziv];
+            $result = sqlsrv_query($conn, $sql, $params);    
             if ($result === FALSE)
                 die(print_r(sqlsrv_errors(), true));
-        
-            if (sqlsrv_fetch($result)) {
+            $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+
+            if ($zaznam) {
                 session_start();      
-                $_SESSION['uziv'] = $uziv;
+                $_SESSION['uziv'] = $zaznam['id_zam'];
                 header("Location: uvod.php");
                 exit();
-            } else {
-                header("Location: " . $_SERVER['PHP_SELF']);
-                exit();
-            }
+            } 
+            else 
+                $error = "Uživatel nenalezen!";
             sqlsrv_free_stmt($result);
         }
     }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,20 +41,16 @@
         <span class="separator">|</span>
         <form action="" method="post">
             <h2>Přihlášení</h2>
-            <input type="text" name="uziv" placeholder="Přihlašovací jméno" required><br>
+            <?php echo isset($error) ? '<p class="error">' . $error . '</p>' : "";?>
+            <input type="text" name="uziv" placeholder="Přihlašovací jméno" required>
             <input type="submit" value="Přihlásit se!" name="subLogin"><br>
         </form>
     </div>
     <div class="footer">
-        <img src="Indorama.png">
+        <img src="Indorama.png" width="200px">
     </div>
 </body>
 <style>
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
     .container {
         display: flex;
         align-items: center;
@@ -75,6 +74,8 @@
         font-size: 24px;
     }
     form {
+        display: flex;
+        flex-direction: column;
         background-color: #FFFFFF; 
         padding: 20px;
         border-radius: 10px;
@@ -82,6 +83,7 @@
         max-width: 400px;
         width: 200%;
         text-align: center;
+        align-items: center;
     }
     input[type="text"] {
         width: 80%;
@@ -106,11 +108,38 @@
         background-color: #d40000;
     }
 
+    .footer{
+        display: none;
+    }
+    
+    .error {
+        width: 60%;
+        color: #d40000;
+        font-size: 16px;
+        background-color: #ffe6e6;
+        border: 1px solid #d40000;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 1px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
     @media (max-width: 660px) {
+        body{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo{
+            display: none;
+        }
         .container {
             text-align: center;
             flex-direction: column;
             width: 90%;
+        }
+        .footer{
+            display: flex;
         }
         h1{
             margin: 0 0 0 0;

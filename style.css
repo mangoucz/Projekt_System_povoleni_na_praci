@@ -34,20 +34,14 @@ body{
 }
 .logo{
     margin-left: 1%; 
-    max-width: 10%;
+    max-width: 200px;
 }  
 
 .footer{
-    display: flex;
     justify-content: center;
-    align-items: center;
-    background-color: #b6c7e2;
-    padding: 0.75% 0;
+    background-color: #FFFFFF;
+    padding: 1% 0;
     position: fixed;
     bottom: 0;
     width: 100%;
-}
-
-.footer img{ 
-    width: 170px;
 }
