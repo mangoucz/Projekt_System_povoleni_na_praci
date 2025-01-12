@@ -51,12 +51,22 @@
     </div>
 </body>
 <style>
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
     .container {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        margin: 15% 0 0 0;
+        width: 75%;
+        padding: 10% 0;
+        background: rgba(255, 255, 255, 0.8); 
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        min-height: 300px;
     }
     .separator {
         font-size: 100px;
@@ -79,7 +89,7 @@
         background-color: #FFFFFF; 
         padding: 20px;
         border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         max-width: 400px;
         width: 200%;
         text-align: center;
@@ -89,23 +99,33 @@
         width: 80%;
         padding: 10px;
         margin: 10px 0;
-        border: 1px solid #003366; 
+        border: 1px solid #CCCCCC; 
         border-radius: 5px;
         font-size: 16px;
+        background: #F5F5F5;
+        color: #333;
+        transition: border-color 0.3s ease;
+    }
+    input[type="text"]:hover {
+        border-color: #003366; 
+        box-shadow: 0 2px 6px rgba(0, 51, 102, 0.2);
+    }
+
+    input[type="text"]:focus {
+        border-color: #003366;
+        outline: none;
+        box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
     }
     input[type="submit"] {
         background-color: #003366; 
-        color: #FFFFFF;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
         width: 60%;
-        transition: background-color 0.3s ease;
     }
     input[type="submit"]:hover {
         background-color: #d40000;
+    }
+
+    input[type="submit"]:active {
+        box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
     }
 
     .footer{
@@ -129,14 +149,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-        .logo{
-            display: none;
+            justify-content: flex-start;
         }
         .container {
             text-align: center;
             flex-direction: column;
             width: 90%;
+            background: unset;
+            box-shadow: unset;
         }
         .footer{
             display: flex;
@@ -149,7 +169,7 @@
         }
         form {
             width: 90%;
-            margin-top: 30%;
+            margin-top: 40%;
         }
     }
 </style>

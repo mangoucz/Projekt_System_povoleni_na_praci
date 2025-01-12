@@ -146,6 +146,9 @@
             </div>
         </fieldset>
     </div>
+    <div class="footer">
+        <img src="Indorama.png" width="200px">
+    </div>
     <style>
         h2 {
             font-size: 24px; 
@@ -165,11 +168,12 @@
         }
 
         .container {
-            padding: 20px;
-            background-color: #edf4fb;
-            border-radius: 10px;
+            padding: 0.5% 1%;
             margin: 20px auto;
             max-width: 900px;
+            background: rgba(255, 255, 255, 0.8); 
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
         .prehled-field {
             border: 1px solid #ddd;
@@ -287,23 +291,24 @@
         }
         input[type="submit"] {
             background-color: #003366; 
-            color: #FFFFFF;
-            border: none;
-            padding: 10px 20px;
-            margin: 2% 0;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
         }
         input[type="submit"]:hover {
             background-color: #d40000;
         }
-
+        input[type="submit"]:active{
+            box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
+        }
+        .footer{
+            display: none;
+        }
         @media (max-width: 660px) {
             .header {
                 flex-direction: column;
                 align-items: center;
+            }
+            .container{
+                background: unset;
+                box-shadow: unset;
             }
             .footer{
                 display: flex;  

@@ -1038,6 +1038,10 @@
         </div>
     </form>
     <style>
+        body{
+            background: unset;
+            background-color: #F0F8FF; 
+        }
         table{
             background-color: white;
             padding: 20px;

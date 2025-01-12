@@ -1,9 +1,10 @@
 body{
     font-family: 'Arial', sans-serif;
-    background-color: #F0F8FF; 
     color: #003366;
     margin: 0;
     padding: 0;
+    background: linear-gradient(135deg, #F0F8FF, #e6e6e6);
+    min-height: 100vh;
 }
 
 .header{
@@ -36,6 +37,15 @@ body{
     margin-left: 1%; 
     max-width: 200px;
 }  
+input[type="submit"] {
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
 
 .footer{
     justify-content: center;
