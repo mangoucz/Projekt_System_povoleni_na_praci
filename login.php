@@ -70,19 +70,13 @@
     }
     .separator {
         font-size: 100px;
-        color: #003366;
         margin-right: 20px;
     }
     h1 {
-        color: #003366; 
         font-size: 36px;
         margin: 0.9% 20px 0 0;
     }
-    h2 {
-        color: #003366;
-        margin-bottom: 20px;
-        font-size: 24px;
-    }
+    
     form {
         display: flex;
         flex-direction: column;

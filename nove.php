@@ -1136,7 +1136,6 @@
             background-color: #CC2444;
         }
 
-
         td:has(button), th:has(button){
             text-align: center;
         }
@@ -1155,7 +1154,6 @@
             padding-left: 35px;
             margin-bottom: 16px;
             cursor: pointer;
-            font-size: 16px;
         }
         .container input {
             position: absolute;

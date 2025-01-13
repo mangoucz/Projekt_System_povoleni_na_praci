@@ -6,7 +6,11 @@ body{
     background: linear-gradient(135deg, #F0F8FF, #e6e6e6);
     min-height: 100vh;
 }
-
+h2 {
+    color: #003366;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
 .header{
     background-color: #ffffff;
     display: flex;

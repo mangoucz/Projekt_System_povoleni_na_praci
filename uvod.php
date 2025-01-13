@@ -83,24 +83,24 @@
             ];
         ?>
         <h2>Moje povolení</h2>
-        <fieldset class="prehled-field">
+        <fieldset>
             <form method="get">
                 <div class="date-selection">
-                    <select name="mesic" id="mesic" class="custom-select">
+                    <select name="mesic">
                         <?php for ($m = 1; $m <= 12; $m++): ?>
                             <option value="<?= $m ?>" <?= ($m == $mesic) ? 'selected' : '' ?>>
                                 <?= $mesicCZ[$m] ?>
                             </option>
                         <?php endfor; ?>
                     </select>
-                    <select name="rok" id="rok" class="custom-select">
+                    <select name="rok">
                         <?php for ($y = date('Y') - 5; $y <= date('Y'); $y++): ?>
                             <option value="<?= $y ?>" <?= ($y == $rok) ? 'selected' : '' ?>>
                                 <?= $y ?>
                             </option>
                         <?php endfor; ?>
                     </select>
-                    <input type="submit" value="Zobrazit" class="submit-button">
+                    <input type="submit" value="Zobrazit">
                 </div>
             </form>
             <div class="prehledy">
@@ -116,8 +116,7 @@
                     $result = sqlsrv_query($conn, $sql, $params);
                     if ($result === FALSE)
                         die(print_r(sqlsrv_errors(), true));
-                ?>
-                <?php 
+ 
                     if (!sqlsrv_has_rows($result)) 
                         echo '<p style="font-style: italic;">Nebyl nalezen žádný záznam!</p>';
                     else {
@@ -150,13 +149,6 @@
         <img src="Indorama.png" width="200px">
     </div>
     <style>
-        h2 {
-            font-size: 24px; 
-            font-weight: bold; 
-            color: #003366; 
-            text-align: left;
-            margin-bottom: 15px;
-        }
         h2::after {
             content: "";
             display: block;
@@ -175,7 +167,7 @@
             border-radius: 15px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
-        .prehled-field {
+        fieldset {
             border: 1px solid #ddd;
             border-radius: 8px;
             padding: 20px;
@@ -189,7 +181,7 @@
             display: flex;
             align-items: center;
         }
-        .custom-select {
+        select {
             background-color: #ffffff;
             border: 1px solid #cccccc;
             border-radius: 5px;
@@ -200,7 +192,7 @@
             margin-right: 20px;
             transition: border-color 0.3s ease;
         }
-        .custom-select:hover {
+        select:hover {
             border-color: #003366;
         }
 
@@ -276,13 +268,13 @@
             font-weight: bold;
         }
         .link {
-            color: #007BFF;
+            color: #0056b3;
             text-decoration: none;
             font-weight: bold;
             transition: color 0.3s ease;
         }
         .link:hover {
-            color: #0056b3;
+            color: #003366;
         }
         
         form {
