@@ -351,7 +351,7 @@
                 <img src="user_icon.png" width="28%" style="margin-right: 2%;">
                 <div class="uziv_inf">
                     <p><?php echo $jmeno; ?></p>
-                    <p style="font-size: 12px; margin-left: 2px;"><?php echo $funkce; ?></p>
+                    <p style="font-size: 12px; margin-left: 1px;"><?php echo $funkce; ?></p>
                 </div>
             </div>
             <a href="login.php">
@@ -382,8 +382,8 @@
                         <td><input type="text" name="interni"></td>
                         <td><input type="text" name="externi"></td>
                         <td><input type="text" name="pocetOs"></td>
-                        <td><input type="date" name="povolOd"></td>
-                        <td><input type="date" name="povolDo"></td>
+                        <td><input type="date" name="povolOd" min="<?php echo date("Y-m-d") ?>"></td>
+                        <td><input type="date" name="povolDo" min="<?php echo date("Y-m-d") ?>"></td>
                         <td rowspan="5">
                             <div class="panel">
                                 <label class="container">K práci na zařízení
@@ -414,8 +414,8 @@
                         <td><input type="text" name="provoz"></td>
                         <th>Název(číslo) objektu</th>
                         <td><input type="text" name="objekt"></td>
-                        <td><input type="time" name="hodOd"></td>
-                        <td><input type="time" name="hodDo"></td>
+                        <td><input type="text" name="hodOd" class="time" maxlength="5" placeholder="00:00"></td>
+                        <td><input type="text" name="hodDo" class="time" maxlength="5" placeholder="00:00"></td>
                     </tr>
                     <tr>
                         <th>Název zařízení</th>
@@ -461,7 +461,7 @@
                             </label>
                         </td>
                         <th>Hodin</th>
-                        <td><input type="time" name="vyparene_hod" disabled></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="vyparene_hod" disabled></td>
                         <td colspan="4"><input type="text" name="vyparene_kom" disabled></td>
                     </tr>
                     <tr>
@@ -490,7 +490,7 @@
                             </label>
                         </td>
                         <th>Hodin</th>
-                        <td><input type="time" name="vyvetrane_hod" disabled></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="vyvetrane_hod" disabled></td>
                         <td colspan="4"><input type="text" name="vyvetrane_kom" disabled></td>
                     </tr>
                     <tr>
@@ -501,7 +501,7 @@
                             </label>
                         </td>
                         <th>Hodin</th>
-                        <td><input type="time" name="profouk_dusik_hod" disabled></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="profouk_dusik_hod" disabled></td>
                         <td colspan="4"><input type="text" name="profouk_dusik_kom" disabled></td>
                     </tr>
                     <tr>
@@ -512,7 +512,7 @@
                             </label>
                         </td>
                         <th>Hodin</th>
-                        <td><input type="time" name="profouk_vzd_hod" disabled></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="profouk_vzd_hod" disabled></td>
                         <td colspan="4"><input type="text" name="profouk_vzd_kom" disabled></td>
                     </tr>
                     <tr>
@@ -732,7 +732,7 @@
                     <tr>
                         <th>Datum</th>
                         <td><input type="date" name="odpovednost_dat"></td>
-                        <td><input type="time" name="odpovednost_cas"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="odpovednost_cas"></td>
                         <th>Hodin</th>
                     </tr>
                     <tr>
@@ -818,7 +818,7 @@
                         <th>Dne</th>
                         <td><input type="date" name="ohen_dat"></td>
                         <th>Hodin</th>
-                        <td><input type="time" name="ohen_cas"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="ohen_cas"></td>
                     </tr>
                     <tr>
                         <th colspan="2">4.4 Osobně zkontroloval - jméno</th>
@@ -844,14 +844,14 @@
                     <tr class="rozboryTR" data-index="0">
                         <td><input type="text" name="rozbor[0][nazev]"></td>
                         <td><input type="date" name="rozbor[0][dat]"></td>
-                        <td><input type="time" name="rozbor[0][cas]"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[0][cas]"></td>
                         <td><input type="text" name="rozbor[0][misto]"></td>
                         <td><input type="text" name="rozbor[0][hodn]"></td>
                         <td></td>
                         <td></td>
                     </tr>
                     <tr id="rozborAdd">
-                        <td colspan="6"><button type="button" id="rozborAdd" class="add">+</button></td>
+                        <td colspan="6"><button type="button" id="rozborAddBut" class="add">+</button></td>
                         <input type="hidden" name="rozboryPocet" value="1">
                     </tr>
                 </tbody>
@@ -879,7 +879,7 @@
                         <th>Dne</th>
                         <td><input type="date" name="dalsi_jine_dat"></td>
                         <th>Hodin</th>
-                        <td><input type="time" name="dalsi_jine_cas"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="dalsi_jine_cas"></td>
                     </tr>
                     <tr>
                         <th>Podpis</th>
@@ -914,15 +914,15 @@
                         <th>Dne</th>
                         <td><input type="date" name="oprava_dat"></td>
                         <th>Hodina</th>
-                        <td><input type="time" name="oprava_cas"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="oprava_cas"></td>
                         <th>Dne</th>
                         <td><input type="date" name="svarec_ukon_dat"></td>
                         <th>Hodina</th>
-                        <td><input type="time" name="svarec_ukon_cas"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="svarec_ukon_cas"></td>
                         <th>Kontrola dne</th>
                         <td><input type="date" name="kontrola_dat"></td>
                         <th>Hodina</th>
-                        <td><input type="time" name="kontrola_cas"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="kontrola_cas"></td>
                     </tr>
                     <tr>
                         <th>Předal</th>
@@ -946,11 +946,11 @@
                         <th>Dne</th>
                         <td><input type="date" name="z_opravy_dat"></td>
                         <th>Hodina</th>
-                        <td><input type="time" name="z_opravy_cas"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="z_opravy_cas"></td>
                         <th>Od</th>
-                        <td><input type="time" name="dozor_od"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="dozor_od"></td>
                         <th>Do</th>
-                        <td><input type="time" name="dozor_do"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="dozor_do"></td>
                     </tr>
                     <tr>
                         <th>Předal</th>
@@ -970,7 +970,7 @@
                     </tr>
                 </tbody>
             </table>
-            <!--<table class="ninth">
+            <table class="ninth">
                 <thead>
                     <tr>
                         <th colspan="7">13. Prodloužených za podmínek stanovených tímto povolením</th>
@@ -1019,7 +1019,7 @@
                         <td colspan="3"></td>
                     </tr>
                 </tbody>
-            </table>-->
+            </table>
             <table class="tenth">
                 <thead>
                     <tr>
@@ -1037,6 +1037,9 @@
             <input type="submit" class="add" value="Odeslat" name="subOdeslat" style="font-size: 16px;">
         </div>
     </form>
+    <div class="footer">
+        <img src="Indorama.png" width="200px">
+    </div>
     <style>
         body{
             background: unset;
@@ -1200,6 +1203,33 @@
             justify-content: center; 
             margin: 20px 0; 
         }
-        </style>
+
+        .footer{
+            display: none;
+        }
+
+        @media (max-width: 660px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .headerB{
+                gap: 150px;
+            }
+            .container{
+                background: unset;
+                box-shadow: unset;
+            }
+            .footer{
+                display: flex;  
+            }
+            .logo {
+                display: none;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
 </body>
 </html>

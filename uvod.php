@@ -55,7 +55,7 @@
                 <img src="user_icon.png" width="28%" style="margin-right: 2%;">
                 <div class="uziv_inf">
                     <p><?php echo $jmeno; ?></p>
-                    <p style="font-size: 12px; margin-left: 2px;"><?php echo $funkce; ?></p>
+                    <p style="font-size: 12px; margin-left: 1px;"><?php echo $funkce; ?></p>
                 </div>
             </div>
             <a href="login.php">
@@ -111,7 +111,7 @@
                                 p.odeslano
                             FROM Povolenka as p 
                             WHERE p.id_zam = ? AND MONTH(p.odeslano) = ? AND YEAR(p.odeslano) = ?
-                            ORDER BY p.odeslano ASC;";
+                            ORDER BY p.odeslano DESC;";
                     $params = [$uziv, $mesic, $rok];
                     $result = sqlsrv_query($conn, $sql, $params);
                     if ($result === FALSE)
