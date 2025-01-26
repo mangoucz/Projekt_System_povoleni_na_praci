@@ -1,10 +1,7 @@
 <?php
     if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         if (isset($_POST['subLogin'])) {
-            $uziv = $_POST['uziv'];
-            $sql = "";
-            $params = [];
-            $error = "";        
+            $uziv = $_POST['uziv'];    
             
             require_once 'server.php';
 
@@ -62,7 +59,7 @@
         align-items: center;
         justify-content: center;
         width: 75%;
-        padding: 10% 0;
+        padding: 5% 0;
         background: rgba(255, 255, 255, 0.8); 
         border-radius: 15px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);

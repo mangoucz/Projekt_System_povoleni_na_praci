@@ -3,7 +3,7 @@ $(document).ready(function() {
         $("#rizikoValue").text($(this).val());
     });
 
-    $(".time").on('input', function () {
+    $(document).on('input', '.time', function () {
         let value = $(this).val().replace(/[^0-9]/g, "");
     
         if (value.length >= 1) {
@@ -29,12 +29,12 @@ $(document).ready(function() {
     });
     
     
-    $(".time").on('blur', function() {
+    $(document).on('blur', '.time', function() {
         let value = $(this).val();
         if (value.length == 2)
             $(this).val(value + ":00");
         else if(value.length == 1)
-            $(this).val(value + "0:00");
+            $(this).val("0" + value + ":00");
     });
 
     $(document).on('click', '#svarecAddBut', function() {
@@ -44,8 +44,8 @@ $(document).ready(function() {
             .addClass('svareciTR')
             .attr("data-index", index)
             .html(`
-                <td><input type="text" name="svarec[${index}][jmeno]"></td>
-                <td colspan="2"><input type="text" name="svarec[${index}][prukaz]"></td>
+                <td data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]"></td>
+                <td data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[${index}][prukaz]"></td>
                 <td colspan="2"></td>
                 <td><button type="button" class="svarecDel del">-</button></td>
             `);
@@ -67,7 +67,7 @@ $(document).ready(function() {
             .html(`
                 <td><input type="text" name="rozbor[${index}][nazev]"></td>
                 <td><input type="date" name="rozbor[${index}][dat]"></td>
-                <td><input type="time" name="rozbor[${index}][cas]"></td>
+                <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[${index}][cas]"></td>
                 <td><input type="text" name="rozbor[${index}][misto]"></td>
                 <td><input type="text" name="rozbor[${index}][hodn]"></td>
                 <td></td>
