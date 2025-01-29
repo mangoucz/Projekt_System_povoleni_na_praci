@@ -395,11 +395,11 @@
                         <td data-label="Externí"><input type="text" name="externi"></td>
                         <td data-label="Počet osob"><input type="text" name="pocetOs"></td>
                         <td data-label="Od" rowspan="2">
-                            <input type="date" name="povolOd" min="<?php echo date("Y-m-d") ?>" style="margin-bottom: 10%;">
+                            <input type="date" name="povolOd" id="povolOd" class="date" min="<?php echo date("Y-m-d") ?>" style="margin-bottom: 10%;">
                             <input type="text" name="hodOd" class="time" maxlength="5" placeholder="00:00">
                         </td>
                         <td data-label="Do" rowspan="2">
-                            <input type="date" name="povolDo" min="<?php echo date("Y-m-d") ?>" style="margin-bottom: 10%;">
+                            <input type="date" name="povolDo" id="povolDo" class="date" min="<?php echo date("Y-m-d") ?>" style="margin-bottom: 10%;">
                             <input type="text" name="hodDo" class="time" maxlength="5" placeholder="00:00">
                         </td>
                         <td data-label="Povolení" rowspan="5">

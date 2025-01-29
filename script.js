@@ -3,6 +3,16 @@ $(document).ready(function() {
         $("#rizikoValue").text($(this).val());
     });
 
+    $(document).on('input', '.date', function () {
+        const povolOd = $('#povolOd');
+        const povolDo = $('#povolDo');
+        let date = povolOd.val();
+
+        povolDo.attr('min', date);
+        if(povolOd.val() > povolDo.val())
+            povolDo.val(date);
+    });
+
     $(document).on('input', '.time', function () {
         let value = $(this).val().replace(/[^0-9]/g, "");
     
