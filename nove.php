@@ -330,6 +330,10 @@
                     window.location.href = "uvod.php";
                   </script>';
         }
+        else if(isset($_POST['subUvod'])){
+            header("Location: uvod.php");
+            exit();
+        }
     }
 ?>
 <!DOCTYPE html>
@@ -345,8 +349,11 @@
 <body>
     <div class="header">
         <img src="Indorama.png" class="logo">
-        <h1>NOVÉ POVOLENÍ</h1>
+        <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
         <div class="headerB">
+            <a href="uvod.php">
+                <img src="home_icon.png" width="75%" style="cursor: pointer; margin-top: 15%;">
+            </a>
             <div class="uziv">
                 <img src="user_icon.png" width="28%" style="margin-right: 2%;">
                 <div class="uziv_inf">
@@ -362,7 +369,7 @@
     <form action="" method="post">
         <div class="firstPage">
             <table class="intro">
-                <thead>
+                <thead class="origo">
                     <tr>
                         <th>Rizikovost</th>
                         <th>Interní</th>
@@ -373,9 +380,14 @@
                         <th>Povolení</th>
                     </tr>
                 </thead>
+                <thead class="respons">
+                    <tr>
+                        <th>POVOLENÍ k práci</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr>
-                        <td data-label="Rizikovost">
+                        <td data-label="Rizikovost" style="display: flex;">
                             <input type="range" id="riziko" name="riziko" min="1" max="10" step="1" value="5">
                             <b id="rizikoValue">5</b>
                         </td>
@@ -438,11 +450,14 @@
                 </tbody>
             </table>
             <table class="first">
-                <thead>
+                <thead class="origo">
                     <tr>
                         <th colspan="2">1. Příprava zařízení k opravě</th>
                         <th colspan="5">Bližší určení</th>
                     </tr>
+                </thead>
+                <thead class="respons">
+                    <th>1. Příprava zařízení k opravě</th>
                 </thead>
                 <tbody>
                     <tr>
@@ -529,7 +544,7 @@
                         <th>Kým</th>
                         <td data-label="Kým" colspan="3"><input type="text" name="odpojeno_od_el_kym" disabled></td>
                         <th>Podpis</th>
-                        <td></td>
+                        <td class="origo"></td>
                     </tr>
                     <tr>
                         <td>
@@ -541,7 +556,7 @@
                         <th>Kým</th>
                         <td data-label="Kým" colspan="3"><input type="text" name="oddelene_zaslep_kym" disabled></td>
                         <th>Podpis</th>
-                        <td></td>
+                        <td class="origo"></td>
                     </tr>
                     <tr>
                         <td>
@@ -741,7 +756,7 @@
                     </tr>
                     <tr>
                         <th>Podpis vedoucího čety</th>
-                        <td colspan="2"></td>
+                        <td class="origo" colspan="2"></td>
                     </tr>
                     <tr>
                         <td colspan="6" class="podnadpis">2.13 Sváření provedou</td>
@@ -754,7 +769,7 @@
                     <tr class="svareciTR" data-index="0">
                         <td data-label="Jméno"><input type="text" name="svarec[0][jmeno]" /></td>
                         <td data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[0][prukaz]" /></td>
-                        <td colspan="2"></td>
+                        <td class="origo" colspan="3"></td>
                     </tr>
                     <tr id="svarecAdd">
                         <td colspan="6"><button type="button" id="svarecAddBut" class="add">+</button></td>
@@ -807,33 +822,34 @@
                 <tbody>
                     <tr>
                         <th colspan="5">4.1 Podmínky (doplňující bod č. 1)</th>
+                        <td class="respons" data-label="4.1 Podmínky (doplňující bod č. 1)"></td>
                     </tr>
                     <tr>
                         <td colspan="5"><textarea name="podminky" rows="5" style="resize: none; width: 100%;"></textarea></td>
                     </tr>
                     <tr>
                         <th colspan="2">4.2 Výše uvedené podmínky stanovil - jméno:</th>
-                        <td><input type="text" name="podminky_jm"></td>
+                        <td data-label="4.2 Výše uvedené podmínky stanovil - jméno:"><input type="text" name="podminky_jm"></td>
                         <th>Podpis</th>
-                        <td></td>
+                        <td class="origo"></td>
                     </tr>
                     <tr>
                         <th>4.3 Pracoviště připraveno pro práci s otevřeným ohněm:</th>
                         <th>Dne</th>
-                        <td><input type="date" name="ohen_dat"></td>
+                        <td data-label="4.3 Pracoviště připraveno pro práci s otevřeným ohněm dne"><input type="date" name="ohen_dat"></td>
                         <th>Hodin</th>
-                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="ohen_cas"></td>
+                        <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="ohen_cas"></td>
                     </tr>
                     <tr>
                         <th colspan="2">4.4 Osobně zkontroloval - jméno</th>
-                        <td><input type="text" name="zkontroloval_jm"></td>
+                        <td data-label="4.4 Osobně zkontroloval - jméno"><input type="text" name="zkontroloval_jm"></td>
                         <th>Podpis</th>
-                        <td></td>
+                        <td class="origo"></td>
                     </tr>
                 </tbody>
             </table>
             <table class="fifth">
-                <thead>
+                <thead class="origo">
                     <tr>
                         <th>5. Rozbor ovzduší</th>
                         <th>Datum</th>
@@ -844,15 +860,18 @@
                         <th></th>
                     </tr>
                 </thead>
+                <thead class="respons">
+                    <th>5. Rozbor ovzduší</th>
+                </thead>
                 <tbody>
                     <tr class="rozboryTR" data-index="0">
-                        <td><input type="text" name="rozbor[0][nazev]"></td>
-                        <td><input type="date" name="rozbor[0][dat]"></td>
-                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[0][cas]"></td>
-                        <td><input type="text" name="rozbor[0][misto]"></td>
-                        <td><input type="text" name="rozbor[0][hodn]"></td>
+                        <td data-label="Rozbor ovzduší"><input type="text" name="rozbor[0][nazev]"></td>
+                        <td data-label="Datum"><input type="date" name="rozbor[0][dat]"></td>
+                        <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[0][cas]"></td>
+                        <td data-label="Místo odběru vzorku ovzduší"><input type="text" name="rozbor[0][misto]"></td>
+                        <td data-label="Naměřená hodnota"><input type="text" name="rozbor[0][hodn]"></td>
                         <td></td>
-                        <td></td>
+                        <td class="origo"></td>
                     </tr>
                     <tr id="rozborAdd">
                         <td colspan="6"><button type="button" id="rozborAddBut" class="add">+</button></td>
@@ -873,19 +892,19 @@
                     <tr>
                         <td rowspan="4"><textarea name="dalsi_jine" rows="10" style="resize: none; width: 95%;"></textarea></td>
                         <th>Stanovil</th>
-                        <td colspan="3"><input type="text" name="dalsi_jine_stanovil"></td>
+                        <td data-label="Stanovil" colspan="3"><input type="text" name="dalsi_jine_stanovil"></td>
                     </tr>
                     <tr>
                         <th>Jméno</th>
-                        <td colspan="3"><input type="text" name="dalsi_jine_jm"></td>
+                        <td data-label="Jméno" colspan="3"><input type="text" name="dalsi_jine_jm"></td>
                     </tr>
                     <tr>
                         <th>Dne</th>
-                        <td><input type="date" name="dalsi_jine_dat"></td>
+                        <td data-label="Dne"><input type="date" name="dalsi_jine_dat"></td>
                         <th>Hodin</th>
-                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="dalsi_jine_cas"></td>
+                        <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="dalsi_jine_cas"></td>
                     </tr>
-                    <tr>
+                    <tr class="origo">
                         <th>Podpis</th>
                         <td colspan="3"></td>
                     </tr>
@@ -895,17 +914,18 @@
                 <thead>
                     <tr>
                         <th>7. Další nutná opatření - případně viz protokol ze dne</th>
-                        <th><input type="date" name="nutna_dat"></th>
+                        <th class="origo"><input type="date" name="nutna_dat"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td class="respons"><input type="date" name="nutna_dat"></td>
                         <td colspan="2"><textarea name="nutna_opatreni" rows="4" style="resize: none; width: 100%;"></textarea></td>
                     </tr>
                 </tbody>
             </table>
             <table class="eighth">
-                <thead>
+                <thead class="origo">
                     <tr>
                         <th colspan="3">8. Předání do opravy - protokol č.</th>
                         <th><input type="text" name="oprava_protokol"></th>
@@ -913,7 +933,10 @@
                         <th colspan="4">12. Kontrola BT, PO, jiného orgánu</th>
                     </tr>
                 </thead>
-                <tbody>
+                <thead class="respons">
+                    <th>8. Předání do opravy - protokol č.</th>
+                </thead>
+                <tbody class="origo">
                     <tr>
                         <th>Dne</th>
                         <td><input type="date" name="oprava_dat"></td>
@@ -968,13 +991,96 @@
                         <th>Převzal</th>
                         <td colspan="3"><input type="text" name="z_opravy_prevzal"></td>
                         <th>Podpis</th>
-                        <td colspan="3"></td>
+                        <td class="origo" colspan="3"></td>
                         <th>Podpis</th>
-                        <td></td>
+                        <td class="origo"></td>
+                    </tr>
+                </tbody>
+                <tbody class="respons">
+                    <tr>
+                        <td><input type="text" name="oprava_protokol"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Dne"><input type="date" name="oprava_dat"></td>
+                        <td data-label="Hodina"><input type="text" class="time" maxlength="5" placeholder="00:00" name="oprava_cas"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Předal" colspan="3"><input type="text" name="oprava_predal"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Převzal" colspan="3"><input type="text" name="oprava_prevzal"></td>
                     </tr>
                 </tbody>
             </table>
-            <table class="ninth">
+            <table class="ninth respons">
+                <thead>
+                    <th>9. Předání z opravy</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Dne"><input type="date" name="oprava_dat"></td>
+                        <td data-label="Hodina"><input type="text" class="time" maxlength="5" placeholder="00:00" name="z_opravy_cas"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Předal"><input type="text" name="z_opravy_predal"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Převzal"><input type="text" name="z_opravy_prevzal"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="tenth respons">
+                <thead>
+                    <th>10. Práce svářečské ukončeny</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Dne"><input type="date" name="svarec_ukon_dat"></td>
+                        <td data-label="Hodina"><input type="text" class="time" maxlength="5" placeholder="00:00" name="svarec_ukon_cas"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Předal"><input type="text" name="svarec_predal"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Převzal"><input type="text" name="svarec_prevzal"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="eleventh respons">
+                <thead>
+                    <th>11. Následný dozor</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Od"><input type="text" class="time" maxlength="5" placeholder="00:00" name="dozor_od"></td>
+                        <td data-label="Do"><input type="text" class="time" maxlength="5" placeholder="00:00" name="dozor_do"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Jméno"><input type="text" name="dozor_jm"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="twelfth respons">
+                <thead>
+                    <th>12. Kontrola BT, PO, jiného orgánu</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Dne"><input type="date" name="kontrola_dat"></td>
+                        <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="kontrola_cas"></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Zjištěno"></td>
+                    </tr>
+                    <tr>
+                        <td><textarea name="kontrola_zjisteno" rows="10" style="resize: none; width: 100%; padding: 5% 0;"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Jméno"><input type="text" name="kontrola_jm"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="thirteenth">
                 <thead>
                     <tr>
                         <th colspan="7">13. Prodloužených za podmínek stanovených tímto povolením</th>
@@ -982,11 +1088,11 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <th class="podnadpis" colspan="7">Prodlužuje provozovatel</th>
+                        <td class="podnadpis" colspan="7">Prodlužuje provozovatel</td>
                     </tr>
                     <tr>
                         <th>13.1 Pro práci na zařízení</th>
-                        <td colspan="6"><input type="text" name="prodluz_zarizeni"></td>
+                        <td data-label="13.1 Pro práci na zařízení" colspan="6"><input type="text" name="prodluz_zarizeni"></td>
                     </tr>
                     <tr>
                         <th>Datum</th>
@@ -997,16 +1103,16 @@
                         <th>Podpis odpovědného prac. prov. útvaru</th>
                         <th></th>
                     </tr>
-                    <tr>
-                        <td><input type="date" name="prodluz_zar_dat"></td>
-                        <td><input type="text" name="prodluz_zar_oddo"></td>
-                        <td><input type="text" name="prodluz_zar_prestavka"></td>
-                        <td><input type="text" name="prodluz_zar_os"></td>
-                        <td colspan="3"></td>
+                    <tr class="prodlZarTR">
+                        <td data-label="Datum"><input type="date" name="prodluz_zar_dat"></td>
+                        <td data-label="Od - Do"><input type="text" name="prodluz_zar_oddo"></td>
+                        <td data-label="Přestávka"><input type="text" name="prodluz_zar_prestavka"></td>
+                        <td data-label="Počet osob"><input type="text" name="prodluz_zar_os"></td>
+                        <td class="origo" colspan="3"></td>
                     </tr>
                     <tr>
                         <th>13.2 Pro práci s otevřeným ohněm</th>
-                        <td colspan="6"><input type="text" name="prodluz_ohen"></td>
+                        <td data-label="13.2 Pro práci s otevřeným ohněm" colspan="6"><input type="text" name="prodluz_ohen"></td>
                     </tr>
                     <tr>
                         <th>Datum</th>
@@ -1015,16 +1121,16 @@
                         <th>Počet osob</th>
                         <th colspan="3">Podpis Vystavovatele</th>
                     </tr>
-                    <tr>
-                        <td><input type="date" name="prodluz_oh_dat"></td>
-                        <td><input type="text" name="prodluz_oh_oddo"></td>
-                        <td><input type="text" name="prodluz_oh_prestavka"></td>
-                        <td><input type="text" name="prodluz_oh_os"></td>
-                        <td colspan="3"></td>
+                    <tr class="prodlOhTR">
+                        <td data-label="Datum"><input type="date" name="prodluz_oh_dat"></td>
+                        <td data-label="Od - Do"><input type="text" name="prodluz_oh_oddo"></td>
+                        <td data-label="Přestávka"><input type="text" name="prodluz_oh_prestavka"></td>
+                        <td data-label="Počet osob"><input type="text" name="prodluz_oh_os"></td>
+                        <td class="origo" colspan="3"></td>
                     </tr>
                 </tbody>
             </table>
-            <table class="tenth">
+            <table class="fourteenth">
                 <thead>
                     <tr>
                         <th>14. Doplňky, poznámky</th>
@@ -1038,7 +1144,7 @@
             </table>
         </div>
         <div class="submit-container">
-            <input type="submit" class="add" value="Odeslat" name="subOdeslat" style="font-size: 16px;">
+            <input type="submit" class="add" id="odeslat" value="Odeslat" name="subOdeslat" style="font-size: 16px;">
         </div>
     </form>
     <div class="footer">
@@ -1052,7 +1158,7 @@
         table{
             background-color: white;
             padding: 20px;
-            border: 1px solid #bcd4ef;
+            border: 1px solid #BCD4EF;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 80%;
@@ -1060,28 +1166,28 @@
             border-collapse: collapse;
         }
         thead th {
-            background-color: #eaf3ff;
+            background-color: #EAF3FF;
             text-align: center;
             font-weight: bold;
             padding: 10px;
-            border-bottom: 2px solid #bcd4ef;
+            border-bottom: 2px solid #BCD4EF;
         }
         tbody th {
             background-color: #f7faff;
             font-weight: bold;
             text-align: left;
             padding: 10px;
-            border-bottom: 1px solid #e6ecf2;
+            border-bottom: 1px solid #E6ECF2;
         }
         td {
             padding: 10px;
             text-align: left;
-            border-bottom: 1px solid #e6ecf2;
+            border-bottom: 1px solid #E6ECF2;
         }
         .podnadpis{
             font-weight: bold;
             padding: 1% 0 1% 1%;
-            background-color: #eeeeee;
+            background-color: #EEEEEE;
         }
         input[type="text"],
         input[type="date"],
@@ -1091,7 +1197,7 @@
             padding: 8px;
             margin: 2px 0;
             box-sizing: border-box;
-            border: 1px solid #bcd4ef;
+            border: 1px solid #BCD4EF;
             border-radius: 4px;
             font-size: 14px;
             outline: none;
@@ -1100,7 +1206,7 @@
         input[type="range"] {
             width: 85%; 
             height: 5px; 
-            background-color:#eeeeee; 
+            background-color: #EEEEEE; 
         }
         input[type="text"]:focus,
         input[type="date"]:focus,
@@ -1108,8 +1214,8 @@
             border-color: #2196F3;
             box-shadow: 0 0 4px rgba(33, 150, 243, 0.5);
         }
-        button, input[type="submit"]{
-            color: white;
+        button, .add, #odeslat{
+            color: #FFFFFF;
             border: none;
             border-radius: 50px;
             padding: 10px 20px; 
@@ -1209,17 +1315,18 @@
             margin: 20px 0; 
         }
 
-        .footer{
+        .footer, .respons{
             display: none;
         }
 
         @media (max-width: 660px) {
             .header {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center;
             }
-            .headerB{
-                gap: 150px;
+            h1 {
+                margin: 5% 0;
+                font-size: 1.5em;
             }
             .container{
                 background: unset;
@@ -1228,24 +1335,28 @@
             .footer{
                 display: flex;  
             }
-            .logo {
-                display: none;
+            .podnadpis{
+                padding: 4% 0 4% 2%;
             }
-            h1 {
-                font-size: 1.5em;
+            #rizikoValue{
+                margin: 1.5% 0 0 1.5%
             }
             table{
                 width: 90%;
-            }
-            tbody th, table.intro thead {
-                display: none;
-            }
-            table, tbody, tr, td {
-                display: block;
-            }
-            thead{
                 display: block;
                 padding: 0;
+            }
+            tbody th, .logo, .origo {
+                display: none;
+            }
+            table, thead, thead th, tbody, tr, td, .respons {
+                display: block;
+            }
+            tbody{
+                display: block;
+                padding: 0;
+                width: 90%;
+                margin-left: 5%;
             }
             tr {
                 margin-bottom: 1rem;
@@ -1253,6 +1364,7 @@
             td[data-label]{
                 text-align: right;
                 padding-left: 50%;
+                padding-bottom: 10%;
                 position: relative;
             }
             td[data-label]::before{
@@ -1270,6 +1382,9 @@
             }
             .panel{
                 margin-top: 2rem;
+            }
+            .svareciTR, .rozboryTR, .prodlZarTR, .prodlOhTR{
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
         }
     </style>

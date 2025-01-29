@@ -46,7 +46,7 @@ $(document).ready(function() {
             .html(`
                 <td data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]"></td>
                 <td data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[${index}][prukaz]"></td>
-                <td colspan="2"></td>
+                <td class="origo" colspan="2"></td>
                 <td><button type="button" class="svarecDel del">-</button></td>
             `);
 
@@ -65,12 +65,12 @@ $(document).ready(function() {
             .addClass('rozboryTR')
             .attr("data-index", index)
             .html(`
-                <td><input type="text" name="rozbor[${index}][nazev]"></td>
-                <td><input type="date" name="rozbor[${index}][dat]"></td>
-                <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[${index}][cas]"></td>
-                <td><input type="text" name="rozbor[${index}][misto]"></td>
-                <td><input type="text" name="rozbor[${index}][hodn]"></td>
-                <td></td>
+                <td data-label="Rozbor ovzduší"><input type="text" name="rozbor[${index}][nazev]"></td>
+                <td data-label="Datum"><input type="date" name="rozbor[${index}][dat]"></td>
+                <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[${index}][cas]"></td>
+                <td data-label="Místo odběru vzorku ovzduší"><input type="text" name="rozbor[${index}][misto]"></td>
+                <td data-label="Naměřená hodnota"><input type="text" name="rozbor[${index}][hodn]"></td>
+                <td class="origo"></td>
                 <td><button type="button" class="rozborDel del">-</button></td>
             `);
         $("#rozborAdd").before(radek);

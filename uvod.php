@@ -49,7 +49,7 @@
         <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
         <div class="headerB">
             <form action="" method="post">
-                <input type="submit" value="Nové povolení" name="subNove">
+                <input type="submit" value="Nové povolení" name="subNove" class="defButt">
             </form>
             <div class="uziv">
                 <img src="user_icon.png" width="28%" style="margin-right: 2%;">
@@ -100,7 +100,7 @@
                             </option>
                         <?php endfor; ?>
                     </select>
-                    <input type="submit" value="Zobrazit">
+                    <input type="submit" value="Zobrazit" class="defButt">
                 </div>
             </form>
             <div class="prehledy">
@@ -280,15 +280,6 @@
         form {
             width: 60%;
             text-align: center;
-        }
-        input[type="submit"] {
-            background-color: #003366; 
-        }
-        input[type="submit"]:hover {
-            background-color: #d40000;
-        }
-        input[type="submit"]:active{
-            box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
         }
         .footer{
             display: none;
