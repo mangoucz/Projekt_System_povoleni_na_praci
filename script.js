@@ -1,4 +1,39 @@
 $(document).ready(function() {
+    $(document).on('click', '.link', function () {
+        let id = $(this).attr("id");
+
+        $.ajax({
+            url: "get_povoleni.php",
+            type: "POST",
+            data: { id_pov: id },
+            dataType: "json",
+            success: function(response) {
+                if (response.success) {
+                    $(".modal h2").text("Povolení č. " + response.data.ev_cislo);
+                    $(".modal .zadal").text("Zadal " + response.data.zadal);
+                    $(".modal .od").text("Od " + response.data.od);
+                    $(".modal .do").text("Do " + response.data.do);
+                    $(".modal .povoleni_na").text("Povolení na " + response.data.povoleni_na);
+                    $(".modal .popis_prace").text("Popis práce " + response.data.popis_prace);
+                    $(".modal .odeslano").text("Odesláno " + response.data.odeslano);
+
+                    $(".modal").fadeIn(200).css("display", "flex");
+                } 
+                else {
+                    alert("Chyba při načítání dat!");
+                    alert(response.message);
+                }
+            },
+            error: function() {
+                alert("Chyba komunikace se serverem!");
+            }
+        });
+    });
+
+    $(document).on('click', '.close', function () {
+        $(".modal").fadeOut(200).css("display", "none");
+    });
+
     $("#riziko").on('input', function () {
         $("#rizikoValue").text($(this).val());
     });

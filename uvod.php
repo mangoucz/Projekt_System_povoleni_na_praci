@@ -42,6 +42,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Systém povolení na práci</title>
     <link rel="stylesheet" href="style.css">
+    <script src="jquery-3.7.1.min.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
     <div class="header">
@@ -134,7 +136,7 @@
                             echo '</div>';
                             echo '</div>';
                             echo '<div>';
-                            echo '<a href="#" class="link" id="' . $zaznam['id_pov'] . '">Podrobnosti &gt;</a>';
+                            echo '<a class="link" id="' . $zaznam['id_pov'] . '" style="cursor: pointer;">Podrobnosti &gt;</a>';
                             echo '</div>';
                             echo '</div>';
                             echo '</div>';
@@ -144,6 +146,29 @@
                 ?>
             </div>
         </fieldset>
+    </div>
+    <div class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Podrobnosti povolenky</h2>
+            </div>
+            <div class="modal-body">
+                <span class="zadal"></span>
+                <span class="povoleni_na"></span>
+                <span class="od"></span>
+                <span class="do"></span>
+                <span class="popis_prace"></span>
+                <span class="odeslano"></span>
+            </div>
+            <div class="modal-footer">
+                <form method="post">
+                    <input type="submit" value="Editovat" class="defButt edit">
+                    <input type="submit" value="Prodloužit" class="defButt extend">
+                    <button class="print-btn">🖨️ Tisk</button>
+                </form>
+            </div>
+        </div>
     </div>
     <div class="footer">
         <img src="Indorama.png" width="200px">
