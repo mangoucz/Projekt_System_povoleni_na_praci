@@ -50,7 +50,7 @@
         <img src="Indorama.png" class="logo">
         <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
         <div class="headerB">
-            <form action="" method="post">
+            <form action="" method="post" style="width: 60%;">
                 <input type="submit" value="Nové povolení" name="subNove" class="defButt">
             </form>
             <div class="uziv">
@@ -86,7 +86,7 @@
         ?>
         <h2>Moje povolení</h2>
         <fieldset>
-            <form method="get">
+            <form method="get" style="width: 60%;">
                 <div class="date-selection">
                     <select name="mesic">
                         <?php for ($m = 1; $m <= 12; $m++): ?>
@@ -162,10 +162,11 @@
                 <span class="odeslano"></span>
             </div>
             <div class="modal-footer">
-                <form method="post">
-                    <input type="submit" value="Editovat" class="defButt edit">
-                    <input type="submit" value="Prodloužit" class="defButt extend">
-                    <button class="print-btn">🖨️ Tisk</button>
+                <form method="post" action="nove.php">
+                    <input type="submit" value="Editovat" name="subEdit" class="defButt edit">
+                    <input type="button" value="Tisk" class="defButt print"></input>
+                    <input type="submit" value="Prodloužit" name="subProdl" id="subProdl" class="defButt extend">
+                    <input type="hidden" name="id" value="">
                 </form>
             </div>
         </div>
@@ -303,7 +304,6 @@
         }
         
         form {
-            width: 60%;
             text-align: center;
         }
         .footer{
@@ -317,6 +317,7 @@
             .container{
                 background: unset;
                 box-shadow: unset;
+                margin: 20px 10px;
             }
             .footer{
                 display: flex;  

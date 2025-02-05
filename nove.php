@@ -330,9 +330,8 @@
                     window.location.href = "uvod.php";
                   </script>';
         }
-        else if(isset($_POST['subUvod'])){
-            header("Location: uvod.php");
-            exit();
+        else if(isset($_POST['subEdit']) || isset($_POST['subProdl'])){
+            $id = $_POST['id'];
         }
     }
 ?>
@@ -1208,6 +1207,12 @@
             height: 5px; 
             background-color: #EEEEEE; 
         }
+        input[type="text"]:hover,
+        input[type="date"]:hover,
+        input[type="time"]:hover {
+            border-color:rgb(140, 200, 250); 
+            box-shadow: 0 2px 6px rgba(0, 51, 102, 0.2);
+        }
         input[type="text"]:focus,
         input[type="date"]:focus,
         input[type="time"]:focus{
@@ -1319,6 +1324,19 @@
             display: none;
         }
 
+        <?php if(isset($_POST['subProdl'])){ ?>
+            table:not(.thirteenth){
+                display: none;
+            }
+            .thirteenth{
+                display: table;
+            }
+        <?php } else{ ?>
+            .thirteenth{
+                display: none;
+            }
+        <?php }?>
+                
         @media (max-width: 660px) {
             .header {
                 flex-direction: column;

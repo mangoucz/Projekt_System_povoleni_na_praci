@@ -11,6 +11,7 @@ h2 {
     margin-bottom: 15px;
     font-size: 24px;
 }
+
 .header{
     background-color: #ffffff;
     display: flex;
@@ -41,7 +42,9 @@ h2 {
     margin-left: 1%; 
     max-width: 200px;
 }  
-input[type="submit"] {
+
+.defButt {
+    background-color: #003366; 
     color: #FFFFFF;
     border: none;
     padding: 10px 20px;
@@ -49,9 +52,6 @@ input[type="submit"] {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
-}
-.defButt {
-    background-color: #003366; 
 }
 .defButt:hover {
     background-color: #d40000;
@@ -81,7 +81,6 @@ input[type="submit"] {
     background: rgba(0, 0, 0, 0.5);
     transition: 0.3s;
 }
-
 .modal-content {
     background: #fff;
     padding: 20px;
@@ -89,8 +88,6 @@ input[type="submit"] {
     width: 400px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
-
-/* Hlavička modalu */
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -99,49 +96,22 @@ input[type="submit"] {
     border-bottom: 1px solid #ddd;
     padding-bottom: 10px;
 }
-
 .modal-header h2 {
     font-size: 18px;
     color: #333;
 }
-
+.modal-body {
+    padding: 15px 0;
+}
 .close {
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
     color: #888;
 }
-
 .close:hover {
     color: #000;
 }
-
-/* Tělo modalu */
-.modal-body {
-    padding: 15px 0;
-}
-
-.modal-body p {
-    font-size: 14px;
-    margin: 5px 0;
-}
-
-.print-btn {
-    display: block;
-    margin: 10px 0;
-    padding: 8px 12px;
-    background: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.print-btn:hover {
-    background: #2980b9;
-}
-
-/* Patička modalu */
 .modal-footer {
     display: flex;
     justify-content: space-between;
@@ -149,29 +119,23 @@ input[type="submit"] {
     padding-top: 10px;
 }
 
-/* Styl tlačítek */
-.defButt {
-    padding: 8px 12px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
 .defButt.edit {
     background: #f39c12;
-    color: #fff;
 }
-
 .defButt.edit:hover {
     background: #e67e22;
 }
 
-.defButt.extend {
-    background: #2ecc71;
-    color: #fff;
+.defButt.print {
+    background: #3498db;
+}
+.print-btn:hover {
+    background: #2980b9;
 }
 
+.defButt.extend {
+    background: #2ecc71;
+}
 .defButt.extend:hover {
     background: #27ae60;
 }

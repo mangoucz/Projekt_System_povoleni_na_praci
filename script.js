@@ -16,6 +16,7 @@ $(document).ready(function() {
                     $(".modal .povoleni_na").text("Povolení na " + response.data.povoleni_na);
                     $(".modal .popis_prace").text("Popis práce " + response.data.popis_prace);
                     $(".modal .odeslano").text("Odesláno " + response.data.odeslano);
+                    $(".modal input[type='hidden']").val(id);
 
                     $(".modal").fadeIn(200).css("display", "flex");
                 } 

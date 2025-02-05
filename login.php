@@ -40,7 +40,7 @@
             <h2>Přihlášení</h2>
             <?php echo isset($error) ? '<p class="error">' . $error . '</p>' : "";?>
             <input type="text" name="uziv" placeholder="Přihlašovací jméno" required>
-            <input type="submit" value="Přihlásit se!" name="subLogin"><br>
+            <input type="submit" value="Přihlásit se!" name="subLogin" class="defButt"><br>
         </form>
     </div>
     <div class="footer">
@@ -108,15 +108,7 @@
         box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
     }
     input[type="submit"] {
-        background-color: #003366; 
         width: 60%;
-    }
-    input[type="submit"]:hover {
-        background-color: #d40000;
-    }
-
-    input[type="submit"]:active {
-        box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
     }
 
     .footer{
@@ -127,7 +119,7 @@
         width: 60%;
         color: #d40000;
         font-size: 16px;
-        background-color: #ffe6e6;
+        background: #ffe6e6;
         border: 1px solid #d40000;
         border-radius: 5px;
         padding: 10px;
