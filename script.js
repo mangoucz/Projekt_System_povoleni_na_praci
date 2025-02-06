@@ -74,13 +74,23 @@ $(document).ready(function() {
         $(this).val(value);
     });
     
-    
     $(document).on('blur', '.time', function() {
         let value = $(this).val();
+        let povolOd = $('#povolOd').val();
+        let povolDo = $('#povolDo').val();
+        let hodOd = $("#hodOd").val();
+        let hodDo = $("#hodDo").val();
+        let hodOdNum = hodOd ? parseInt(hodOd) : null;
+        let hodDoNum = hodDo ? parseInt(hodDo) : null;
+    
         if (value.length == 2)
             $(this).val(value + ":00");
         else if(value.length == 1)
             $(this).val("0" + value + ":00");
+        
+        if (povolOd === povolDo && hodOdNum !== null && hodDoNum !== null && hodOdNum > hodDoNum) {
+            $("#hodDo").val("");
+        }
     });
 
     $(document).on('click', '#svarecAddBut', function() {
@@ -131,10 +141,14 @@ $(document).ready(function() {
         const tr = $(this).closest('tr'); 
         const inputs = tr.find('input[type="text"], input[type="time"]'); 
 
-        if ($(this).is(':checked')) 
+        if ($(this).is(':checked')){
             inputs.removeAttr("disabled"); 
-        else 
+            inputs.attr("required", true);
+        }
+        else{
             inputs.attr("disabled", true).val("");
+            inputs.removeAttr("required"); 
+        }
     });
 
     $(document).on('click', '.svarecDel', function() {
