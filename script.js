@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $(document).on('click', '.link', function () {
-        let id = $(this).attr("id");
+        const id = $(this).attr("id");
 
         $.ajax({
             url: "get_povoleni.php",
@@ -40,21 +40,31 @@ $(document).ready(function() {
     });
 
     $(document).on('input', '.date', function () {
-        const povolOd = $('#povolOd');
-        const povolDo = $('#povolDo');
-        let date = povolOd.val();
-
-        povolDo.attr('min', date);
-        if(povolOd.val() > povolDo.val())
-            povolDo.val(date);
+        const inputs = [
+            { datOd: '#povolOd', datDo: '#povolDo' },
+            { datOd: '#prodluzZarOd', datDo: '#prodluzZarDo' },
+            { datOd: '#prodluzOhOd', datDo: '#prodluzOhDo' }
+        ];
+    
+        inputs.forEach(({ datOd, datDo }) => {
+            const datDoEl = $(datDo);
+            const datOdVal = $(datOd).val();
+            
+            if (datOdVal) {
+                datDoEl.attr('min', datOdVal);
+                if (datOdVal > datDoEl.val())
+                    datDoEl.val(datOdVal);
+            }
+        });
     });
+    
 
     $(document).on('input', '.time', function () {
         let value = $(this).val().replace(/[^0-9]/g, "");
     
         if (value.length >= 1) {
-            let hod1 = parseInt(value.substring(0, 1)); 
-            let hod2 = parseInt(value.substring(1, 2)) || "";
+            const hod1 = parseInt(value.substring(0, 1)); 
+            const hod2 = parseInt(value.substring(1, 2)) || "";
     
             if (hod1 >= 3)
                 value = "0" + hod1;
@@ -62,11 +72,11 @@ $(document).ready(function() {
                 value = value.substring(0, 1);
     
             if (value.length > 2) {
-                let min1 = value.length >= 3 ? parseInt(value.substring(2, 3)) : ""; 
+                const min1 = value.length >= 3 ? parseInt(value.substring(2, 3)) : ""; 
                 if (min1 > 5) 
                     value = value.substring(0, 2) + ":";
                 else {
-                    let min2 = value.substring(3, 4) || "";
+                    const min2 = value.substring(3, 4) || "";
                     value = value.substring(0, 2) + ":" + min1 + min2;
                 }
             }
@@ -75,13 +85,13 @@ $(document).ready(function() {
     });
     
     $(document).on('blur', '.time', function() {
-        let value = $(this).val();
-        let povolOd = $('#povolOd').val();
-        let povolDo = $('#povolDo').val();
-        let hodOd = $("#hodOd").val();
-        let hodDo = $("#hodDo").val();
-        let hodOdNum = hodOd ? parseInt(hodOd) : null;
-        let hodDoNum = hodDo ? parseInt(hodDo) : null;
+        const value = $(this).val();
+        const povolOd = $('#povolOd').val();
+        const povolDo = $('#povolDo').val();
+        const hodOd = $("#hodOd").val();
+        const hodDo = $("#hodDo").val();
+        const hodOdNum = hodOd ? parseInt(hodOd) : null;
+        const hodDoNum = hodDo ? parseInt(hodDo) : null;
     
         if (value.length == 2)
             $(this).val(value + ":00");
@@ -94,7 +104,7 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '#svarecAddBut', function() {
-        let index = $("tr.svareciTR[data-index]").length;
+        const index = $("tr.svareciTR[data-index]").length;
 
         const radek = $("<tr>")
             .addClass('svareciTR')
@@ -115,7 +125,7 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '#rozborAddBut', function() {
-        let index = $("tr.rozboryTR[data-index]").length;
+        const index = $("tr.rozboryTR[data-index]").length;
 
         const radek = $("<tr>")
             .addClass('rozboryTR')
@@ -155,10 +165,10 @@ $(document).ready(function() {
         $(this).closest('tr').remove();
         updateIndex("tr.svareciTR[data-index]");
 
-        let val = $("#svarecAdd input[type=hidden]").attr("value");
+        const val = $("#svarecAdd input[type=hidden]").attr("value");
         $("#svarecAdd input[type=hidden]").attr("value", val - 1);
 
-        let index = $("tr.svareciTR[data-index]").length;
+        const index = $("tr.svareciTR[data-index]").length;
         if (index == 2) {
             $("#svarecAdd td:first").html(`<button type="button" id="svarecAddBut" class="add">+</button>`);
         }
@@ -168,10 +178,10 @@ $(document).ready(function() {
         updateIndex("tr.rozboryTR[data-index]");
 
         
-        let val = $("#rozborAdd input[type=hidden]").attr("value");
+        const val = $("#rozborAdd input[type=hidden]").attr("value");
         $("#rozborAdd input[type=hidden]").attr("value", val - 1);
 
-        let index = $("tr.rozboryTR[data-index]").length;
+        const index = $("tr.rozboryTR[data-index]").length;
         if (index == 4) {
             $("#rozborAdd td:first").html(`<button type="button" id="rozborAddBut" class="add">+</button>`);
         }
@@ -182,7 +192,7 @@ $(document).ready(function() {
         $(selector).each(function(i) {
             $(this).attr("data-index", i);
             $(this).find("input").each(function() {
-                let name = $(this).attr("name");
+                const name = $(this).attr("name");
                 $(this).attr("name", name.replace(/\[\d\]/, `[${i}]`));
             });
         });
