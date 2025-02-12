@@ -1,4 +1,14 @@
 $(document).ready(function() {
+    if($(".respons").css("display") == "none"){
+        $(".respons input").each(function() {
+            $(this).attr("disabled", true);
+        });
+    }
+    else{
+        $(".origo input").each(function() {
+            $(this).attr("disabled", true);
+        });
+    }
     $(document).on('click', '.link', function () {
         const id = $(this).attr("id");
 

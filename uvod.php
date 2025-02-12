@@ -110,7 +110,9 @@
                     $sql = "SELECT 
                                 p.id_pov,
                                 p.ev_cislo,
-                                p.odeslano
+                                p.odeslano,
+                                p.povol_do,
+                                p.povol_od
                             FROM Povolenka as p 
                             WHERE p.id_zam = ? AND MONTH(p.odeslano) = ? AND YEAR(p.odeslano) = ?
                             ORDER BY p.odeslano DESC;";
@@ -130,6 +132,7 @@
                             echo '<div class="prehled-body">';
                             echo '<div>';
                             echo '<p>Ev. č. ' . $zaznam['ev_cislo'] . '</p>';
+                            echo '<p>Na: '. $zaznam['povol_od']->format("d.m.Y") . ' - ' . $zaznam['povol_do']->format("d.m.Y") . '</p>';
                             echo '<div class="stav">';
                             echo '<p>Stav: <span class="status">Odesláno</span></p>';
                             echo '<span class="icon"></span>';

@@ -181,8 +181,12 @@
                 $odeslano = DATE("Y-m-d H:i:s");
                 
                 //EDIT
-                if (!empty($id_pov)) {
+                if ($id_pov != null) {
                    
+                    echo '<script>
+                            alert("Povolení bylo upraveno!");
+                            window.location.href = "uvod.php";
+                        </script>';
                 }//INSERT
                 else{
                     $sql = "INSERT INTO Povolenka (id_zam, ev_cislo, rizikovost, interni, externi, pocet_osob, povol_od, povol_do, prace_na_zarizeni, svarovani_ohen, vstup_zarizeni_teren, prostredi_vybuch, predani_prevzeti_zarizeni, provoz, objekt, c_zarizeni, nazev_zarizeni, popis_prace, c_karty,
@@ -332,9 +336,15 @@
                             sqlsrv_free_stmt($result);        
                         }
                     }
+
+                    echo '<script>
+                            alert("Žádost byla uspěšně odeslána");
+                            window.location.href = "uvod.php";
+                        </script>';
                 }
             }
             else if(!empty($_POST['prodluz_zarizeni'])){
+                $id_pov = $_POST['id_pov'];
                 $typ = "zařízení";
                 $pro_praci = $_POST['prodluz_zarizeni'];
                 $od = $_POST['prodluzZarOd'] . ' ' . $_POST['prodluzZarhodOd'];
@@ -348,6 +358,11 @@
                 $result = sqlsrv_query($conn, $sql, $params);
                 if ($result === FALSE)
                     die(print_r(sqlsrv_errors(), true));
+
+                echo '<script>
+                        alert("Povolení bylo prodlouženo!");
+                        window.location.href = "uvod.php";
+                    </script>';
             }
             else if (!empty($_POST['prodluz_ohen'])) {
                 $typ = "oheň";
@@ -363,19 +378,21 @@
                 $result = sqlsrv_query($conn, $sql, $params);
                 if ($result === FALSE)
                     die(print_r(sqlsrv_errors(), true));
-            } 
 
-            echo '<script>
-                    alert("Žádost byla uspěšně odeslána");
-                    window.location.href = "uvod.php";
-                  </script>';
+                echo '<script>
+                        alert("Povolení bylo prodlouženo!");
+                        window.location.href = "uvod.php";
+                    </script>';
+            }  
         }
         else if(isset($_POST['subEdit']) || isset($_POST['subProdl'])){
             $id = $_POST['id'];
 
             $sql = "SELECT
+                        p.id_pov as id,
                         p.prace_na_zarizeni as zar,
-                        p.svarovani_ohen as oh
+                        p.svarovani_ohen as oh,
+                        p.povol_do as povolDo
                     FROM Povolenka as p
                     WHERE id_pov = ?;";
             $params = [$id];
@@ -1138,7 +1155,7 @@
                         <th colspan="6">13. Prodloužených za podmínek stanovených tímto povolením</th>
                     </tr>
                 </thead>
-                <tbody class="origo ">
+                <tbody class="origo">
                     <tr>
                         <td class="podnadpis" colspan="6">Prodlužuje provozovatel</td>
                     </tr>
@@ -1153,11 +1170,11 @@
                     </tr>
                     <tr class="prodlZarTR">
                         <td data-label="Od" rowspan="2">
-                            <input type="date" name="prodluzZarOd" id="prodluzZarOd" class="date" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo (isset($zaznam['povolDo']) && date("Y-m-d") < $zaznam['povolDo']->format("Y-m-d")) ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d") ?>" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzZarhodOd" class="time" id="prodluzZarhodOd" maxlength="5" placeholder="00:00" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
-                            <input type="date" name="prodluzZarDo" id="prodluzZarDo" class="date" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzZarDo" id="prodluzZarDo" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzZarhodDo" class="time" id="prodluzZarhodDo" maxlength="5" placeholder="00:00" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <th>Přestávka</th>
@@ -1182,11 +1199,11 @@
                     </tr>
                     <tr class="prodlOhTR">
                         <td data-label="Od" rowspan="2">
-                            <input type="date" name="prodluzOhOd" id="prodluzOhOd" class="date" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo (isset($zaznam['povolDo']) && date("Y-m-d") < $zaznam['povolDo']->format("Y-m-d")) ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d") ?>" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzOhhodOd" class="time" id="hodOd" maxlength="5" placeholder="00:00" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
-                            <input type="date" name="prodluzOhDo" id="prodluzOhDo" class="date" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzOhDo" id="prodluzOhDo" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzOhhodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <th>Přestávka</th>
@@ -1206,11 +1223,11 @@
                     <tr class="prodlZarTR">
                         <td data-label="13.1 Pro práci na zařízení"><input type="text" name="prodluz_zarizeni" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : 'required'; ?>></td>
                         <td data-label="Od" rowspan="2">
-                            <input type="date" name="prodluzZarOd" id="prodluzZarOd" class="date" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo (isset($zaznam['povolDo']) && date("Y-m-d") < $zaznam['povolDo']->format("Y-m-d")) ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d") ?>" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzZarhodOd" class="prodluzZarhodOd" id="hodOd" maxlength="5" placeholder="00:00" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
-                            <input type="date" name="prodluzZarDo" id="prodluzZarDo" class="date" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzZarDo" id="prodluzZarDo" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzZarhodDo" class="time" id="prodluzZarhodDo" maxlength="5" placeholder="00:00" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Přestávka"><input type="text" name="prodluz_zar_prestavka" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>></td>
@@ -1219,11 +1236,11 @@
                     <tr class="prodlOhTR">
                         <td data-label="13.2 Pro práci s otevřeným ohněm"><input type="text" name="prodluz_ohen" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : 'required'; ?>></td>
                         <td data-label="Od" rowspan="2">
-                            <input type="date" name="prodluzOhOd" id="prodluzOhOd" class="date" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo (isset($zaznam['povolDo']) && date("Y-m-d") < $zaznam['povolDo']->format("Y-m-d")) ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d") ?>" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzOhhodOd" class="time" id="prodluzOhhodOd" maxlength="5" placeholder="00:00" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
-                            <input type="date" name="prodluzOhDo" id="prodluzOhDo" class="date" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzOhDo" id="prodluzOhDo" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzOhhodDo" class="time" id="prodluzOhhodDo" maxlength="5" placeholder="00:00" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Přestávka"><input type="text" name="prodluz_oh_prestavka" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>></td>
@@ -1420,7 +1437,7 @@
         .submit-container {
             display: flex;
             justify-content: center; 
-            margin: 20px 0; 
+            margin: 20px 0 100px 0; 
         }
 
         .footer, .respons{
