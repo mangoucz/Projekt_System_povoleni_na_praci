@@ -20,17 +20,19 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     $(".modal h2").text("Povolení č. " + response.data.ev_cislo);
-                    $(".modal .zadal").text("Zadal " + response.data.zadal);
-                    $(".modal .od").text("Od " + response.data.od);
-                    $(".modal .do").text("Do " + response.data.do);
-                    $(".modal .povoleni_na").text("Povolení na " + response.data.povoleni_na);
-                    $(".modal .popis_prace").text("Popis práce " + response.data.popis_prace);
-                    $(".modal .odeslano").text("Odesláno " + response.data.odeslano);
+                    $(".modal .zadal").html("<strong>" + response.data.zadal + "</strong>");
+                    $(".modal .povoleni_na").html(response.data.povoleni_na.join("<br>"));
+                    $(".modal .od").text(response.data.od);
+                    $(".modal .do").text(response.data.do);
+                    $(".modal .prodlDo").text(response.data.prodl_do);
+                    $(".modal .popis_prace").html("<em>" + response.data.popis_prace + "</em>");
+                    $(".modal .odeslano").text(response.data.odeslano);
+                    $(".modal .upraveno").text(response.data.upraveno);
+                    $(".modal .prodl").text(response.data.pocet_prodl);
                     $(".modal input[type='hidden']").val(id);
-
+        
                     $(".modal").fadeIn(200).css("display", "flex");
-                } 
-                else {
+                } else {
                     alert("Chyba při načítání dat!");
                     alert(response.message);
                 }
@@ -38,7 +40,7 @@ $(document).ready(function() {
             error: function() {
                 alert("Chyba komunikace se serverem!");
             }
-        });
+        });        
     });
 
     $(document).on('click', '.close', function () {

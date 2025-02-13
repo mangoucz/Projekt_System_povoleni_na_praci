@@ -16,7 +16,10 @@
                         povol_od as od,
                         povol_do as do,
                         popis_prace,
-                        odeslano
+                        odeslano, 
+                        upraveno,
+                        (select CONCAT(COUNT(prd.id_prodl),'x') from Prodlouzeni as prd where prd.id_pov = p.id_pov) as pocet_prodl,
+                        (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov) as prodl_do
                     FROM Povolenka AS p JOIN Zamestnanci as z on p.id_zam = z.id_zam
                     WHERE p.id_pov = ?;";
             $params = [$id];
@@ -33,9 +36,12 @@
             $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
 
             if ($zaznam) {
-                $zaznam["od"] = $zaznam["od"]->format("d.m.Y");
-                $zaznam["do"] = $zaznam["do"]->format("d.m.Y");
-                $zaznam["odeslano"] = $zaznam["odeslano"]->format("d.m.Y");
+                $zaznam["od"] = $zaznam["od"]->format("d.m.Y H:i");
+                $zaznam["do"] = $zaznam["do"]->format("d.m.Y H:i");
+                $zaznam["prodl_do"] = isset($zaznam["prodl_do"]) ? $zaznam["prodl_do"]->format("d.m.Y H:i") : "-";
+                $zaznam["odeslano"] = $zaznam["odeslano"]->format("d.m.Y H:i");
+                $zaznam["upraveno"] = isset($zaznam["upraveno"]) ? $zaznam["upraveno"]->format("d.m.Y H:i") : "Ne";
+                $zaznam["pocet_prodl"] = $zaznam["pocet_prodl"] != "0x" ? $zaznam["pocet_prodl"] : "Ne";
                 
                 $povoleni_na = [];
                 if ($zaznam["prace_na_zarizeni"] === 1) $povoleni_na[] = "Práce na zařízení";
@@ -43,7 +49,7 @@
                 if ($zaznam["vstup_zarizeni_teren"] === 1) $povoleni_na[] = "Vstup do zařízení pod úroveň terénu";
                 if ($zaznam["prostredi_vybuch"] === 1) $povoleni_na[] = "Prostředí s nebezpečím výbuchu";
                 if ($zaznam["predani_prevzeti_zarizeni"] === 1) $povoleni_na[] = "Předání / převzetí zařízení";
-                $zaznam["povoleni_na"] = implode(", ", $povoleni_na);
+                $zaznam["povoleni_na"] = $povoleni_na;
 
                 echo json_encode([
                     "success" => true,

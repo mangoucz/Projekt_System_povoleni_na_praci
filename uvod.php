@@ -112,8 +112,9 @@
                                 p.ev_cislo,
                                 p.odeslano,
                                 p.povol_do,
-                                p.povol_od
-                            FROM Povolenka as p 
+                                p.povol_od,
+                                Concat(z.jmeno, ' ', z.prijmeni) as Zam
+                            FROM Povolenka as p JOIN Zamestnanci as z ON p.id_zam = z.id_zam 
                             WHERE p.id_zam = ? AND MONTH(p.odeslano) = ? AND YEAR(p.odeslano) = ?
                             ORDER BY p.odeslano DESC;";
                     $params = [$uziv, $mesic, $rok];
@@ -127,15 +128,16 @@
                         while ($zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
                             echo'<div class="prehled">';
                             echo '<div class="prehled-head">';
-                            echo '<p>Datum: <strong>' . $zaznam['odeslano']->format('d.m.Y') . '</strong></p>';
+                            echo '<p>Ev. č. ' . $zaznam['ev_cislo'] . '</p>';
                             echo '</div>';
                             echo '<div class="prehled-body">';
                             echo '<div>';
-                            echo '<p>Ev. č. ' . $zaznam['ev_cislo'] . '</p>';
+                            echo '<p>Podal: ' . $zaznam['Zam'] . '</p>';
                             echo '<p>Na: '. $zaznam['povol_od']->format("d.m.Y") . ' - ' . $zaznam['povol_do']->format("d.m.Y") . '</p>';
                             echo '<div class="stav">';
                             echo '<p>Stav: <span class="status">Odesláno</span></p>';
                             echo '<span class="icon"></span>';
+                            echo '<p class="odeslano">' . $zaznam['odeslano']->format('d.m.Y') . '</p>';
                             echo '</div>';
                             echo '</div>';
                             echo '<div>';
@@ -157,12 +159,15 @@
                 <h2>Podrobnosti povolenky</h2>
             </div>
             <div class="modal-body">
-                <span class="zadal"></span>
-                <span class="povoleni_na"></span>
-                <span class="od"></span>
-                <span class="do"></span>
-                <span class="popis_prace"></span>
-                <span class="odeslano"></span>
+                <div class="info-row"><span class="label">Zadal:</span><span class="zadal obsah"></span></div>
+                <div class="info-row"><span class="label">Povolení na:</span><span class="povoleni_na obsah"></span></div>
+                <div class="info-row"><span class="label">Od:</span><span class="od obsah"></span></div>
+                <div class="info-row"><span class="label">Do:</span><span class="do obsah"></span></div>
+                <div class="info-row"><span class="label">Prodlouženo do:</span><span class="prodlDo obsah"></span></div>
+                <div class="info-row"><span class="label">Odesláno:</span><span class="odeslano obsah"></span></div>
+                <div class="info-row"><span class="label">Upraveno:</span><span class="upraveno obsah"></span></div>
+                <div class="info-row"><span class="label">Prodlouženo:</span><span class="prodl obsah"></span></div>
+                <div class="info-row"><span class="label">Popis práce:</span><span class="popis_prace obsah"></span></div>
             </div>
             <div class="modal-footer">
                 <form method="post" action="nove.php">
@@ -237,7 +242,7 @@
 
         .prehled {
             border-bottom: 1px solid #dddddd;
-            padding: 10px 0;
+            padding: 10px 0 5px 0;
             transition: background-color 0.3s ease;
         }
         .prehled:hover {
@@ -256,8 +261,9 @@
         .prehled-body {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             margin-top: 8px;
+            align-items: flex-start; 
+            position: relative;
         }
         .prehled-body p {
             margin: 0;
@@ -266,6 +272,13 @@
             margin-left: 10px;
             margin-bottom: -10px;
             width: 30px;
+        }
+        .prehled-body .odeslano {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            color: #6c757d;
+            font-weight: normal;
         }
 
         .stav{

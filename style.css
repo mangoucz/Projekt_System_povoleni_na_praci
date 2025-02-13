@@ -102,6 +102,25 @@ h2 {
 }
 .modal-body {
     padding: 15px 0;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+}
+.label {
+    font-weight: bold;
+    color: #333;
+}
+.modal-body .info-row:last-child {
+    border-bottom: none;
+}
+.modal-body .obsah{
+    text-align: right;
+    width: 65%;
 }
 .close {
     cursor: pointer;
@@ -129,7 +148,7 @@ h2 {
 .defButt.print {
     background: #3498db;
 }
-.print-btn:hover {
+.defButt.print:hover {
     background: #2980b9;
 }
 
