@@ -64,8 +64,10 @@ $(document).ready(function() {
             
             if (datOdVal) {
                 datDoEl.attr('min', datOdVal);
-                if (datOdVal > datDoEl.val())
+                if (datOdVal > datDoEl.val()){
+                    datDoEl.attr('type', 'date')
                     datDoEl.val(datOdVal);
+                }
             }
         });
     });

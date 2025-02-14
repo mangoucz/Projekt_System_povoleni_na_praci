@@ -343,7 +343,7 @@
                         </script>';
                 }
             }
-            else if(!empty($_POST['prodluz_zarizeni'])){
+            if(!empty($_POST['prodluz_zarizeni'])){
                 $id_pov = $_POST['id_pov'];
                 $typ = "zařízení";
                 $pro_praci = $_POST['prodluz_zarizeni'];
@@ -364,7 +364,7 @@
                         window.location.href = "uvod.php";
                     </script>';
             }
-            else if (!empty($_POST['prodluz_ohen'])) {
+            if(!empty($_POST['prodluz_ohen'])) {
                 $typ = "oheň";
                 $pro_praci = $_POST['prodluz_ohen'];
                 $od = $_POST['prodluzOhOd'] . ' ' . $_POST['prodluzOhHodOd'];
@@ -392,7 +392,9 @@
                         p.id_pov as id,
                         p.prace_na_zarizeni as zar,
                         p.svarovani_ohen as oh,
-                        p.povol_do as povolDo
+                        p.povol_do as povolDo,
+                        (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'zařízení') as prodlZarDo,
+                        (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'oheň') as prodlOhDo
                     FROM Povolenka as p
                     WHERE id_pov = ?;";
             $params = [$id];
@@ -1150,6 +1152,21 @@
                 </tbody>
             </table>
             <table class="thirteenth">
+                <?php 
+                    $prodlZarDo = isset($zaznam['prodlZarDo']) && $zaznam['prodlZarDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['prodlZarDo']->format("Y-m-d") : date("Y-m-d");
+                    $prodlOhDo = isset($zaznam['prodlOhDo']) && $zaznam['prodlOhDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['prodlOhDo']->format("Y-m-d") : date("Y-m-d"); 
+                    $povolDo = isset($zaznam['povolDo']) && $zaznam['povolDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d");
+
+                    if ($prodlZarDo >= $povolDo) 
+                        $zarMin = $prodlZarDo;
+                    else
+                        $zarMin = $povolDo;
+
+                    if ($prodlOhDo >= $povolDo) 
+                        $ohMin = $prodlOhDo;
+                    else
+                        $ohMin = $povolDo;
+                ?>
                 <thead>
                     <tr>
                         <th colspan="6">13. Prodloužených za podmínek stanovených tímto povolením</th>
@@ -1170,7 +1187,7 @@
                     </tr>
                     <tr class="prodlZarTR">
                         <td data-label="Od" rowspan="2">
-                            <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo (isset($zaznam['povolDo']) && date("Y-m-d") < $zaznam['povolDo']->format("Y-m-d")) ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d") ?>" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo $zarMin; ?>" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzZarhodOd" class="time" id="prodluzZarhodOd" maxlength="5" placeholder="00:00" <?php echo ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
@@ -1199,7 +1216,7 @@
                     </tr>
                     <tr class="prodlOhTR">
                         <td data-label="Od" rowspan="2">
-                            <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo (isset($zaznam['povolDo']) && date("Y-m-d") < $zaznam['povolDo']->format("Y-m-d")) ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d") ?>" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo $ohMin; ?>" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzOhhodOd" class="time" id="hodOd" maxlength="5" placeholder="00:00" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
