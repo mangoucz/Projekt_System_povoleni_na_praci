@@ -113,7 +113,9 @@
                                 p.odeslano,
                                 p.povol_do,
                                 p.povol_od,
-                                Concat(z.jmeno, ' ', z.prijmeni) as Zam
+                                Concat(z.jmeno, ' ', z.prijmeni) as Zam,
+                                (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'zařízení') as prodlZarDo,
+                                (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'oheň') as prodlOhDo
                             FROM Povolenka as p JOIN Zamestnanci as z ON p.id_zam = z.id_zam 
                             WHERE p.id_zam = ? AND MONTH(p.odeslano) = ? AND YEAR(p.odeslano) = ?
                             ORDER BY p.odeslano DESC;";
@@ -126,6 +128,18 @@
                         echo '<p style="font-style: italic;">Nebyl nalezen žádný záznam!</p>';
                     else {
                         while ($zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+                            if (isset($zaznam['prodlZarDo']) && isset($zaznam['prodlOhDo'])) {
+                                $povolDo = $zaznam['prodlZarDo'] < $zaznam['prodlOhDo'] ? $zaznam['prodlOhDo'] : $zaznam['prodlZarDo'];
+                            }
+                            elseif(isset($zaznam['prodlZarDo'])){
+                                $povolDo = $zaznam['prodlZarDo'];
+                            }
+                            elseif (isset($zaznam['prodlOhDo'])) {
+                                $povolDo = $zaznam['prodlOhDo'];
+                            }
+                            else 
+                                $povolDo = $zaznam['povol_do'];
+
                             echo'<div class="prehled">';
                             echo '<div class="prehled-head">';
                             echo '<p>Ev. č. ' . $zaznam['ev_cislo'] . '</p>';
@@ -133,7 +147,7 @@
                             echo '<div class="prehled-body">';
                             echo '<div>';
                             echo '<p>Podal: ' . $zaznam['Zam'] . '</p>';
-                            echo '<p>Na: '. $zaznam['povol_od']->format("d.m.Y") . ' - ' . $zaznam['povol_do']->format("d.m.Y") . '</p>';
+                            echo '<p>Na: '. $zaznam['povol_od']->format("d.m.Y") . ' - ' . $povolDo->format("d.m.Y") . '</p>';
                             echo '<div class="stav">';
                             echo '<p>Stav: <span class="status">Odesláno</span></p>';
                             echo '<span class="icon"></span>';

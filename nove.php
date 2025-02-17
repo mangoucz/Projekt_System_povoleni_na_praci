@@ -182,7 +182,10 @@
                 
                 //EDIT
                 if ($id_pov != null) {
-                   
+                    $sql = "UPDATE Povolenka SET
+                            WHERE id_pov = ?;";
+                    $params = [$id_pov];
+
                     echo '<script>
                             alert("Povolení bylo upraveno!");
                             window.location.href = "uvod.php";
@@ -365,6 +368,7 @@
                     </script>';
             }
             if(!empty($_POST['prodluz_ohen'])) {
+                $id_pov = $_POST['id_pov'];
                 $typ = "oheň";
                 $pro_praci = $_POST['prodluz_ohen'];
                 $od = $_POST['prodluzOhOd'] . ' ' . $_POST['prodluzOhHodOd'];
@@ -388,15 +392,20 @@
         else if(isset($_POST['subEdit']) || isset($_POST['subProdl'])){
             $id = $_POST['id'];
 
-            $sql = "SELECT
-                        p.id_pov as id,
-                        p.prace_na_zarizeni as zar,
-                        p.svarovani_ohen as oh,
-                        p.povol_do as povolDo,
-                        (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'zařízení') as prodlZarDo,
-                        (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'oheň') as prodlOhDo
-                    FROM Povolenka as p
-                    WHERE id_pov = ?;";
+            if (isset($_POST['subProdl'])) {
+                $sql = "SELECT
+                            p.id_pov as id,
+                            p.prace_na_zarizeni as zar,
+                            p.svarovani_ohen as oh,
+                            p.povol_do as povolDo,
+                            (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'zařízení') as prodlZarDo,
+                            (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'oheň') as prodlOhDo
+                        FROM Povolenka as p
+                        WHERE id_pov = ?;";
+            }
+            else{
+                $sql = "SELECT * FROM Povolenka WHERE id_pov = ?;";
+            }
             $params = [$id];
             $result = sqlsrv_query($conn, $sql, $params);
             if ($result === false) 
@@ -1217,11 +1226,11 @@
                     <tr class="prodlOhTR">
                         <td data-label="Od" rowspan="2">
                             <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo $ohMin; ?>" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
-                            <input type="text" name="prodluzOhhodOd" class="time" id="hodOd" maxlength="5" placeholder="00:00" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
+                            <input type="text" name="prodluzOhHodOd" class="time" id="hodOd" maxlength="5" placeholder="00:00" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
                             <input type="text" name="prodluzOhDo" id="prodluzOhDo" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?php echo date("Y-m-d") ?>" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
-                            <input type="text" name="prodluzOhhodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
+                            <input type="text" name="prodluzOhHodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <th>Přestávka</th>
                         <td data-label="Přestávka"><input type="text" name="prodluz_oh_prestavka" <?php echo ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>></td>
