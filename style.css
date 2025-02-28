@@ -11,6 +11,9 @@ h2 {
     margin-bottom: 15px;
     font-size: 24px;
 }
+.date{
+    height: 34px;
+}
 
 .header{
     background-color: #ffffff;

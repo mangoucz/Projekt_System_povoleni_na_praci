@@ -16,6 +16,9 @@
         
         return $ev_cislo + 1;
     }
+    function inputVal($el, $def = "") : string {
+        return $el ?? $def;
+    }
     session_start();
 
     if (isset($_SESSION['uziv']))
@@ -448,7 +451,7 @@
     </div>
     <form action="" method="POST">
         <div class="firstPage">
-            <table class="intro">
+            <table id="intro">
                 <thead class="origo">
                     <tr>
                         <th>Rizikovost</th>
@@ -468,40 +471,42 @@
                 <tbody>
                     <tr>
                         <td data-label="Rizikovost" style="display: flex;">
-                            <input type="range" id="riziko" name="riziko" min="1" max="10" step="1" value="5">
+                            <input type="range" id="riziko" name="riziko" min="1" max="10" step="1" value="<?php echo inputVal($zaznam['rizikovost'] ?? null, 5) ?>">
                             <b id="rizikoValue">5</b>
                         </td>
-                        <td data-label="Interní"><input type="text" name="interni"></td>
-                        <td data-label="Externí"><input type="text" name="externi"></td>
-                        <td data-label="Počet osob"><input type="text" name="pocetOs"></td>
-                        <td data-label="Od" rowspan="2">
-                            <input type="date" name="povolOd" id="povolOd" class="date" min="<?php echo date("Y-m-d") ?>" style="margin-bottom: 10%;">
-                            <input type="text" name="hodOd" class="time" id="hodOd" maxlength="5" placeholder="00:00">
+                        <td data-label="Interní"><input type="text" name="interni" value="<?php echo inputVal($zaznam['interni'] ?? null) ?>"></td>
+                        <td data-label="Externí"><input type="text" name="externi" value="<?php echo inputVal($zaznam['externi'] ?? null) ?>"></td>
+                        <td data-label="Počet osob"><input type="text" name="pocetOs" value="<?php echo inputVal($zaznam['pocet_osob'] ?? null) ?>"></td>
+                        <td class="origo"><input type="text" name="povolOd" id="povolOd" class="date" min="<?php echo date("Y-m-d") ?>" value="<?php echo inputVal($zaznam['pocet_osob'] ?? null) ?>" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum"></td>
+                        <td data-label="Od" class="respons" rowspan="2">
+                            <input type="text" name="povolOd" id="povolOd" class="date" min="<?php echo date("Y-m-d") ?>" value="<?php echo inputVal($zaznam['pocet_osob'] ?? null) ?>" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" style="margin-bottom: 10%;">
+                            <input type="text" name="hodOd" class="time" id="hodOd" value="<?php echo inputVal($zaznam['pocet_osob'] ?? null) ?>" maxlength="5" placeholder="00:00">
                         </td>
-                        <td data-label="Do" rowspan="2">
-                            <input type="date" name="povolDo" id="povolDo" class="date" min="<?php echo date("Y-m-d") ?>" style="margin-bottom: 10%;">
+                        <td class="origo"><input type="text" name="povolDo" id="povolDo" class="date" min="<?php echo date("Y-m-d") ?>" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum"></td>
+                        <td data-label="Do" class="respons" rowspan="2">
+                            <input type="text" name="povolDo" id="povolDo" class="date" min="<?php echo date("Y-m-d") ?>" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" style="margin-bottom: 10%;">
                             <input type="text" name="hodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00">
                         </td>
                         <td data-label="Povolení" rowspan="5">
                             <div class="panel">
                                 <label class="container">K práci na zařízení
-                                    <input type="checkbox" name="prace_na_zarizeni" value="1">
+                                    <input type="checkbox" name="prace_na_zarizeni" id="prace_na_zarizeni" value="1">
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="container">Ke svařování a práci s otevřeným ohněm
-                                    <input type="checkbox" name="svarovani_ohen" value="1">
+                                    <input type="checkbox" name="svarovani_ohen" id="svarovani_ohen" value="1">
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="container">Ke vstupu do zařízení nebo pod úroveň terénu
-                                    <input type="checkbox" name="vstup_zarizeni_teren" value="1">
+                                    <input type="checkbox" name="vstup_zarizeni_teren" id="vstup_zarizeni_teren" value="1">
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="container">K práci v prostředí s nebezpečím výbuchu
-                                    <input type="checkbox" name="prostredi_vybuch" value="1">
+                                    <input type="checkbox" name="prostredi_vybuch" id="prostredi_vybuch" value="1">
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="container">K předání a převzetí zařízení do opravy a do provozu
-                                    <input type="checkbox" name="predani_prevzeti_zarizeni" value="1">
+                                    <input type="checkbox" name="predani_prevzeti_zarizeni" id="predani_prevzeti_zarizeni" value="1">
                                     <span class="checkbox"></span>
                                 </label>
                             </div>
@@ -512,6 +517,8 @@
                         <td data-label="Provoz"><input type="text" name="provoz"></td>
                         <th>Název(číslo) objektu</th>
                         <td data-label="Název(číslo) objektu"><input type="text" name="objekt"></td>
+                        <td class="origo"><input type="text" name="hodOd" class="time" id="hodOd" maxlength="5" placeholder="00:00"></td>
+                        <td class="origo"><input type="text" name="hodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00"></td>
                     </tr>
                     <tr>
                         <th>Název zařízení</th>
@@ -529,7 +536,7 @@
                     </tr>   
                 </tbody>
             </table>
-            <table class="first">
+            <table id="first">
                 <thead class="origo">
                     <tr>
                         <th colspan="2">1. Příprava zařízení k opravě</th>
@@ -736,7 +743,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="sec">
+            <table id="sec">
                 <thead>
                     <tr>
                         <th colspan="6">2. Vlastní zabezpečení prováděné práce</th>
@@ -861,7 +868,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="third">
+            <table id="third">
                 <thead>
                     <tr>
                         <th colspan="7">3. Prohlašuji, že jsem se přesvědčil, že výše uvededené zajištění je provedeno.</th>
@@ -890,7 +897,7 @@
             </table>
         </div>
         <div class="secPage">
-            <table class="fourth">
+            <table id="fourth">
                 <thead>
                     <tr>
                         <th colspan="5">4. Podmínky pro práci s otevřeným ohněm</th>
@@ -928,7 +935,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="fifth">
+            <table id="fifth">
                 <thead class="origo">
                     <tr>
                         <th>5. Rozbor ovzduší</th>
@@ -959,7 +966,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="sixth">
+            <table id="sixth">
                 <thead>
                     <tr>
                         <th colspan="5">6. Další jiné podmínky práce na zařízení</th>
@@ -990,7 +997,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="seventh">
+            <table id="seventh">
                 <thead>
                     <tr>
                         <th>7. Další nutná opatření - případně viz protokol ze dne</th>
@@ -1004,7 +1011,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="eighth">
+            <table id="eighth">
                 <thead class="origo">
                     <tr>
                         <th colspan="3">8. Předání do opravy - protokol č.</th>
@@ -1092,7 +1099,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="ninth respons">
+            <table id="ninth" class="respons">
                 <thead>
                     <th>9. Předání z opravy</th>
                 </thead>
@@ -1109,7 +1116,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="tenth respons">
+            <table id="tenth" class="respons">
                 <thead>
                     <th>10. Práce svářečské ukončeny</th>
                 </thead>
@@ -1126,7 +1133,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="eleventh respons">
+            <table id="eleventh" class="respons">
                 <thead>
                     <th>11. Následný dozor</th>
                 </thead>
@@ -1140,7 +1147,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="twelfth respons">
+            <table id="twelfth" class="respons">
                 <thead>
                     <th>12. Kontrola BT, PO, jiného orgánu</th>
                 </thead>
@@ -1160,7 +1167,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="thirteenth">
+            <table id="thirteenth">
                 <?php 
                     $prodlZarDo = isset($zaznam['prodlZarDo']) && $zaznam['prodlZarDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['prodlZarDo']->format("Y-m-d") : date("Y-m-d");
                     $prodlOhDo = isset($zaznam['prodlOhDo']) && $zaznam['prodlOhDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['prodlOhDo']->format("Y-m-d") : date("Y-m-d"); 
@@ -1274,7 +1281,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="fourteenth">
+            <table id="fourteenth">
                 <thead>
                     <tr>
                         <th>14. Doplňky, poznámky</th>
@@ -1471,14 +1478,14 @@
         }
 
         <?php if(isset($_POST['subProdl'])){ ?>
-            table:not(.thirteenth){
+            table:not(#thirteenth){
                 display: none;
             }
-            .thirteenth{
+            #thirteenth{
                 display: table;
             }
         <?php } else{ ?>
-            .thirteenth{
+            #thirteenth{
                 display: none;
             }
         <?php }?>

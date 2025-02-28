@@ -9,9 +9,30 @@ $(document).ready(function() {
             $(this).attr("disabled", true);
         });
     }
+
+    $("#first, #sec, #third, #fourth, #fifth, #sixth").hide();
+    const checkboxMap = {
+        "prace_na_zarizeni": ["first", "third", "sixth"],
+        "svarovani_ohen": ["sec", "third", "fourth", "fifth"],
+        "vstup_zarizeni_teren": ["first", "sec", "third"],
+        "prostredi_vybuch": ["sec", "third", "fifth"],
+        "predani_prevzeti_zarizeni": [] 
+    };
+
+    $(document).on('change', '#intro input[type="checkbox"]', function() {
+        const checkboxName = $(this).attr("id");
+        const isChecked = $(this).is(":checked");        
+        const tableIds = checkboxMap[checkboxName];
+        
+        if (tableIds.length > 0) {
+            tableIds.forEach(function(i) {
+                $("#" + i).toggle(isChecked);
+            });
+        } 
+    });
+
     $(document).on('click', '.link', function () {
         const id = $(this).attr("id");
-
         $.ajax({
             url: "get_povoleni.php",
             type: "POST",
@@ -161,7 +182,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', '.first input[type="checkbox"]', function() {
+    $(document).on('click', '#first input[type="checkbox"]', function() {
         const tr = $(this).closest('tr'); 
         const inputs = tr.find('input[type="text"], input[type="time"]'); 
 
