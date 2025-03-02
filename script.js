@@ -20,15 +20,21 @@ $(document).ready(function() {
     };
 
     $(document).on('change', '#intro input[type="checkbox"]', function() {
-        const checkboxName = $(this).attr("id");
-        const isChecked = $(this).is(":checked");        
-        const tableIds = checkboxMap[checkboxName];
-        
-        if (tableIds.length > 0) {
-            tableIds.forEach(function(i) {
-                $("#" + i).toggle(isChecked);
+        const visibleTables = {};
+
+        $("#intro input[type='checkbox']:checked").each(function() {
+            const tableIds = checkboxMap[$(this).attr("id")] || [];
+
+            tableIds.forEach(function(id) {
+                visibleTables[id] = true;
             });
-        } 
+        });
+        $("#first, #sec, #third, #fourth, #fifth, #sixth").each(function() {
+            if (visibleTables[$(this).attr("id")]) 
+                $(this).stop().fadeIn(250);
+            else 
+                $(this).stop().fadeOut(250);
+        });
     });
 
     $(document).on('click', '.link', function () {
