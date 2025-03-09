@@ -186,7 +186,7 @@
             <div class="modal-footer">
                 <form method="post" action="nove.php">
                     <input type="submit" value="Editovat" name="subEdit" class="defButt edit">
-                    <input type="button" value="Tisk" class="defButt print"></input>
+                    <input type="submit" value="Tisk" name="subPrint" class="defButt print"></input>
                     <input type="submit" value="Prodloužit" name="subProdl" id="subProdl" class="defButt extend">
                     <input type="hidden" name="id" value="">
                 </form>

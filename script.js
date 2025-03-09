@@ -1,4 +1,22 @@
 $(document).ready(function() {
+    function zobrazTab() {
+        const visibleTables = {};
+    
+        $("#intro input[type='checkbox']:checked").each(function() {
+            const tableIds = checkboxMap[$(this).attr("id")] || [];
+    
+            tableIds.forEach(function(id) {
+                visibleTables[id] = true;
+            });
+        });
+        $("#first, #sec, #third, #fourth, #fifth, #sixth").each(function() {
+            if (visibleTables[$(this).attr("id")]) 
+                $(this).stop().fadeIn(250);
+            else 
+                $(this).stop().fadeOut(250);
+        });
+    }
+
     if($(".respons").css("display") == "none"){
         $(".respons input").each(function() {
             $(this).attr("disabled", true);
@@ -18,23 +36,10 @@ $(document).ready(function() {
         "prostredi_vybuch": ["sec", "third", "fifth"],
         "predani_prevzeti_zarizeni": [] 
     };
+    zobrazTab();
 
     $(document).on('change', '#intro input[type="checkbox"]', function() {
-        const visibleTables = {};
-
-        $("#intro input[type='checkbox']:checked").each(function() {
-            const tableIds = checkboxMap[$(this).attr("id")] || [];
-
-            tableIds.forEach(function(id) {
-                visibleTables[id] = true;
-            });
-        });
-        $("#first, #sec, #third, #fourth, #fifth, #sixth").each(function() {
-            if (visibleTables[$(this).attr("id")]) 
-                $(this).stop().fadeIn(250);
-            else 
-                $(this).stop().fadeOut(250);
-        });
+        zobrazTab();
     });
 
     $(document).on('click', '.link', function () {

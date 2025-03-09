@@ -42,6 +42,7 @@
                 $zaznam["odeslano"] = $zaznam["odeslano"]->format("d.m.Y H:i");
                 $zaznam["upraveno"] = isset($zaznam["upraveno"]) ? $zaznam["upraveno"]->format("d.m.Y H:i") : "Ne";
                 $zaznam["pocet_prodl"] = $zaznam["pocet_prodl"] != "0x" ? $zaznam["pocet_prodl"] : "Ne";
+                $zaznam["popis_prace"] = $zaznam["popis_prace"] != null ? $zaznam["popis_prace"] : "-"; 
                 
                 $povoleni_na = [];
                 if ($zaznam["prace_na_zarizeni"] === 1) $povoleni_na[] = "Práce na zařízení";

@@ -32,6 +32,9 @@
         }
         return "";
     }
+    function inputCheck($input){
+        return $input === "" ? $input = null : $input;
+    }
     
     session_start();
 
@@ -71,9 +74,9 @@
                 //INTRO
                 $ev_cislo = GenEvCislo($conn);
                 $riziko = $_POST['riziko'];
-                $interni = $_POST['interni'];
-                $externi = $_POST['externi'];
-                $pocetOs = $_POST['pocetOs'];
+                $interni = inputCheck($_POST['interni']);
+                $externi = inputCheck($_POST['externi']);
+                $pocetOs = $_POST['pocetOs'] === "" ? 1 : $_POST['pocetOs'];
                 $_POST['hodOd'] = $_POST['hodOd'] ?? null;
                 $_POST['hodDo'] = $_POST['hodDo'] ?? null;
                 $povolOd = $_POST['povolOd'] ?? null . ' ' . $_POST['hodOd'];
@@ -83,12 +86,12 @@
                 $vstup_zarizeni_teren = $_POST['vstup_zarizeni_teren'] ?? 0;
                 $prostredi_vybuch = $_POST['prostredi_vybuch'] ?? 0;
                 $predani_prevzeti_zarizeni = $_POST['predani_prevzeti_zarizeni'] ?? 0;
-                $provoz = $_POST['provoz'];
-                $objekt = $_POST['objekt'];
-                $NZarizeni = $_POST['NZarizeni'];
-                $CZarizeni = $_POST['CZarizeni'];
-                $prace = $_POST['prace'];
-                $rizikaPrac = $_POST['rizikaPrac'];
+                $provoz = inputCheck($_POST['provoz']);
+                $objekt = inputCheck($_POST['objekt']);
+                $NZarizeni = inputCheck($_POST['NZarizeni']);
+                $CZarizeni = inputCheck($_POST['CZarizeni']);
+                $prace = inputCheck($_POST['prace']);
+                $rizikaPrac = inputCheck($_POST['rizikaPrac']);
                 //TAB 1 1-10 Zařízení bylo
                 $vycisteni = $_POST['vycisteni'] ?? 0;
                 $vycisteni_kom = $_POST['vycisteni_kom'] ?? null;
@@ -415,7 +418,7 @@
                     </script>';
             }  
         }
-        else if(isset($_POST['subEdit']) || isset($_POST['subProdl'])){
+        else if(isset($_POST['subEdit']) || isset($_POST['subProdl']) || isset($_POST['subPrint'])){
             $id = $_POST['id'];
 
             if (isset($_POST['subProdl'])) {
@@ -430,15 +433,28 @@
                         WHERE id_pov = ?;";
             }
             else{
-                $sql = "SELECT * FROM Povolenka WHERE id_pov = ?;";
+                $sql = "SELECT 
+                            Povolenka.*, 
+                            (SELECT MAX(prd.do) FROM Prodlouzeni AS prd WHERE prd.id_pov = Povolenka.id_pov AND prd.typ = 'zařízení') AS prodlZarDo,
+                            (SELECT MAX(prd.do) FROM Prodlouzeni AS prd WHERE prd.id_pov = Povolenka.id_pov AND prd.typ = 'oheň') AS prodlOhDo    
+                        FROM Povolenka 
+                        WHERE Povolenka.id_pov = ?;";
             }
             $params = [$id];
             $result = sqlsrv_query($conn, $sql, $params);
             if ($result === false) 
                 die(print_r(sqlsrv_errors(), true));
 
-            $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+            $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);  
             sqlsrv_free_stmt($result);
+
+            if (isset($_POST['subEdit']) || isset($_POST['subPrint'])) {
+                $poleDat = [$zaznam['povol_do'], $zaznam['prodlZarDo'], $zaznam['prodlOhDo']];
+                $nejDo = max(array_filter($poleDat));
+            }
+            if (isset($_POST['subPrint'])) {
+                echo "<script>window.print();</script>";
+            }
         }
     }
 ?>
@@ -507,10 +523,10 @@
                             <input type="text" name="povolOd" id="povolOd" class="date" min="<?= date("Y-m-d") ?>" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat') ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" style="margin-bottom: 10%;">
                             <input type="text" name="hodOd" class="time" id="hodOd" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" maxlength="5" placeholder="00:00" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>>
                         </td>
-                        <td class="origo"><input type="text" name="povolDo" id="povolDo" class="date" min="<?= date("Y-m-d") ?>" value="<?= inputVal($zaznam['povol_do'] ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum"></td>
+                        <td class="origo"><input type="text" name="povolDo" id="povolDo" class="date" min="<?= date("Y-m-d") ?>" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum"></td>
                         <td data-label="Do" class="respons" rowspan="2">
-                            <input type="text" name="povolDo" id="povolDo" class="date" min="<?= date("Y-m-d") ?>" value="<?= inputVal($zaznam['povol_do'] ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" style="margin-bottom: 10%;">
-                            <input type="text" name="hodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_do'] ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>   >
+                            <input type="text" name="povolDo" id="povolDo" class="date" min="<?= date("Y-m-d") ?>" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" style="margin-bottom: 10%;">
+                            <input type="text" name="hodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>   >
                         </td>
                         <td data-label="Povolení" rowspan="5">
                             <div class="panel">
@@ -543,7 +559,7 @@
                         <th>Název(číslo) objektu</th>
                         <td data-label="Název(číslo) objektu"><input type="text" name="objekt" value="<?= $zaznam['objekt'] ?? null ?>"></td>
                         <td class="origo"><input type="text" name="hodOd" class="time" id="hodOd" maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>></td>
-                        <td class="origo"><input type="text" name="hodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_do'] ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>></td>
+                        <td class="origo"><input type="text" name="hodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>></td>
                     </tr>
                     <tr>
                         <th>Název zařízení</th>
@@ -578,7 +594,7 @@
                     <tr>
                         <td>
                             <label class="container">1.1 Vyčištění od zbytků
-                                <input type="checkbox" class="inputCheckbox" name="vycisteni" value="1">
+                                <input type="checkbox" name="vycisteni" value="1" <?= inputVal($zaznam['vycisteni'] ?? null, "check") ?>>
                                 <span class="checkbox"></span>
                             </label>
                         </td>
@@ -587,7 +603,7 @@
                     <tr>
                         <td>
                             <label class="container">1.2 Vypařené
-                                <input type="checkbox" name="vyparene" value="1">
+                                <input type="checkbox" name="vyparene" value="1" <?= inputVal($zaznam['vyparene'] ?? null, "check") ?>>
                                 <span class="checkbox"></span>
                             </label>
                         </td>
@@ -598,7 +614,7 @@
                     <tr>
                         <td>
                             <label class="container">1.3 Vypláchnuté vodou
-                                    <input type="checkbox" name="vyplachnute" value="1">
+                                    <input type="checkbox" name="vyplachnute" value="1" <?= inputVal($zaznam['vyplachnute'] ?? null, "check") ?>>
                                     <span class="checkbox"></span>
                             </label>
                         </td>
@@ -607,7 +623,7 @@
                     <tr>
                         <td>
                             <label class="container">1.4 Plyn vytěsnen vodou
-                                <input type="checkbox" name="plyn_vytesnen" value="1">
+                                <input type="checkbox" name="plyn_vytesnen" value="1" <?= inputVal($zaznam['plyn_vytesnen'] ?? null, "check") ?>>
                                 <span class="checkbox"></span>
                             </label>
                         </td>
@@ -616,7 +632,7 @@
                     <tr>
                         <td>
                             <label class="container">1.5 Vyvětrané
-                                <input type="checkbox" name="vyvetrane" value="1">
+                                <input type="checkbox" name="vyvetrane" value="1" <?= inputVal($zaznam['vyvetrane'] ?? null, "check") ?>>
                                 <span class="checkbox"></span>
                             </label>
                         </td>
@@ -627,7 +643,7 @@
                     <tr>
                         <td>
                             <label class="container">1.6 Profoukané dusíkem
-                                <input type="checkbox" name="profouk_dusik" value="1">
+                                <input type="checkbox" name="profouk_dusik" value="1" <?= inputVal($zaznam['profouk_dusik'] ?? null, "check") ?>>
                                 <span class="checkbox"></span>
                             </label>
                         </td>
@@ -638,7 +654,7 @@
                     <tr>
                         <td>
                             <label class="container">1.7 Profoukané vzduchem
-                                <input type="checkbox" name="profouk_vzd" value="1">
+                                <input type="checkbox" name="profouk_vzd" value="1" <?= inputVal($zaznam['profouk_vzd'] ?? null, "check") ?>>
                                 <span class="checkbox"></span>
                             </label>
                         </td>
@@ -649,7 +665,7 @@
                     <tr>
                         <td>
                             <label class="container">1.8 Odpojeno od elektrického proudu
-                                <input type="checkbox" name="odpojeno_od_el" value="1">
+                                <input type="checkbox" name="odpojeno_od_el" value="1" <?= inputVal($zaznam['odpojeno_od_el'] ?? null, "check") ?>>
                                 <span class="checkbox"></span>
                             </label>
                         </td>
@@ -661,7 +677,7 @@
                     <tr>
                         <td>
                             <label class="container">1.9 Oddělené záslepkami
-                                <input type="checkbox" name="oddelene_zaslep" value="1">
+                                <input type="checkbox" name="oddelene_zaslep" value="1" <?= inputVal($zaznam['oddelene_zaslep'] ?? null, "check") ?>>
                                 <span class="checkbox"></span>
                             </label>
                         </td>
@@ -673,7 +689,7 @@
                     <tr>
                         <td>
                             <label class="container">1.10 Jinak zapezpečené
-                                <input type="checkbox" name="jinak_zab" value="1">
+                                <input type="checkbox" name="jinak_zab" value="1" <?= inputVal($zaznam['jinak_zab'] ?? null, "check") ?>>
                                 <span class="checkbox"></span>
                             </label>
                         </td>
@@ -1588,6 +1604,10 @@
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
         }
+
+        @media print {
+            
+        }   
     </style>
 </body>
 </html>
