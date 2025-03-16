@@ -1603,11 +1603,7 @@
             .svareciTR, .rozboryTR, .prodlZarTR, .prodlOhTR{
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
-        }
-
-        @media print {
-            
-        }   
+        } 
     </style>
 </body>
 </html>
