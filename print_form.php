@@ -13,12 +13,12 @@
     body {
         margin: 0;
         padding: 0;
-        font-size: 9pt; /* Reduced base font size */
+        font-size: 9pt;
     }
     table {
         width: 100%;
         border-collapse: collapse;
-        /*border: 2px solid black;*/
+        border: 2px solid black;
         font-size: inherit;
     }
     td {
@@ -26,7 +26,7 @@
         line-height: 1;
     }
     img {
-        width: 180px; /* Further reduced logo size */
+        width: 180px;
     }
     input {
         width: 100%;
@@ -47,13 +47,14 @@
         white-space: normal;
         text-align: center;
         vertical-align: middle;
-        width: 20px; /* Add fixed width to allow wrapping */
+        width: 20px;
     }
 
     @media print {
         body {
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
+            margin: 0.5cm;
         }
         table { 
             page-break-inside: avoid;
@@ -78,7 +79,7 @@
             <td colspan="8">k práci na zařízení</td>
         </tr>
         <tr>
-            <td rowspan="2" colspan="6">Interní:</td>
+            <td rowspan="2" colspan="6">Interní: <input type="text" name="" id=""></td>
             <td style="text-align: right;"><input type="checkbox" name="" id=""></td>
             <td colspan="8">ke svařování a práci s otevřeným ohněm</td>
         </tr>
@@ -87,8 +88,8 @@
             <td colspan="8">ke vstupu do zařízení nebo pod úroveň terénu</td>
         </tr>
         <tr>
-            <td rowspan="2" colspan="5">Externí:</td>
-            <td rowspan="2">Počet osob</td>
+            <td rowspan="2" colspan="5">Externí: <input type="text" name="" id=""></td>
+            <td rowspan="2" style="width: 1.5cm;">Počet osob <input type="text" name="" id=""></td>
             <td style="text-align: right;"><input type="checkbox" name="" id=""></td>
             <td colspan="8">k práci v prostředí s nebezpečím výbuchu</td>
         </tr>
@@ -100,9 +101,9 @@
             <td colspan="3">na dny</td>
             <td colspan="4"><input type="text" name="" id=""></td>
             <td><input type="text" name="" id=""></td>
-            <td colspan="2">od</td>
+            <td colspan="2" style="text-align: right;">od</td>
             <td><input type="text" name="" id=""></td>
-            <td>do</td>
+            <td style="text-align: right;">do</td>
             <td colspan="2"><input type="text" name="" id=""></td>
             <td>hodin</td>
         </tr>
@@ -128,63 +129,63 @@
         </tr>
         <tr>
             <td colspan="9"><b>1. Příprava zařízení k opravě</b></td>
-            <td colspan="6"><b>Bližší určení</b></td>
+            <td colspan="6" style="text-align: center;"><b>Bližší určení</b></td>
         </tr>
         <tr>
             <td rowspan="17" class="svisly-text">Zajištění provozovatelem</td>
             <td rowspan="10" class="svisly-text">Zařízení bylo</td>
             <td>1.1</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="width: 0.5cm; text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="5">Vyčištění od zbytků</td>
             <td colspan="6"><input type="text" name="" id=""></td>
         </tr>
         <tr>
             <td>1.2</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="3">Vypařené</td>
-            <td>hodin:</td>
+            <td style="text-align: right;">hodin:</td>
             <td><input type="text" name="" id=""></td>
             <td colspan="6"><input type="text" name="" id=""></td>
         </tr>
         <tr>
             <td>1.3</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="5">Vypláchnuté vodou</td>
             <td colspan="6"><input type="text" name="" id=""></td>
         </tr>
         <tr>
             <td>1.4</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="5">Plyn vytěsnen vodou</td>
             <td colspan="6"><input type="text" name="" id=""></td>
         </tr>
         <tr>
             <td>1.5</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="3">Vyvětrané</td>
-            <td>hodin:</td>
+            <td style="text-align: right;">hodin:</td>
             <td><input type="text" name="" id=""></td>
             <td colspan="6"><input type="text" name="" id=""></td>
         </tr>
         <tr>
             <td>1.6</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="3">Profoukané dusíkem</td>
-            <td>hodin:</td>
+            <td style="text-align: right;">hodin:</td>
             <td><input type="text" name="" id=""></td>
             <td colspan="6"><input type="text" name="" id=""></td>
         </tr>
         <tr>
             <td>1.7</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="3">Profoukané vzduchem</td>
-            <td>hodin:</td>
+            <td style="text-align: right;">hodin:</td>
             <td><input type="text" name="" id=""></td>
             <td colspan="6"><input type="text" name="" id=""></td>
         </tr>
         <tr>
             <td>1.8</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="5">Odpojeno od elektrického proudu</td>
             <td>kým</td>
             <td colspan="3"><input type="text" name="" id=""></td>
@@ -193,7 +194,7 @@
         </tr>
         <tr>
             <td>1.9</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="5">Oddělené záslepkami</td>
             <td>kým</td>
             <td colspan="3"><input type="text" name="" id=""></td>
@@ -202,7 +203,7 @@
         </tr>
         <tr>
             <td>1.10</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="5">Jinak zapezpečené</td>
             <td>jak</td>
             <td colspan="5"><input type="text" name="" id=""></td>
@@ -210,14 +211,14 @@
         <tr>
             <td rowspan="7" class="svisly-text">Podmínky BP a PO</td>
             <td>1.11</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="5">Použít nejiskřivého nářadí</td>
             <td></td>
             <td colspan="5"></td>
         </tr>
         <tr>
             <td>1.12</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="5">Po dobu oprav - zkrápět, větrat</td>
             <td></td>
             <td>krát za</td>
@@ -227,7 +228,7 @@
         </tr>
         <tr>
             <td>1.13</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="5">Provést rozbor ovzduší</td>
             <td>místo</td>
             <td><input type="text" name="" id=""></td>
@@ -238,7 +239,7 @@
         </tr>
         <tr>
             <td>1.14</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="5">Zabezpečit dozor dalšími osobami</td>
             <td>počet</td>
             <td><input type="text" name="" id=""></td>
@@ -246,7 +247,7 @@
         </tr>
         <tr>
             <td>1.15</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="5">Požární hlídka provozu</td>
             <td>počet</td>
             <td><input type="text" name="" id=""></td>
@@ -255,7 +256,7 @@
         </tr>
         <tr>
             <td>1.16</td>
-            <td><input type="checkbox" name="" id=""></td>
+            <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
             <td colspan="5">Hasící přístroj</td>
             <td>počet</td>
             <td><input type="text" name="" id=""></td>
@@ -265,13 +266,13 @@
             <td><input type="text" name="" id=""></td>
         </tr>
         <tr>
-            <td>1.17</td>
+            <td style="text-align: center;">1.17</td>
             <td><input type="checkbox" name="" id=""></td>
             <td colspan="5">Jiné zabezpečení požární ochrany</td>
             <td colspan="6"><input type="text" name="" id=""></td>
         </tr>
         <tr>
-            <td colspan="15">2. Vlastní zabezpečení prováděné práce</td>
+            <td colspan="15"><b>2. Vlastní zabezpečení prováděné práce</b></td>
         </tr>
         <tr>
             <td rowspan="19"></td>
@@ -318,7 +319,7 @@
         <tr>
             <td rowspan="3" class="svisly-text">Jiné <br> příkazy</td>
             <td>2.9</td>
-            <td colspan="2">Jiné</td>
+            <td colspan="2"><b>Jiné</b></td>
             <td colspan="10"><input type="text" name="" id=""></td>
         </tr>
         <tr>
@@ -342,7 +343,7 @@
             <td colspan="3"><input type="text" name="" id=""></td>
         </tr>
         <tr>
-            <td rowspan="3" colspan="7">
+            <td rowspan="3" colspan="7" style="font-size: 8pt;">
                 2.12 Prohlášení: Prohlašuji, že zajistím dodržení výše uvedených <br>
                 podmínek, jakož i bezpečný provoz a postup práce, mně podřízených <br>
                 pracovníků. Při jakékoliv změně podmínek práci přeruším a požádám <br>
@@ -393,15 +394,14 @@
             <td colspan="5"><input type="text" name="" id=""></td>
         </tr>
         <tr>
-            <td colspan="15">3. Prohlašuji, že jsem se osobně přesvědčil, že výše uvedené zajištění je provedeno.</td>
+            <td colspan="15"><b>3. Prohlašuji, že jsem se osobně přesvědčil, že výše uvedené zajištění je provedeno.</b></td>
         </tr>
         <tr>
             <td colspan="3">Datum</td>
             <td colspan="2"><input type="text" name="" id=""></td>
             <td>Datum</td>
             <td colspan="2"><input type="text" name="" id=""></td>
-            <td>Vyjádření přilehlého obvodu:</td>
-            <td colspan="6"><input type="text" name="" id=""></td>
+            <td colspan="7">Vyjádření přilehlého obvodu: <input type="text" name="" id="" style="width: auto;"></td>
         </tr>
         <tr>
             <td colspan="5">Podpis odpovědného pracovníka provozu:</td>
