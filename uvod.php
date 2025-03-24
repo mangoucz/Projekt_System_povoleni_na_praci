@@ -184,9 +184,16 @@
                 <div class="info-row"><span class="label">Popis práce:</span><span class="popis_prace obsah"></span></div>
             </div>
             <div class="modal-footer">
-                <form method="post" action="nove.php">
+                <form action="nove.php" method="post">
                     <input type="submit" value="Editovat" name="subEdit" class="defButt edit">
-                    <input type="submit" value="Tisk" name="subPrint" class="defButt print"></input>
+                    <input type="hidden" name="id" value="">
+                </form>
+                <form action="print_form.php" method="post" target="printFrame">
+                    <input type="hidden" name="id" value="">
+                    <input type="submit" class="defButt print" value="Tisk"></button>
+                </form>
+                <iframe name="printFrame" style="display: none;"></iframe>
+                <form action="nove.php" method="post">
                     <input type="submit" value="Prodloužit" name="subProdl" id="subProdl" class="defButt extend">
                     <input type="hidden" name="id" value="">
                 </form>

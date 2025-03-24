@@ -136,7 +136,7 @@ h2 {
 }
 .modal-footer {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     border-top: 1px solid #ddd;
     padding-top: 10px;
 }

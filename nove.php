@@ -418,7 +418,7 @@
                     </script>';
             }  
         }
-        else if(isset($_POST['subEdit']) || isset($_POST['subProdl']) || isset($_POST['subPrint'])){
+        else if(isset($_POST['subEdit']) || isset($_POST['subProdl'])){
             $id = $_POST['id'];
 
             if (isset($_POST['subProdl'])) {
@@ -448,12 +448,9 @@
             $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);  
             sqlsrv_free_stmt($result);
 
-            if (isset($_POST['subEdit']) || isset($_POST['subPrint'])) {
+            if (isset($_POST['subEdit'])) {
                 $poleDat = [$zaznam['povol_do'], $zaznam['prodlZarDo'], $zaznam['prodlOhDo']];
                 $nejDo = max(array_filter($poleDat));
-            }
-            if (isset($_POST['subPrint'])) {
-                echo "<script>window.print();</script>";
             }
         }
     }

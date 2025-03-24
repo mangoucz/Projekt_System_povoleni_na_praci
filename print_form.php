@@ -1,3 +1,53 @@
+<?php
+    function inputVal($el, $typ) : string {
+        if (!isset($el)) {
+            return "";
+        } 
+        
+        if ($typ === "dat") {
+            return $el->format("d. m.") ?? "";
+        } 
+        else if ($typ === "cas") {
+            return $el->format("H:i") ?? "";
+        }
+        else if ($typ === "check"){
+            return $el === 1 ? 'checked' : '';
+        }
+        return "";
+    }
+    session_start();
+
+    if (isset($_SESSION['uziv']))
+        $uziv = $_SESSION['uziv'];
+    else{
+        header("Location: login.php");
+        exit();    
+    }
+    require_once 'server.php';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $sql = "";
+        $params = [];
+
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            
+            $sql = "SELECT * FROM Povolenka WHERE Povolenka.id_pov = ?;";            
+            $params = [$id];
+            
+            $result = sqlsrv_query($conn, $sql, $params);
+            if ($result === false) 
+                die(print_r(sqlsrv_errors(), true));
+
+            $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);  
+            sqlsrv_free_stmt($result);
+        }
+        else {
+            header("Location: uvod.php");
+            exit();
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +55,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tisk</title>
 </head>
+<script>
+    window.onload = function() {
+        window.print();
+    };
+</script>
 <style>
     body {
         font-size: 9pt;
@@ -31,7 +86,22 @@
         margin: 0;
     }
     input[type="checkbox"] {
-        width: auto;
+        appearance: none;
+        width: 12px;
+        height: 12px;
+        border: 1px solid black;
+        position: relative;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    input[type="checkbox"]:checked:after {
+        content: 'X';
+        position: absolute;
+        color: black;
+        font-size: 14px;
+        line-height: 10px;
+        left: 0.5px;
     }
 
     .svisly-text {
@@ -65,64 +135,64 @@
                 <td rowspan="2" colspan="5" style="text-align: center;"><b style="font-size: 20pt;">POVOLENÍ k práci</b></td>
     
                 <td colspan="2"><b>Evidenční číslo:</b></td>
-                <td colspan="2"><input type="text" name="ev_cislo"></td>
+                <td colspan="2"><input type="text" name="ev_cislo" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td colspan="2">Rizikovost:</td>
-                <td colspan="2"><input type="text" name="rizikovost"></td>
+                <td colspan="2"><input type="text" name="rizikovost" value="<?= $zaznam['rizikovost'] ?>"></td>
             </tr>
             <tr>
-                <td style="text-align: right;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: right;"><input type="checkbox" name="" <?= inputVal($zaznam['prace_na_zarizeni'], 'check') ?>></td>
                 <td colspan="8">k práci na zařízení</td>
             </tr>
             <tr>
-                <td rowspan="2" colspan="6">Interní: <input type="text" name="" id=""></td>
-                <td style="text-align: right;"><input type="checkbox" name="" id=""></td>
+                <td rowspan="2" colspan="6">Interní: <input type="text" name="" value="<?= $zaznam['interni'] ?>"></td>
+                <td style="text-align: right;"><input type="checkbox" name="" <?= inputVal($zaznam['svarovani_ohen'], 'check') ?>></td>
                 <td colspan="8">ke svařování a práci s otevřeným ohněm</td>
             </tr>
             <tr>
-                <td style="text-align: right;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: right;"><input type="checkbox" name="" <?= inputVal($zaznam['vstup_zarizeni_teren'], 'check') ?>></td>
                 <td colspan="8">ke vstupu do zařízení nebo pod úroveň terénu</td>
             </tr>
             <tr>
-                <td rowspan="2" colspan="5">Externí: <input type="text" name="" id=""></td>
-                <td rowspan="2" style="width: 1.5cm;">Počet osob <input type="text" name="" id=""></td>
-                <td style="text-align: right;"><input type="checkbox" name="" id=""></td>
+                <td rowspan="2" colspan="5">Externí: <input type="text" name="" value="<?= $zaznam['externi'] ?>"></td>
+                <td rowspan="2" style="width: 1.5cm;">Počet osob <input type="text" name="" value="<?= $zaznam['pocet_osob'] ?>"></td>
+                <td style="text-align: right;"><input type="checkbox" name="" <?= inputVal($zaznam['prostredi_vybuch'], 'check') ?>></td>
                 <td colspan="8">k práci v prostředí s nebezpečím výbuchu</td>
             </tr>
             <tr>
-                <td style="text-align: right;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: right;"><input type="checkbox" name="" <?= inputVal($zaznam['predani_prevzeti_zarizeni'], 'check') ?>></td>
                 <td colspan="8">k předání a převzetí zařízení do opravy a do provozu</td>
             </tr>
             <tr>
                 <td colspan="3">na dny</td>
-                <td colspan="4"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
+                <td colspan="4"><input type="text" name="" value="<?= '' . inputVal($zaznam['povol_od'], 'dat') . ' - ' . inputVal($zaznam['povol_do'], 'dat')  ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['povol_do']->format("Y") ?>"></td>
                 <td colspan="2" style="text-align: right;">od</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= inputVal($zaznam['povol_od'], 'cas') ?>"></td>
                 <td style="text-align: right;">do</td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="2"><input type="text" name="" value="<?= inputVal($zaznam['povol_do'], 'cas') ?>"></td>
                 <td>hodin</td>
             </tr>
             <tr>
                 <td colspan="3">provoz:</td>
-                <td colspan="3"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['provoz'] ?>"></td>
                 <td colspan="2">název (číslo) objektu:</td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['objekt'] ?>"></td>
                 <td colspan="2">číslo zařízení:</td>
-                <td colspan="3"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['c_zarizeni'] ?>"></td>
             </tr>
             <tr>
                 <td colspan="5">název zařízení</td>
-                <td colspan="10"><input type="text" name="" id=""></td>
+                <td colspan="10"><input type="text" name="" value="<?= $zaznam['nazev_zarizeni'] ?>"></td>
             </tr>
             <tr>
                 <td colspan="5">popis, druh a rozsah práce</td>
-                <td colspan="10"><input type="text" name="" id=""></td>
+                <td colspan="10"><input type="text" name="" value="<?= $zaznam['popis_prace'] ?>"></td>
             </tr>
             <tr>
                 <td colspan="6">seznámení s riziky pracoviště dle karty č.:</td>
-                <td colspan="9"><input type="text" name="" id=""></td>
+                <td colspan="9"><input type="text" name="" value="<?= $zaznam['c_karty'] ?>"></td>
             </tr>
             <tr>
                 <td colspan="9"><b>1. Příprava zařízení k opravě</b></td>
@@ -132,141 +202,141 @@
                 <td rowspan="17" class="svisly-text">Zajištění provozovatelem</td>
                 <td rowspan="10" class="svisly-text">Zařízení bylo</td>
                 <td>1.1</td>
-                <td style="width: 0.5cm; text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="width: 0.5cm; text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Vyčištění od zbytků</td>
-                <td colspan="6"><input type="text" name="" id=""></td>
+                <td colspan="6"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>1.2</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3">Vypařené</td>
                 <td style="text-align: right;">hodin:</td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="6"><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="6"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>1.3</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Vypláchnuté vodou</td>
-                <td colspan="6"><input type="text" name="" id=""></td>
+                <td colspan="6"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>1.4</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Plyn vytěsnen vodou</td>
-                <td colspan="6"><input type="text" name="" id=""></td>
+                <td colspan="6"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>1.5</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3">Vyvětrané</td>
                 <td style="text-align: right;">hodin:</td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="6"><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="6"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>1.6</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3">Profoukané dusíkem</td>
                 <td style="text-align: right;">hodin:</td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="6"><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="6"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>1.7</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3">Profoukané vzduchem</td>
                 <td style="text-align: right;">hodin:</td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="6"><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="6"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>1.8</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Odpojeno od elektrického proudu</td>
                 <td>kým</td>
-                <td colspan="3"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>podpis</td>
                 <td></td>
             </tr>
             <tr>
                 <td>1.9</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Oddělené záslepkami</td>
                 <td>kým</td>
-                <td colspan="3"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>podpis</td>
                 <td></td>
             </tr>
             <tr>
                 <td>1.10</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Jinak zapezpečené</td>
                 <td>jak</td>
-                <td colspan="5"><input type="text" name="" id=""></td>
+                <td colspan="5"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td rowspan="7" class="svisly-text">Podmínky BP a PO</td>
                 <td>1.11</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Použít nejiskřivého nářadí</td>
                 <td></td>
                 <td colspan="5"></td>
             </tr>
             <tr>
                 <td>1.12</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Po dobu oprav - zkrápět, větrat</td>
                 <td></td>
                 <td>krát za</td>
                 <td>hodin</td>
                 <td>v místě:</td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>1.13</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Provést rozbor ovzduší</td>
                 <td>místo</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>čas</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>Výsledek</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>1.14</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Zabezpečit dozor dalšími osobami</td>
                 <td>počet</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="4">jména uvést v bodě 7</td>
             </tr>
             <tr>
                 <td>1.15</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Požární hlídka provozu</td>
                 <td>počet</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>jméno</td>
-                <td colspan="3"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>1.16</td>
-                <td style="text-align: center;"><input type="checkbox" name="" id=""></td>
+                <td style="text-align: center;"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Hasící přístroj</td>
                 <td>počet</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>druh</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>typ</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td style="text-align: center;">1.17</td>
-                <td><input type="checkbox" name="" id=""></td>
+                <td><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5">Jiné zabezpečení požární ochrany</td>
-                <td colspan="6"><input type="text" name="" id=""></td>
+                <td colspan="6"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td colspan="15"><b>2. Vlastní zabezpečení prováděné práce</b></td>
@@ -276,68 +346,68 @@
                 <td rowspan="7" class="svisly-text">Osobní ochranné <br> pracovní prostředky</td>
                 <td>2.1</td>
                 <td colspan="3">Ochrana nohou - jaká</td>
-                <td colspan="9"><input type="text" name="" id=""></td>
+                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>2.2</td>
                 <td colspan="3">Ochrana těla - jaká</td>
-                <td colspan="9"><input type="text" name="" id=""></td>
+                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>2.3</td>
                 <td colspan="3">Ochrana hlavy - jaká</td>
-                <td colspan="9"><input type="text" name="" id=""></td>
+                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>2.4</td>
                 <td colspan="3">Ochrana očí - jaká - druh</td>
-                <td colspan="9"><input type="text" name="" id=""></td>
+                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>2.5</td>
                 <td colspan="3">Ochrana dýchadel - jaká</td>
-                <td colspan="9"><input type="text" name="" id=""></td>
+                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>2.6</td>
                 <td colspan="3">Ochranný pás - druh</td>
-                <td colspan="9"><input type="text" name="" id=""></td>
+                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>2.7</td>
                 <td colspan="3">Ochranné rukavice - druh</td>
-                <td colspan="9"><input type="text" name="" id=""></td>
+                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>2.8</td>
                 <td colspan="3">Dozor jmenovitě</td>
-                <td colspan="10"><input type="text" name="" id=""></td>
+                <td colspan="10"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td rowspan="3" class="svisly-text">Jiné <br> příkazy</td>
                 <td>2.9</td>
                 <td colspan="2"><b>Jiné</b></td>
-                <td colspan="10"><input type="text" name="" id=""></td>
+                <td colspan="10"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>2.10</td>
                 <td colspan="3">napětí 220 V</td>
-                <td><input type="checkbox" name="" id=""></td>
+                <td><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>s krytem</td>
-                <td colspan="2"><input type="checkbox" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
+                <td colspan="2"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>bez krytu</td>
-                <td colspan="3"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>2.11</td>
                 <td colspan="3">napětí 24 V</td>
-                <td><input type="checkbox" name="" id=""></td>
+                <td><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>bez krytu</td>
-                <td colspan="2"><input type="checkbox" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
+                <td colspan="2"><input type="checkbox" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>bez krytu</td>
-                <td colspan="3"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td rowspan="3" colspan="7" style="font-size: 8pt;">
@@ -348,13 +418,13 @@
                     zabezpečím pracoviště ve smyslu ČSN 05 06 10.
                 </td>
                 <td>Za práci čety odpovídá:</td>
-                <td colspan="6"><input type="text" name="" id=""></td>
+                <td colspan="6"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td colspan="2">Datum:</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td></td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="2">hodin</td>
             </tr>
             <tr>
@@ -370,41 +440,41 @@
                 <td colspan="5">Podpis</td>
             </tr>
             <tr>
-                <td colspan="5"><input type="text" name="" id=""></td>
-                <td colspan="4"><input type="text" name="" id=""></td>
+                <td colspan="5"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5"></td>
             </tr>
             <tr>
-                <td colspan="5"><input type="text" name="" id=""></td>
-                <td colspan="4"><input type="text" name="" id=""></td>
+                <td colspan="5"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5"></td>
             </tr>
             <tr>
-                <td colspan="5"><input type="text" name="" id=""></td>
-                <td colspan="4"><input type="text" name="" id=""></td>
+                <td colspan="5"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="5"></td>
             </tr>
             <tr>
                 <td></td>
                 <td>2.14</td>
                 <td colspan="8">Osvědčení o způsobilosti k práci a sváření na plynové zařízení má pracovník:</td>
-                <td colspan="5"><input type="text" name="" id=""></td>
+                <td colspan="5"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td colspan="15"><b>3. Prohlašuji, že jsem se osobně přesvědčil, že výše uvedené zajištění je provedeno.</b></td>
             </tr>
             <tr>
                 <td colspan="3">Datum</td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>Datum</td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td colspan="7">Vyjádření přilehlého obvodu: <input type="text" name="" id="" style="width: auto;"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="7">Vyjádření přilehlého obvodu: <input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>" style="width: auto;"></td>
             </tr>
             <tr>
                 <td colspan="5">Podpis odpovědného pracovníka provozu:</td>
                 <td colspan="3">Podpis odpovědného pracovníka provádějícího útvaru GB nebo externí firmy:</td>
                 <td colspan="4">Podpis vedoucího přilehlého obvodu:</td>
-                <td colspan="3">Datum<input type="text" name="" id=""></td>
+                <td colspan="3">Datum<input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
         </tbody>
     </table>
@@ -425,23 +495,23 @@
             <tr>
                 <td>4.2</td>
                 <td colspan="5">Výše uvedené podmínky stanovil - jméno:</td>
-                <td colspan="5"><input type="text" name="" id=""></td>
+                <td colspan="5"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>Podpis:</td>
                 <td colspan="2"></td>
             </tr>
             <tr>
                 <td>4.3</td>
                 <td colspan="6">Pracoviště připraveno pro práci s otevřeným ohněm:</td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>Dne:</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="2">Hodin:</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>4.4</td>
                 <td colspan="3">Osobně zkontroloval - jméno:</td>
-                <td colspan="5"><input type="text" name="" id=""></td>
+                <td colspan="5"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>Podpis:</td>
                 <td colspan="4"></td>
             </tr>
@@ -454,44 +524,44 @@
                 <td colspan="2">Podpis:</td>
             </tr>
             <tr>
-                <td colspan="4"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td colspan="4"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
-                <td colspan="4"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td colspan="4"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
-                <td colspan="4"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td colspan="4"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
-                <td colspan="4"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td colspan="4"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
-                <td colspan="4"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td colspan="4"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td colspan="11"><b>6. Další jiné podmínky práce na zařízení</b></td>
@@ -501,13 +571,13 @@
                 <td rowspan="3" colspan="2" class="svisly-text">Vystavovatel <br> nebo kontrolní <br> orgán</td>
                 <td rowspan="3" colspan="9"><textarea name="dalsi_jine" rows="4" style="resize: none; width: 95%; border: none;"></textarea></td>
                 <td>Jméno:</td>
-                <td colspan="3"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>Dne:</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>hodin:</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td>Podpis:</td>
@@ -515,38 +585,38 @@
             </tr>
             <tr>
                 <td colspan="8"><b>7. Další nutná opatření - případně viz protokol ze dne</b></td>
-                <td colspan="7"><input type="text" name="" id=""></td>
+                <td colspan="7"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
                 <td colspan="15"><textarea name="dalsi_jine" rows="4" style="resize: none; width: 95%; border: none;"></textarea></td>
             </tr>
             <tr>
-                <td colspan="5"><b>8. Předání do opravy - protokol č. <input type="text" name="" id="" style="width: 10%;"></b></td>
+                <td colspan="5"><b>8. Předání do opravy - protokol č. <input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>" style="width: 10%;"></b></td>
                 <td colspan="6"><b>10. Práce svářečské ukončeny</b></td>
                 <td colspan="4"><b>12. Kontrola BT, PO, jiného orgánu</b></td>
             </tr>
             <tr>
                 <td>Dne:</td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>Hodina:</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>Dne:</td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>Hodina:</td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>Provedena dne:</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>Hodina:</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
-                <td colspan="5">Předal: <input type="text" name="" id=""></td>
-                <td colspan="6">Předal: <input type="text" name="" id=""></td>
-                <td colspan="4">Zjištěno: <input type="text" name="" id=""></td>
+                <td colspan="5">Předal: <input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="6">Předal: <input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="4">Zjištěno: <input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
-                <td colspan="5">Převzal: <input type="text" name="" id=""></td>
-                <td colspan="6">Převzal: <input type="text" name="" id=""></td>
+                <td colspan="5">Převzal: <input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="6">Převzal: <input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="4"></td>
             </tr>
             <tr>
@@ -556,24 +626,24 @@
             </tr>
             <tr>
                 <td colspan="2">Dne:</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>Hodina:</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>Od:</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>hodin</td>
                 <td>do</td>
-                <td><input type="text" name="" id=""></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td>hodin</td>
                 <td colspan="5"></td>
             </tr>
             <tr>
-                <td colspan="5">Předal: <input type="text" name="" id=""></td>
-                <td colspan="6">Jméno: <input type="text" name="" id=""></td>
-                <td colspan="4">Jméno: <input type="text" name="" id=""></td>
+                <td colspan="5">Předal: <input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="6">Jméno: <input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="4">Jméno: <input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
             </tr>
             <tr>
-                <td colspan="5">Převzal: <input type="text" name="" id=""></td>
+                <td colspan="5">Převzal: <input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="6">Podpis:</td>
                 <td colspan="4">Podpis:</td>
             </tr>
@@ -594,50 +664,50 @@
                 <td colspan="4" style="text-align: center;">Podpis odpovědného prac. prov. útvaru</td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3"></td>
                 <td colspan="4"></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3"></td>
                 <td colspan="4"></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3"></td>
                 <td colspan="4"></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3"></td>
                 <td colspan="4"></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3"></td>
                 <td colspan="4"></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3"></td>
                 <td colspan="4"></td>
             </tr>
@@ -653,45 +723,45 @@
                 <td colspan="3" style="text-align: center;">Podpis vystavovatele</td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3"></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3"></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3"></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3"></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3"></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
-                <td><input type="text" name="" id=""></td>
-                <td colspan="2"><input type="text" name="" id=""></td>
+                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
                 <td colspan="3"></td>
             </tr>
             <tr>
