@@ -26,21 +26,37 @@
     require_once 'server.php';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $sql = "";
+        $sql = [];
         $params = [];
 
         if (isset($_POST['id'])) {
             $id = $_POST['id'];
+            $rozbory = [];
+            $svareci = [];
             
-            $sql = "SELECT * FROM Povolenka WHERE Povolenka.id_pov = ?;";            
+            $sql[0] = "SELECT * FROM Povolenka as p WHERE p.id_pov = ?;";
+            $sql[1] = "SELECT * FROM (Povolenka as p left JOIN Pov_Svar as ps ON p.id_pov = ps.id_pov) LEFT JOIN Svareci AS s ON s.id_svar = ps.id_svar WHERE p.id_pov = ?;"; 
+            $sql[2] = "SELECT * FROM (Povolenka as p left JOIN Pov_Roz as pr ON p.id_pov = pr.id_pov) left JOIN Rozbory as r ON pr.id_roz = r.id_roz WHERE p.id_pov = ?;";           
             $params = [$id];
-            
-            $result = sqlsrv_query($conn, $sql, $params);
-            if ($result === false) 
-                die(print_r(sqlsrv_errors(), true));
 
-            $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);  
-            sqlsrv_free_stmt($result);
+            for ($i = 0; $i <= 2; $i++) { 
+                $result = sqlsrv_query($conn, $sql[$i], $params);
+                if ($result === false) 
+                    die(print_r(sqlsrv_errors(), true));
+    
+                while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                    if ($i === 0) {
+                        $zaznam = $row;                  
+                    }
+                    else if ($i === 1) {
+                        $svareci[] = $row;
+                    }
+                    else {
+                        $rozbory[] = $row;
+                    }
+                }
+                sqlsrv_free_stmt($result);
+            }
         }
         else {
             header("Location: uvod.php");
@@ -440,18 +456,18 @@
                 <td colspan="5">Podpis</td>
             </tr>
             <tr>
-                <td colspan="5"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="5"><input type="text" name="" value="<?= $svareci[0]['jmeno'] ?? '' ?>"></td>
+                <td colspan="4"><input type="text" name="" value="<?= $svareci[0]['c_prukazu'] ?? '' ?>"></td>
                 <td colspan="5"></td>
             </tr>
             <tr>
-                <td colspan="5"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="5"><input type="text" name="" value="<?= $svareci[1]['jmeno'] ?? '' ?>"></td>
+                <td colspan="4"><input type="text" name="" value="<?= $svareci[1]['c_prukazu'] ?? '' ?>"></td>
                 <td colspan="5"></td>
             </tr>
             <tr>
-                <td colspan="5"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="4"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="5"><input type="text" name="" value="<?= $svareci[2]['jmeno'] ?? '' ?>"></td>
+                <td colspan="4"><input type="text" name="" value="<?= $svareci[2]['c_prukazu'] ?? '' ?>"></td>
                 <td colspan="5"></td>
             </tr>
             <tr>
@@ -465,16 +481,16 @@
             </tr>
             <tr>
                 <td colspan="3">Datum</td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= inputVal($zaznam['dat_odpov_provoz'], 'dat') ?>"></td>
                 <td>Datum</td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="7">Vyjádření přilehlého obvodu: <input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>" style="width: auto;"></td>
+                <td colspan="2"><input type="text" name="" value="<?= inputVal($zaznam['dat_odpov_GB_exter'], 'dat') ?>"></td>
+                <td colspan="7">Vyjádření přilehlého obvodu: <input type="text" name="" value="<?= $zaznam['prohl_obvod'] ?>" style="width: auto;"></td>
             </tr>
             <tr>
                 <td colspan="5">Podpis odpovědného pracovníka provozu:</td>
                 <td colspan="3">Podpis odpovědného pracovníka provádějícího útvaru GB nebo externí firmy:</td>
                 <td colspan="4">Podpis vedoucího přilehlého obvodu:</td>
-                <td colspan="3">Datum<input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="3">Datum<input type="text" name="" value="<?= inputVal($zaznam['dat_vedouci'], 'dat') ?>"></td>
             </tr>
         </tbody>
     </table>
