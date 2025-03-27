@@ -67,7 +67,7 @@
         $params = [];
 
         if (isset($_POST['subOdeslat'])) {
-            if (empty($_POST['prodluz_zarizeni']) && empty($_POST['prodluz_ohen'])) {
+            if (empty($_POST['prodluzZarDo']) && empty($_POST['prodluzOhDo'])) {
                 $id_pov = $_POST['id_pov'] ?? null;
                 $svareciPocet = $_POST['svareciPocet'];
                 $rozboryPocet = $_POST['rozboryPocet'];
@@ -378,7 +378,8 @@
                         </script>';
                 }
             }
-            if(!empty($_POST['prodluz_zarizeni'])){
+            //TAB 13
+            if(!empty($_POST['prodluzZarDo'])){
                 $id_pov = $_POST['id_pov'];
                 $typ = "zařízení";
                 $pro_praci = $_POST['prodluz_zarizeni'];
@@ -386,10 +387,11 @@
                 $do = $_POST['prodluzZarDo'] . ' ' . $_POST['prodluzZarhodDo'];
                 $prestavka = $_POST['prodluz_zar_prestavka'];
                 $pocet_os = $_POST['prodluz_zar_os'];
+                $dat_zadosti = DATE("Y-m-d");
 
-                $sql = "INSERT INTO Prodlouzeni (id_pov, typ, pro_praci, od, do, prestavka, pocet_os)
-                        VALUES (?, ?, ?, ?, ?, ?, ?);";
-                $params = [$id_pov, $typ, $pro_praci, $od, $do, $prestavka, $pocet_os];
+                $sql = "INSERT INTO Prodlouzeni (id_pov, typ, pro_praci, od, do, prestavka, pocet_os, dat_zadosti)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+                $params = [$id_pov, $typ, $pro_praci, $od, $do, $prestavka, $pocet_os, $dat_zadosti];
                 $result = sqlsrv_query($conn, $sql, $params);
                 if ($result === FALSE)
                     die(print_r(sqlsrv_errors(), true));
@@ -399,7 +401,7 @@
                         window.location.href = "uvod.php";
                     </script>';
             }
-            if(!empty($_POST['prodluz_ohen'])) {
+            if(!empty($_POST['prodluzOhDo'])) {
                 $id_pov = $_POST['id_pov'];
                 $typ = "oheň";
                 $pro_praci = $_POST['prodluz_ohen'];
@@ -407,10 +409,11 @@
                 $do = $_POST['prodluzOhDo'] . ' ' . $_POST['prodluzOhHodDo'];
                 $prestavka = $_POST['prodluz_oh_prestavka'];
                 $pocet_os = $_POST['prodluz_oh_os'];
+                $dat_zadosti = DATE("Y-m-d");
 
-                $sql = "INSERT INTO Prodlouzeni (id_pov, typ, pro_praci, od, do, prestavka, pocet_os)
-                        VALUES (?, ?, ?, ?, ?, ?, ?);";
-                $params = [$id_pov, $typ, $pro_praci, $od, $do, $prestavka, $pocet_os];
+                $sql = "INSERT INTO Prodlouzeni (id_pov, typ, pro_praci, od, do, prestavka, pocet_os, dat_zadosti)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+                $params = [$id_pov, $typ, $pro_praci, $od, $do, $prestavka, $pocet_os, $dat_zadosti];
                 $result = sqlsrv_query($conn, $sql, $params);
                 if ($result === FALSE)
                     die(print_r(sqlsrv_errors(), true));
@@ -1234,8 +1237,7 @@
                         <td class="podnadpis" colspan="6">Prodlužuje provozovatel</td>
                     </tr>
                     <tr>
-                        <th>13.1 Pro práci na zařízení</th>
-                        <td data-label="13.1 Pro práci na zařízení" colspan="5"><input type="text" name="prodluz_zarizeni" id="prodluzZar" <?= ($zaznam['zar'] == 0) ? 'disabled' : 'required'; ?>></td>
+                        <th colspan="6">13.1 Pro práci na zařízení</th>
                     </tr>
                     <tr>
                         <th>Od</th>
@@ -1263,8 +1265,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <th>13.2 Pro práci s otevřeným ohněm</th>
-                        <td data-label="13.2 Pro práci s otevřeným ohněm" colspan="5"><input type="text" name="prodluz_ohen" id="prodluz_ohen" <?= ($zaznam['oh'] == 0) ? 'disabled' : 'required'; ?>></td>
+                        <th colspan="6">13.2 Pro práci s otevřeným ohněm</th>
                     </tr>
                     <tr>
                         <th>Od</th>
@@ -1295,7 +1296,7 @@
                         <td class="podnadpis">Prodlužuje provozovatel</td>
                     </tr>
                     <tr class="prodlZarTR">
-                        <td data-label="13.1 Pro práci na zařízení"><input type="text" name="prodluz_zarizeni" <?= ($zaznam['zar'] == 0) ? 'disabled' : 'required'; ?>></td>
+                        <td data-label="13.1 Pro práci na zařízení"></td>
                         <td data-label="Od" rowspan="2">
                             <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?= (isset($zaznam['povolDo']) && date("Y-m-d") < $zaznam['povolDo']->format("Y-m-d")) ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d") ?>" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzZarhodOd" class="prodluzZarhodOd" id="hodOd" maxlength="5" placeholder="00:00" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
@@ -1308,7 +1309,7 @@
                         <td data-label="Počet osob"><input type="text" name="prodluz_zar_os" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>></td>
                     </tr>
                     <tr class="prodlOhTR">
-                        <td data-label="13.2 Pro práci s otevřeným ohněm"><input type="text" name="prodluz_ohen" <?= ($zaznam['oh'] == 0) ? 'disabled' : 'required'; ?>></td>
+                        <td data-label="13.2 Pro práci s otevřeným ohněm"></td>
                         <td data-label="Od" rowspan="2">
                             <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?= (isset($zaznam['povolDo']) && date("Y-m-d") < $zaznam['povolDo']->format("Y-m-d")) ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d") ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzOhhodOd" class="time" id="prodluzOhhodOd" maxlength="5" placeholder="00:00" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>

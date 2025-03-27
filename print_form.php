@@ -33,13 +33,15 @@
             $id = $_POST['id'];
             $rozbory = [];
             $svareci = [];
+            $prodl = [];
             
             $sql[0] = "SELECT * FROM Povolenka as p WHERE p.id_pov = ?;";
-            $sql[1] = "SELECT * FROM (Povolenka as p left JOIN Pov_Svar as ps ON p.id_pov = ps.id_pov) LEFT JOIN Svareci AS s ON s.id_svar = ps.id_svar WHERE p.id_pov = ?;"; 
-            $sql[2] = "SELECT * FROM (Povolenka as p left JOIN Pov_Roz as pr ON p.id_pov = pr.id_pov) left JOIN Rozbory as r ON pr.id_roz = r.id_roz WHERE p.id_pov = ?;";           
+            $sql[1] = "SELECT * FROM Pov_Svar as ps LEFT JOIN Svareci AS s ON s.id_svar = ps.id_svar WHERE ps.id_pov = ?;"; 
+            $sql[2] = "SELECT * FROM Pov_Roz as pr LEFT JOIN Rozbory AS r ON r.id_roz = pr.id_roz WHERE pr.id_pov = ?;"; 
+            $sql[3] = "SELECT * FROM Prodlouzeni as prodl WHERE prodl.id_pov = ? ORDER BY prodl.od;";          
             $params = [$id];
 
-            for ($i = 0; $i < 3; $i++) { 
+            for ($i = 0; $i < 4; $i++) { 
                 $result = sqlsrv_query($conn, $sql[$i], $params);
                 if ($result === false) 
                     die(print_r(sqlsrv_errors(), true));
@@ -51,8 +53,14 @@
                     else if ($i === 1) {
                         $svareci[] = $row;
                     }
-                    else {
+                    else if ($i === 2) {
                         $rozbory[] = $row;
+                    }
+                    else if ($i === 3) {
+                        $prodl[] = $row;
+                    }
+                    else{
+                        die("Nastala chyba při načítání dat.");
                     }
                 }
                 sqlsrv_free_stmt($result);
@@ -641,54 +649,16 @@
                 <td colspan="3" style="text-align: center;">Podpis odpovědného prac. provozu</td>
                 <td colspan="4" style="text-align: center;">Podpis odpovědného prac. prov. útvaru</td>
             </tr>
+            <?php for ($i = 0; $i < 6; $i++) : ?>
             <tr>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="3"><input type="text" name="" <?php if (isset($prodl[$i]) && $prodl[$i]['typ'] === 'zařízení') : ?> value="<?= inputVal($prodl[$i]['dat_zadosti'], 'dat') ?>" <?php endif; ?>></td>
+                <td colspan="2"><input type="text" name="" <?php if (isset($prodl[$i]) && $prodl[$i]['typ'] === 'zařízení') : ?> value="<?= inputVal($prodl[$i]['od'], 'dat') . " - " . inputVal($prodl[$i]['do'], 'dat') ?>" <?php endif; ?>></td>
+                <td><input type="text" name="" <?php if (isset($prodl[$i]) && $prodl[$i]['typ'] === 'zařízení') : ?> value="<?= $prodl[$i]['prestavka'] ?>" <?php endif; ?>></td>
+                <td colspan="2"><input type="text" name="" <?php if (isset($prodl[$i]) && $prodl[$i]['typ'] === 'zařízení') : ?> value="<?= $prodl[$i]['pocet_os'] ?>" <?php endif; ?>></td>
                 <td colspan="3"></td>
                 <td colspan="4"></td>
             </tr>
-            <tr>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="3"></td>
-                <td colspan="4"></td>
-            </tr>
-            <tr>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="3"></td>
-                <td colspan="4"></td>
-            </tr>
-            <tr>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="3"></td>
-                <td colspan="4"></td>
-            </tr>
-            <tr>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="3"></td>
-                <td colspan="4"></td>
-            </tr>
-            <tr>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="3"></td>
-                <td colspan="4"></td>
-            </tr>
+            <?php endfor; ?>
             <tr>
                 <td>13.2</td>
                 <td colspan="13">Pro práci s otevřeným ohněm</td>
@@ -700,48 +670,15 @@
                 <td colspan="2" style="text-align: center;">Počet osob</td>
                 <td colspan="3" style="text-align: center;">Podpis vystavovatele</td>
             </tr>
+            <?php for ($i = 0; $i < 6; $i++) : ?>
             <tr>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
+                <td colspan="3"><input type="text" name="" <?php if (isset($prodl[$i]) && $prodl[$i]['typ'] === 'oheň') : ?> value="<?= inputVal($prodl[$i]['dat_zadosti'], 'dat') ?>" <?php endif; ?>></td>
+                <td colspan="2"><input type="text" name="" <?php if (isset($prodl[$i]) && $prodl[$i]['typ'] === 'oheň') : ?> value="<?= inputVal($prodl[$i]['od'], 'dat') . " - " . inputVal($prodl[$i]['do'], 'dat') ?>" <?php endif; ?>></td>
+                <td><input type="text" name="" <?php if (isset($prodl[$i]) && $prodl[$i]['typ'] === 'oheň') : ?> value="<?= $prodl[$i]['prestavka'] ?>" <?php endif; ?>></td>
+                <td colspan="2"><input type="text" name="" <?php if (isset($prodl[$i]) && $prodl[$i]['typ'] === 'oheň') : ?> value="<?= $prodl[$i]['pocet_os'] ?>" <?php endif; ?>></td>
                 <td colspan="3"></td>
             </tr>
-            <tr>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="3"></td>
-            </tr>
-            <tr>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="3"></td>
-            </tr>
-            <tr>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="3"></td>
-            </tr>
-            <tr>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="3"></td>
-            </tr>
-            <tr>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['ev_cislo'] ?>"></td>
-                <td colspan="3"></td>
-            </tr>
+            <?php endfor; ?>
             <tr>
                 <td colspan="15"><b>14. Doplňky, poznámky</b></td>
             </tr>

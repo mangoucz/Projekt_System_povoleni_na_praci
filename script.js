@@ -62,7 +62,9 @@ $(document).ready(function() {
                     $(".modal .upraveno").text(response.data.upraveno);
                     $(".modal .prodl").text(response.data.pocet_prodl);
                     $(".modal input[type='hidden']").val(id);
-        
+                    if (response.data.pocet_prodl === "6x") {
+                        $("#subProdl").attr("disabled", true);
+                    }
                     $(".modal").fadeIn(200).css("display", "flex");
                 } else {
                     alert("Chyba při načítání dat!");
