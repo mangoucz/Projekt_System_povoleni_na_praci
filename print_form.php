@@ -30,7 +30,7 @@
         $params = [];
 
         if (isset($_POST['id'])) {
-            $id = $_POST['id'];
+            $id = $_POST['id'] ?? $_GET['id']; 
             $rozbory = [];
             $svareci = [];
             $prodl = [];
@@ -59,9 +59,6 @@
                     else if ($i === 3) {
                         $prodl[] = $row;
                     }
-                    else{
-                        die("Nastala chyba při načítání dat.");
-                    }
                 }
                 sqlsrv_free_stmt($result);
             }
@@ -82,6 +79,9 @@
 <script>
     window.onload = function() {
         window.print();
+        window.onafterprint = function() {
+            window.close();
+        };
     };
 </script>
 <style>

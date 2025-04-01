@@ -81,6 +81,12 @@ $(document).ready(function() {
         $(".modal").fadeOut(200).css("display", "none");
     });
 
+    $(document).on('keydown', function (e) {
+        if (e.key === "Escape") { 
+            $(".modal").fadeOut(200).css("display", "none");
+        }
+    });
+
     $("#riziko").on('input', function () {
         $("#rizikoValue").text($(this).val());
     });
@@ -184,7 +190,6 @@ $(document).ready(function() {
                 <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[${index}][cas]"></td>
                 <td data-label="Místo odběru vzorku ovzduší"><input type="text" name="rozbor[${index}][misto]"></td>
                 <td data-label="Naměřená hodnota"><input type="text" name="rozbor[${index}][hodn]"></td>
-                <td class="origo"></td>
                 <td><button type="button" class="rozborDel del">-</button></td>
             `);
         $("#rozborAdd").before(radek);

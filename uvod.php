@@ -170,7 +170,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h2>Podrobnosti povolenky</h2>
+                <h2>Povolení č. </h2>
             </div>
             <div class="modal-body">
                 <div class="info-row"><span class="label">Zadal:</span><span class="zadal obsah"></span></div>
@@ -190,9 +190,10 @@
                 </form>
                 <form action="print_form.php" method="post" target="printFrame">
                     <input type="hidden" name="id" value="">
-                    <input type="submit" class="defButt print" value="Tisk"></button>
+                    <input type="submit" class="defButt print" name="subTisk" value="Tisk"></button>
                 </form>
-                <iframe name="printFrame" style="display: none;"></iframe>
+                <!-- <button id="generatePDF">Stáhnout</button> -->
+                <iframe id="frame" name="printFrame" style="display: none;"></iframe>
                 <form action="nove.php" method="post">
                     <input type="submit" value="Prodloužit" name="subProdl" id="subProdl" class="defButt extend">
                     <input type="hidden" name="id" value="">

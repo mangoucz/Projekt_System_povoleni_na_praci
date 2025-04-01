@@ -77,10 +77,10 @@
                 $interni = inputCheck($_POST['interni']);
                 $externi = inputCheck($_POST['externi']);
                 $pocetOs = $_POST['pocetOs'] === "" ? 1 : $_POST['pocetOs'];
-                $_POST['hodOd'] = $_POST['hodOd'] ?? null;
-                $_POST['hodDo'] = $_POST['hodDo'] ?? null;
-                $povolOd = $_POST['povolOd'] ?? null . ' ' . $_POST['hodOd'];
-                $povolDo = $_POST['povolDo'] ?? null . ' ' . $_POST['hodDo'];
+                $hodOd = $_POST['hodOd'] ?? null;
+                $hodDo = $_POST['hodDo'] ?? null;
+                $povolOd = $_POST['povolOd'] ?? null . ' ' . $hodOd;
+                $povolDo = $_POST['povolDo'] ?? null . ' ' . $hodDo;
                 $prace_na_zarizeni = $_POST['prace_na_zarizeni'] ?? 0;
                 $svarovani_ohen = $_POST['svarovani_ohen'] ?? 0;
                 $vstup_zarizeni_teren = $_POST['vstup_zarizeni_teren'] ?? 0;
@@ -673,9 +673,7 @@
                             </label>
                         </td>
                         <th>Kým</th>
-                        <td data-label="Kým" colspan="3"><input type="text" name="odpojeno_od_el_kym" disabled></td>
-                        <th>Podpis</th>
-                        <td class="origo"></td>
+                        <td data-label="Kým" colspan="5"><input type="text" name="odpojeno_od_el_kym" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -685,9 +683,7 @@
                             </label>
                         </td>
                         <th>Kým</th>
-                        <td data-label="Kým" colspan="3"><input type="text" name="oddelene_zaslep_kym" disabled></td>
-                        <th>Podpis</th>
-                        <td class="origo"></td>
+                        <td data-label="Kým" colspan="5"><input type="text" name="oddelene_zaslep_kym" disabled></td>
                     </tr>
                     <tr>
                         <td>
@@ -869,7 +865,7 @@
                         <td data-label="Bez krytu" colspan="3"><input type="text" name="bez_krytu2"></td>
                     </tr>
                     <tr>
-                        <td rowspan="3" colspan="2">
+                        <td rowspan="2" colspan="2">
                             2.12 Prohlášení: Prohlašuji, že zajistím dodržení výše uvedených <br>
                             podmínek, jakož i bezpečný provoz a postup práce, mně podřízených <br>
                             pracovníků. Při jakékoliv změně podmínek práci přeruším a požádám <br>
@@ -884,10 +880,6 @@
                         <td data-label="Datum"><input type="date" name="odpovednost_dat"></td>
                         <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="odpovednost_cas"></td>
                         <th>Hodin</th>
-                    </tr>
-                    <tr>
-                        <th>Podpis vedoucího čety</th>
-                        <td class="origo" colspan="2"></td>
                     </tr>
                     <tr>
                         <td colspan="6" class="podnadpis">2.13 Sváření provedou</td>
@@ -934,9 +926,6 @@
                         <th>Datum</th>
                         <td data-label="Datum"><input type="date" name="prohl_vedouci_dat"></td>
                     </tr>
-                    <tr>
-                        <th colspan="5"></th>
-                    </tr>
                 </tbody>
             </table>
         </div>
@@ -959,10 +948,8 @@
                         <td colspan="5"><textarea name="podminky" rows="5" style="resize: none; width: 100%;"></textarea></td>
                     </tr>
                     <tr>
-                        <th colspan="2">4.2 Výše uvedené podmínky stanovil - jméno:</th>
-                        <td data-label="4.2 Výše uvedené podmínky stanovil - jméno:"><input type="text" name="podminky_jm"></td>
-                        <th>Podpis</th>
-                        <td class="origo"></td>
+                        <th>4.2 Výše uvedené podmínky stanovil - jméno:</th>
+                        <td colspan="4" data-label="4.2 Výše uvedené podmínky stanovil - jméno:"><input type="text" name="podminky_jm"></td>
                     </tr>
                     <tr>
                         <th>4.3 Pracoviště připraveno pro práci s otevřeným ohněm:</th>
@@ -972,10 +959,8 @@
                         <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="ohen_cas"></td>
                     </tr>
                     <tr>
-                        <th colspan="2">4.4 Osobně zkontroloval - jméno</th>
-                        <td data-label="4.4 Osobně zkontroloval - jméno"><input type="text" name="zkontroloval_jm"></td>
-                        <th>Podpis</th>
-                        <td class="origo"></td>
+                        <th>4.4 Osobně zkontroloval - jméno</th>
+                        <td colspan="4" data-label="4.4 Osobně zkontroloval - jméno"><input type="text" name="zkontroloval_jm"></td>
                     </tr>
                 </tbody>
             </table>
@@ -987,7 +972,6 @@
                         <th>Čas</th>
                         <th>Místo odběru vzorku ovzduší</th>
                         <th>Naměřená hodnota</th>
-                        <th>Podpis</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -1001,7 +985,6 @@
                         <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[0][cas]"></td>
                         <td data-label="Místo odběru vzorku ovzduší"><input type="text" name="rozbor[0][misto]"></td>
                         <td data-label="Naměřená hodnota"><input type="text" name="rozbor[0][hodn]"></td>
-                        <td></td>
                         <td class="origo"></td>
                     </tr>
                     <tr id="rozborAdd">
@@ -1034,10 +1017,6 @@
                         <td data-label="Dne"><input type="date" name="dalsi_jine_dat"></td>
                         <th>Hodin</th>
                         <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="dalsi_jine_cas"></td>
-                    </tr>
-                    <tr class="origo">
-                        <th>Podpis</th>
-                        <td colspan="3"></td>
                     </tr>
                 </tbody>
             </table>
@@ -1113,18 +1092,14 @@
                     <tr>
                         <th>Předal</th>
                         <td colspan="3"><input type="text" name="z_opravy_predal"></td>
-                        <th>Jméno</th>
-                        <td colspan="3"><input type="text" name="dozor_jm"></td>
-                        <th>Jméno</th>
-                        <td colspan="3"><input type="text" name="kontrola_jm"></td>
+                        <th rowspan="2">Jméno</th>
+                        <td rowspan="2" colspan="3"><input type="text" name="dozor_jm"></td>
+                        <th rowspan="2">Jméno</th>
+                        <td rowspan="2" colspan="3"><input type="text" name="kontrola_jm"></td>
                     </tr>
                     <tr>
                         <th>Převzal</th>
                         <td colspan="3"><input type="text" name="z_opravy_prevzal"></td>
-                        <th>Podpis</th>
-                        <td class="origo" colspan="3"></td>
-                        <th>Podpis</th>
-                        <td class="origo"></td>
                     </tr>
                 </tbody>
                 <tbody class="respons">
