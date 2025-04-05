@@ -16,6 +16,19 @@ $(document).ready(function() {
                 $(this).stop().fadeOut(250);
         });
     }
+    function updateIndex(selector) {
+        $(selector).each(function(i) {
+            $(this).attr("data-index", i);
+            $(this).find("input").each(function() {
+                const name = $(this).attr("name");
+                $(this).attr("name", name.replace(/\[\d\]/, `[${i}]`));
+            });
+        });
+    }
+    function closeModal() {
+        $(".modal").fadeOut(200).css("display", "none");
+        window.location.href = "uvod.php";
+    }
 
     if($(".respons").css("display") == "none"){
         $(".respons input").each(function() {
@@ -40,6 +53,28 @@ $(document).ready(function() {
 
     $(document).on('change', '#intro input[type="checkbox"]', function() {
         zobrazTab();
+    });
+
+    $(document).on('click', '#odeslat', function() {
+        const formData = $("#form").serializeArray();
+        $.ajax({
+            url: "sub_povoleni.php",
+            type: "POST", 
+            data: formData,
+            dataType: "json",
+            success: function(response) {
+                if (response.success) {
+                    $(".modal h2").text("Povolení č. " + response.data.ev_cislo);
+                    $(".modal input[type=hidden]").val(response.data.id);
+                    $(".modal").fadeIn(200).css("display", "flex");
+                } else {
+                    alert("Chyba při odesílání povolení: " + (response.message || "Neznámá chyba"));
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("Chyba komunikace se serverem! (" + status + " " + error + " " + xhr.responseText + ")");
+            }
+        });
     });
 
     $(document).on('click', '.link', function () {
@@ -75,29 +110,27 @@ $(document).ready(function() {
                 alert("Chyba komunikace se serverem!");
             }
         });        
-    });
+    }); 
 
-    $(document).on('click', '.close', function () {
-        $(".modal").fadeOut(200).css("display", "none");
-    });
-
+    $(document).on('click', '#closeBtn', closeModal);
+    
     $(document).on('keydown', function (e) {
         if (e.key === "Escape") { 
-            $(".modal").fadeOut(200).css("display", "none");
+            closeModal();
         }
     });
-
+    
     $("#riziko").on('input', function () {
         $("#rizikoValue").text($(this).val());
     });
-
+    
     $(document).on('input', '.date', function () {
         const inputs = [
             { datOd: '#povolOd', datDo: '#povolDo' },
             { datOd: '#prodluzZarOd', datDo: '#prodluzZarDo' },
             { datOd: '#prodluzOhOd', datDo: '#prodluzOhDo' }
         ];
-    
+        
         inputs.forEach(({ datOd, datDo }) => {
             const datDoEl = $(datDo);
             const datOdVal = $(datOd).val();
@@ -111,20 +144,18 @@ $(document).ready(function() {
             }
         });
     });
-    
-
     $(document).on('input', '.time', function () {
         let value = $(this).val().replace(/[^0-9]/g, "");
-    
+        
         if (value.length >= 1) {
             const hod1 = parseInt(value.substring(0, 1)); 
             const hod2 = parseInt(value.substring(1, 2)) || "";
-    
+            
             if (hod1 >= 3)
                 value = "0" + hod1;
             else if (hod1 == 2 && hod2 > 3) 
                 value = value.substring(0, 1);
-    
+            
             if (value.length > 2) {
                 const min1 = value.length >= 3 ? parseInt(value.substring(2, 3)) : ""; 
                 if (min1 > 5) 
@@ -137,7 +168,6 @@ $(document).ready(function() {
         }
         $(this).val(value);
     });
-    
     $(document).on('blur', '.time', function() {
         const value = $(this).val();
         const povolOd = $('#povolOd').val();
@@ -146,7 +176,7 @@ $(document).ready(function() {
         const hodDo = $("#hodDo").val();
         const hodOdNum = hodOd ? parseInt(hodOd) : null;
         const hodDoNum = hodDo ? parseInt(hodDo) : null;
-    
+        
         if (value.length == 2)
             $(this).val(value + ":00");
         else if(value.length == 1)
@@ -156,54 +186,53 @@ $(document).ready(function() {
             $("#hodDo").val("");
         }
     });
-
+    
     $(document).on('click', '#svarecAddBut', function() {
         const index = $("tr.svareciTR[data-index]").length;
-
+        
         const radek = $("<tr>")
-            .addClass('svareciTR')
-            .attr("data-index", index)
-            .html(`
-                <td data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]"></td>
-                <td data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[${index}][prukaz]"></td>
-                <td class="origo" colspan="2"></td>
-                <td><button type="button" class="svarecDel del">-</button></td>
+        .addClass('svareciTR')
+        .attr("data-index", index)
+        .html(`
+            <td data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]"></td>
+            <td data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[${index}][prukaz]"></td>
+            <td class="origo" colspan="2"></td>
+            <td><button type="button" class="svarecDel del">-</button></td>
             `);
-
-        $("#svarecAdd").before(radek);
-        $("#svarecAdd input[type=hidden]").attr("value", index + 1);
-
-        if (index >= 2) {
-            $("#svarecAddBut").remove();
-        }
+            
+            $("#svarecAdd").before(radek);
+            $("#svarecAdd input[type=hidden]").attr("value", index + 1);
+            
+            if (index >= 2) {
+                $("#svarecAddBut").remove();
+            }
     });
-
     $(document).on('click', '#rozborAddBut', function() {
         const index = $("tr.rozboryTR[data-index]").length;
-
+            
         const radek = $("<tr>")
-            .addClass('rozboryTR')
-            .attr("data-index", index)
-            .html(`
-                <td data-label="Rozbor ovzduší"><input type="text" name="rozbor[${index}][nazev]"></td>
-                <td data-label="Datum"><input type="date" name="rozbor[${index}][dat]"></td>
-                <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[${index}][cas]"></td>
-                <td data-label="Místo odběru vzorku ovzduší"><input type="text" name="rozbor[${index}][misto]"></td>
-                <td data-label="Naměřená hodnota"><input type="text" name="rozbor[${index}][hodn]"></td>
-                <td><button type="button" class="rozborDel del">-</button></td>
-            `);
+        .addClass('rozboryTR')
+        .attr("data-index", index)
+        .html(`
+            <td data-label="Rozbor ovzduší"><input type="text" name="rozbor[${index}][nazev]"></td>
+            <td data-label="Datum"><input type="date" name="rozbor[${index}][dat]"></td>
+            <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[${index}][cas]"></td>
+            <td data-label="Místo odběru vzorku ovzduší"><input type="text" name="rozbor[${index}][misto]"></td>
+            <td data-label="Naměřená hodnota"><input type="text" name="rozbor[${index}][hodn]"></td>
+            <td><button type="button" class="rozborDel del">-</button></td>
+        `);
         $("#rozborAdd").before(radek);
         $("#rozborAdd input[type=hidden]").attr("value", index + 1);
-
+                
         if (index == 4) {
             $("#rozborAddBut").remove();
         }
     });
-
+            
     $(document).on('click', '#first input[type="checkbox"]', function() {
         const tr = $(this).closest('tr'); 
         const inputs = tr.find('input[type="text"], input[type="time"]'); 
-
+                
         if ($(this).is(':checked')){
             inputs.removeAttr("disabled"); 
             inputs.attr("required", true);
@@ -213,14 +242,14 @@ $(document).ready(function() {
             inputs.removeAttr("required"); 
         }
     });
-
+            
     $(document).on('click', '.svarecDel', function() {
         $(this).closest('tr').remove();
         updateIndex("tr.svareciTR[data-index]");
-
+                
         const val = $("#svarecAdd input[type=hidden]").attr("value");
         $("#svarecAdd input[type=hidden]").attr("value", val - 1);
-
+                
         const index = $("tr.svareciTR[data-index]").length;
         if (index == 2) {
             $("#svarecAdd td:first").html(`<button type="button" id="svarecAddBut" class="add">+</button>`);
@@ -229,25 +258,13 @@ $(document).ready(function() {
     $(document).on('click', '.rozborDel', function() {
         $(this).closest('tr').remove();
         updateIndex("tr.rozboryTR[data-index]");
-
-        
+                        
         const val = $("#rozborAdd input[type=hidden]").attr("value");
         $("#rozborAdd input[type=hidden]").attr("value", val - 1);
-
+                
         const index = $("tr.rozboryTR[data-index]").length;
         if (index == 4) {
             $("#rozborAdd td:first").html(`<button type="button" id="rozborAddBut" class="add">+</button>`);
         }
-    });
-
-    
-    function updateIndex(selector) {
-        $(selector).each(function(i) {
-            $(this).attr("data-index", i);
-            $(this).find("input").each(function() {
-                const name = $(this).attr("name");
-                $(this).attr("name", name.replace(/\[\d\]/, `[${i}]`));
-            });
-        });
-    }
+    });  
 });

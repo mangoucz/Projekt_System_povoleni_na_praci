@@ -169,7 +169,7 @@
     <div class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <span class="close">&times;</span>
+                <span id="closeBtn" class="close">&times;</span>
                 <h2>Povolení č. </h2>
             </div>
             <div class="modal-body">

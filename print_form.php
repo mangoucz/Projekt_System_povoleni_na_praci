@@ -30,7 +30,7 @@
         $params = [];
 
         if (isset($_POST['id'])) {
-            $id = $_POST['id'] ?? $_GET['id']; 
+            $id = $_POST['id']; 
             $rozbory = [];
             $svareci = [];
             $prodl = [];
@@ -79,9 +79,6 @@
 <script>
     window.onload = function() {
         window.print();
-        window.onafterprint = function() {
-            window.close();
-        };
     };
 </script>
 <style>
