@@ -41,7 +41,7 @@
             $sql[3] = "SELECT * FROM Prodlouzeni as prodl WHERE prodl.id_pov = ? ORDER BY prodl.od;";          
             $params = [$id];
 
-            for ($i = 0; $i < 4; $i++) { 
+            for ($i = 0; $i < count($sql); $i++) { 
                 $result = sqlsrv_query($conn, $sql[$i], $params);
                 if ($result === false) 
                     die(print_r(sqlsrv_errors(), true));

@@ -197,11 +197,12 @@
                 if ($result === FALSE) {
                     echo json_encode([
                         "success" => false,
-                        "message" => "Chyba SQL dotazu!",
+                        "message" => "Chyba SQL dotazu pro editaci!",
                         "error" => sqlsrv_errors()
                     ]);
                     exit;
-                }          
+                }        
+                sqlsrv_free_stmt($result);  
             }//INSERT
             else{
                 $sql = "INSERT INTO Povolenka (id_zam, ev_cislo, rizikovost, interni, externi, pocet_osob, povol_od, povol_do, prace_na_zarizeni, svarovani_ohen, vstup_zarizeni_teren, prostredi_vybuch, predani_prevzeti_zarizeni, provoz, objekt, c_zarizeni, nazev_zarizeni, popis_prace, c_karty,
@@ -456,22 +457,10 @@
             }
         }
 
-        $sql = "SELECT ev_cislo FROM Povolenka WHERE id_pov = ?;";
-        $params = [$id_pov];
-        $result = sqlsrv_query($conn, $sql, $params);
-        if ($result === FALSE) {
-            echo json_encode([
-                "success" => false,
-                "message" => "Chyba SQL dotazu při získání čísla povolení!",
-                "error" => sqlsrv_errors()
-            ]);     
-            exit;
-        }
-        $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);  
         echo json_encode([
             "success" => true,
             "data" => [
-                "ev_cislo" => $zaznam['ev_cislo'],
+                "ev_cislo" => $ev_cislo,
                 "id" => $id_pov
             ]
         ]);

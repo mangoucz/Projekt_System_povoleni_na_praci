@@ -68,7 +68,7 @@ $(document).ready(function() {
                     $(".modal input[type=hidden]").val(response.data.id);
                     $(".modal").fadeIn(200).css("display", "flex");
                 } else {
-                    alert("Chyba při odesílání povolení: " + (response.message || "Neznámá chyba"));
+                    alert("Chyba při odesílání povolení: " + (response.message || "Neznámá chyba") + response.error);
                 }
             },
             error: function(xhr, status, error) {
@@ -194,8 +194,8 @@ $(document).ready(function() {
         .addClass('svareciTR')
         .attr("data-index", index)
         .html(`
-            <td data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]"></td>
-            <td data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[${index}][prukaz]"></td>
+            <td data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]" <?= $zaznam['svarec[${index}[jmeno]'] ?? null ?>></td>
+            <td data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[${index}][prukaz]" <?= $zaznam['svarec[${index}][c_prukazu]'] ?? null ?>></td>
             <td class="origo" colspan="2"></td>
             <td><button type="button" class="svarecDel del">-</button></td>
             `);
