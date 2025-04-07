@@ -571,7 +571,7 @@
                 <td colspan="7"><input type="text" name="" value="<?= inputVal($zaznam['nutna_dat'], 'dat') ?>"></td>
             </tr>
             <tr>
-                <td colspan="15"><textarea name="dalsi_jine" rows="4" value="<?= $zaznam['nutna_opatreni'] ?>" style="resize: none; width: 95%; border: none;"></textarea></td>
+                <td colspan="15"><textarea name="dalsi_jine" rows="4" style="resize: none; width: 95%; border: none;"><?= $zaznam['nutna_opatreni'] ?></textarea></td>
             </tr>
             <tr>
                 <td colspan="5"><b>8. Předání do opravy - protokol č. <input type="text" name="" value="<?= $zaznam['oprava_protokol'] ?>" style="width: 10%;"></b></td>
@@ -680,7 +680,7 @@
                 <td colspan="15"><b>14. Doplňky, poznámky</b></td>
             </tr>
             <tr>
-                <td colspan="15"><textarea name="doplnky" rows="4" value="<?= $zaznam['doplnky'] ?>" style="resize: none; width: 95%; border: none;"></textarea></td>
+                <td colspan="15"><textarea name="doplnky" rows="4" style="resize: none; width: 95%; border: none;"><?= $zaznam['doplnky'] ?></textarea></td>
             </tr>
         </tbody>
     </table>

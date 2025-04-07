@@ -122,66 +122,66 @@
             $jine_zab_pozar = $_POST['jine_zab_pozar'] ?? 0;
             $jine_zab_pozar_kom = $_POST['jine_zab_pozar_kom'] ?? null;
             // TAB 2 1-8 Osobní ochranné pracovní prostředky
-            $ochran_nohy = $_POST['ochran_nohy'];
-            $ochran_telo = $_POST['ochran_telo'];
-            $ochran_hlava = $_POST['ochran_hlava'];
-            $ochran_oci = $_POST['ochran_oci'];
-            $ochran_dychadel = $_POST['ochran_dychadel'];
-            $ochran_pas = $_POST['ochran_pas'];
-            $ochran_rukavice = $_POST['ochran_rukavice'];
-            $ochran_dozor = $_POST['ochran_dozor'];
+            $ochran_nohy = inputCheck($_POST['ochran_nohy']);
+            $ochran_telo = inputCheck($_POST['ochran_telo']);
+            $ochran_hlava = inputCheck($_POST['ochran_hlava']);
+            $ochran_oci = inputCheck($_POST['ochran_oci']);
+            $ochran_dychadel = inputCheck($_POST['ochran_dychadel']);
+            $ochran_pas = inputCheck($_POST['ochran_pas']);
+            $ochran_rukavice = inputCheck($_POST['ochran_rukavice']);
+            $ochran_dozor =inputCheck($_POST['ochran_dozor']);
             // TAB 2 9-14 Jiné příkazy
-            $jine_prikazy = $_POST['jine_prikazy'];
+            $jine_prikazy = inputCheck($_POST['jine_prikazy']);
             $U_220 = $_POST['U_220'] ?? 0;
             $U_24 = $_POST['U_24'] ?? 0;
             $kryt = $_POST['kryt'] ?? 0;
             $bez_krytu = $_POST['bez_krytu'] ?? 0;
-            $bez_krytu_kom = $_POST['bez_krytu1'];
-            $bez_krytu_kom2 = $_POST['bez_krytu2'];
-            $za_praci_odpovida = $_POST['za_praci_odpovida'];
+            $bez_krytu_kom = inputCheck($_POST['bez_krytu1']);
+            $bez_krytu_kom2 = inputCheck($_POST['bez_krytu2']);
+            $za_praci_odpovida = inputCheck($_POST['za_praci_odpovida']);
             $odpovednost_dat = $_POST['odpovednost_dat'] . ' ' . $_POST['odpovednost_cas'];
-            $osvedceny_prac = $_POST['osvedceny_prac'];
+            $osvedceny_prac = inputCheck($_POST['osvedceny_prac']);
             // TAB 3
             $prohl_prac_dat = $_POST['prohl_prac_dat'];
             $prohl_exter_dat = $_POST['prohl_exter_dat'];
-            $prohl_obvod = $_POST['prohl_obvod'];
+            $prohl_obvod = inputCheck($_POST['prohl_obvod']);
             $prohl_vedouci_dat = $_POST['prohl_vedouci_dat'];
             // TAB 4
-            $podminky = $_POST['podminky'];
-            $podminky_jm = $_POST['podminky_jm'];
+            $podminky = inputCheck($_POST['podminky']);
+            $podminky_jm = inputCheck($_POST['podminky_jm']);
             $ohen_dat = $_POST['ohen_dat'] . ' ' . $_POST['ohen_cas'];
-            $zkontroloval_jm = $_POST['zkontroloval_jm'];
+            $zkontroloval_jm = inputCheck($_POST['zkontroloval_jm']);
             // TAB 6 (5 jsou rozbory)
-            $dalsi_jine = $_POST['dalsi_jine'];
-            $dalsi_jine_stanovil = $_POST['dalsi_jine_stanovil'];
-            $dalsi_jine_jm = $_POST['dalsi_jine_jm'];
+            $dalsi_jine = inputCheck($_POST['dalsi_jine']);
+            $dalsi_jine_stanovil = inputCheck($_POST['dalsi_jine_stanovil']);
+            $dalsi_jine_jm = inputCheck($_POST['dalsi_jine_jm']);
             $dalsi_jine_dat = $_POST['dalsi_jine_dat'] . ' ' . $_POST['dalsi_jine_cas'];
             // TAB 7
             $nutna_dat = $_POST['nutna_dat'];
-            $nutna_opatreni = $_POST['nutna_opatreni'];
+            $nutna_opatreni = inputCheck($_POST['nutna_opatreni']);
             // TAB 8
             $oprava_protokol = $_POST['oprava_protokol'];
             $oprava_dat = $_POST['oprava_dat'] . ' ' . $_POST['oprava_cas'];
-            $oprava_predal = $_POST['oprava_predal'];
-            $oprava_prevzal = $_POST['oprava_prevzal'];
+            $oprava_predal = inputCheck($_POST['oprava_predal']);
+            $oprava_prevzal =inputCheck($_POST['oprava_prevzal']);
             // TAB 9
             $z_opravy_dat = $_POST['z_opravy_dat'] . ' ' . $_POST['z_opravy_cas'];
-            $z_opravy_predal = $_POST['z_opravy_predal'];
-            $z_opravy_prevzal = $_POST['z_opravy_prevzal'];
+            $z_opravy_predal = inputCheck($_POST['z_opravy_predal']);
+            $z_opravy_prevzal = inputCheck($_POST['z_opravy_prevzal']);
             // TAB 10
             $svarec_ukon_dat = $_POST['svarec_ukon_dat'] . ' ' . $_POST['svarec_ukon_cas'];
-            $svarec_ukon_predal = $_POST['svarec_predal'];
-            $svarec_ukon_prevzal = $_POST['svarec_prevzal'];
+            $svarec_ukon_predal = inputCheck($_POST['svarec_predal']);
+            $svarec_ukon_prevzal = inputCheck($_POST['svarec_prevzal']);
             // TAB 11
             $dozor_od = $_POST['dozor_od'];
             $dozor_do = $_POST['dozor_do'];
-            $dozor_jm = $_POST['dozor_jm'];
+            $dozor_jm = inputCheck($_POST['dozor_jm']);
             // TAB 12
             $kontrola_dat = $_POST['kontrola_dat'] . ' ' . $_POST['kontrola_cas'];
-            $kontrola_zjisteno = $_POST['kontrola_zjisteno'];
-            $kontrola_jm = $_POST['kontrola_jm'];
+            $kontrola_zjisteno = inputCheck($_POST['kontrola_zjisteno']);
+            $kontrola_jm = inputCheck($_POST['kontrola_jm']);
             // TAB 14
-            $doplnky = $_POST['doplnky'];
+            $doplnky = inputCheck($_POST['doplnky']);
             $odeslano = DATE("Y-m-d H:i:s");
 
             //EDIT
