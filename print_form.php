@@ -232,7 +232,7 @@
                 <td style="text-align: center;"><input type="checkbox" name="" <?= inputVal($zaznam['vyparene'], 'check') ?>></td>
                 <td colspan="3">Vypařené</td>
                 <td style="text-align: right;">hodin:</td>
-                <td><input type="text" name="" value="<?= $zaznam['vyparene_hod'] ?>"></td>
+                <td><input type="text" name="" value="<?= inputVal($zaznam['vyparene_hod'], 'cas') ?>"></td>
                 <td colspan="6"><input type="text" name="" value="<?= $zaznam['vyparene_kom'] ?>"></td>
             </tr>
             <tr>
@@ -252,7 +252,7 @@
                 <td style="text-align: center;"><input type="checkbox" name="" <?= inputVal($zaznam['vyvetrane'], 'check') ?>></td>
                 <td colspan="3">Vyvětrané</td>
                 <td style="text-align: right;">hodin:</td>
-                <td><input type="text" name="" value="<?= $zaznam['vyvetrane_hod'] ?>"></td>
+                <td><input type="text" name="" value="<?= inputVal($zaznam['vyvetrane_hod'], 'cas')?>"></td>
                 <td colspan="6"><input type="text" name="" value="<?= $zaznam['vyvetrane_kom'] ?>"></td>
             </tr>
             <tr>
@@ -260,7 +260,7 @@
                 <td style="text-align: center;"><input type="checkbox" name="" <?= inputVal($zaznam['profouk_dusik'], 'check') ?>></td>
                 <td colspan="3">Profoukané dusíkem</td>
                 <td style="text-align: right;">hodin:</td>
-                <td><input type="text" name="" value="<?= $zaznam['profouk_dusik_hod'] ?>"></td>
+                <td><input type="text" name="" value="<?= inputVal($zaznam['profouk_dusik_hod'], 'cas') ?>"></td>
                 <td colspan="6"><input type="text" name="" value="<?= $zaznam['profouk_dusik_kom'] ?>"></td>
             </tr>
             <tr>
@@ -268,7 +268,7 @@
                 <td style="text-align: center;"><input type="checkbox" name="" <?= inputVal($zaznam['profouk_vzd'], 'check') ?>></td>
                 <td colspan="3">Profoukané vzduchem</td>
                 <td style="text-align: right;">hodin:</td>
-                <td><input type="text" name="" value="<?= $zaznam['profouk_vzd_hod'] ?>"></td>
+                <td><input type="text" name="" value="<?= inputVal($zaznam['profouk_vzd_hod'], 'cas') ?>"></td>
                 <td colspan="6"><input type="text" name="" value="<?= $zaznam['profouk_vzd_kom'] ?>"></td>
             </tr>
             <tr>

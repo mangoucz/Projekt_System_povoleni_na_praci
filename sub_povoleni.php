@@ -59,10 +59,10 @@
             $interni = inputCheck($_POST['interni']);
             $externi = inputCheck($_POST['externi']);
             $pocetOs = $_POST['pocetOs'] === "" ? 1 : $_POST['pocetOs'];
-            $hodOd = $_POST['hodOd'] ?? null;
-            $hodDo = $_POST['hodDo'] ?? null;
-            $povolOd = $_POST['povolOd'] ?? null . ' ' . $hodOd;
-            $povolDo = $_POST['povolDo'] ?? null . ' ' . $hodDo;
+            $hodOd = $_POST['hodOd'] ?? '';
+            $hodDo = $_POST['hodDo'] ?? '';
+            $povolOd = ($_POST['povolOd'] ?? '') . ' ' . $hodOd;
+            $povolDo = ($_POST['povolDo'] ?? '') . ' ' . $hodDo;
             $prace_na_zarizeni = $_POST['prace_na_zarizeni'] ?? 0;
             $svarovani_ohen = $_POST['svarovani_ohen'] ?? 0;
             $vstup_zarizeni_teren = $_POST['vstup_zarizeni_teren'] ?? 0;

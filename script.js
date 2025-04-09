@@ -15,6 +15,11 @@ $(document).ready(function() {
             else 
                 $(this).stop().fadeOut(250);
         });
+        $("#first input[type='text']").each(function() {
+            if ($(this).val() == "") {
+                $(this).attr("disabled", true);            
+            }
+        });
     }
     function updateIndex(selector) {
         $(selector).each(function(i) {
@@ -194,8 +199,8 @@ $(document).ready(function() {
         .addClass('svareciTR')
         .attr("data-index", index)
         .html(`
-            <td data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]" <?= $zaznam['svarec[${index}[jmeno]'] ?? null ?>></td>
-            <td data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[${index}][prukaz]" <?= $zaznam['svarec[${index}][c_prukazu]'] ?? null ?>></td>
+            <td data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]"></td>
+            <td data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[${index}][prukaz]"></td>
             <td class="origo" colspan="2"></td>
             <td><button type="button" class="svarecDel del">-</button></td>
             `);
@@ -231,7 +236,7 @@ $(document).ready(function() {
             
     $(document).on('click', '#first input[type="checkbox"]', function() {
         const tr = $(this).closest('tr'); 
-        const inputs = tr.find('input[type="text"], input[type="time"]'); 
+        const inputs = tr.find('input[type="text"]'); 
                 
         if ($(this).is(':checked')){
             inputs.removeAttr("disabled"); 
