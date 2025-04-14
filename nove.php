@@ -106,7 +106,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Systém povolení na práci</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="jquery-ui-1.14.1/jquery-ui.css">
     <script src="jquery-3.7.1.min.js"></script>
+    <script src="jquery-ui-1.14.1/jquery-ui.js"></script>
     <script src="script.js"></script>
 </head>
 <body>
@@ -158,15 +160,15 @@
                         </td>
                         <td data-label="Interní"><input type="text" name="interni" value="<?= $zaznam['interni'] ?? null ?>"></td>
                         <td data-label="Externí"><input type="text" name="externi" value="<?= $zaznam['externi'] ?? null ?>"></td>
-                        <td data-label="Počet osob"><input type="text" name="pocetOs" value="<?= $zaznam['pocet_osob'] ?? null ?>"></td>
-                        <td class="origo"><input type="text" name="povolOd" id="povolOd" class="date" min="<?= date("Y-m-d") ?>" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum"></td>
+                        <td data-label="Počet osob"><input type="number" name="pocetOs" value="<?= $zaznam['pocet_osob'] ?? null ?>"></td>
+                        <td class="origo"><input type="text" name="povolOd" id="povolOd" class="date" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
                         <td data-label="Od" class="respons" rowspan="2">
-                            <input type="text" name="povolOd" id="povolOd" class="date" min="<?= date("Y-m-d") ?>" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat') ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" style="margin-bottom: 10%;">
+                            <input type="text" name="povolOd" id="povolOd" class="date" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum" style="margin-bottom: 10%;">
                             <input type="text" name="hodOd" class="time" id="hodOd" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" maxlength="5" placeholder="00:00" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>>
                         </td>
-                        <td class="origo"><input type="text" name="povolDo" id="povolDo" class="date" min="<?= date("Y-m-d") ?>" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum"></td>
+                        <td class="origo"><input type="text" name="povolDo" id="povolDo" class="date" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
                         <td data-label="Do" class="respons" rowspan="2">
-                            <input type="text" name="povolDo" id="povolDo" class="date" min="<?= date("Y-m-d") ?>" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" style="margin-bottom: 10%;">
+                            <input type="text" name="povolDo" id="povolDo" class="date" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum" style="margin-bottom: 10%;">
                             <input type="text" name="hodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>   >
                         </td>
                         <td data-label="Povolení" rowspan="5">
@@ -206,7 +208,7 @@
                         <th>Název zařízení</th>
                         <td data-label="Název zařízení" colspan="2"><input type="text" name="NZarizeni" value="<?= $zaznam['nazev_zarizeni'] ?? null ?>"></td>
                         <th>Číslo zařízení</th>
-                        <td data-label="Číslo zařízení" colspan="2"><input type="text" name="CZarizeni" value="<?= $zaznam['c_zarizeni'] ?? null ?>"></td>
+                        <td data-label="Číslo zařízení" colspan="2"><input type="number" name="CZarizeni" value="<?= $zaznam['c_zarizeni'] ?? null ?>"></td>
                     </tr>
                     <tr>
                         <th>Popis, druh a rozsah práce</th>
@@ -214,7 +216,7 @@
                     </tr>
                     <tr>
                         <th>Seznámení s riziky pracoviště dle karty č.</th>
-                        <td data-label="Seznámení s riziky pracov. dle karty č." colspan="5"><input type="text" name="rizikaPrac" value="<?= $zaznam['c_karty'] ?? null ?>"></td>
+                        <td data-label="Seznámení s riziky pracov. dle karty č." colspan="5"><input type="number" name="rizikaPrac" value="<?= $zaznam['c_karty'] ?? null ?>"></td>
                     </tr>   
                 </tbody>
             </table>
@@ -354,7 +356,7 @@
                         </td>
                         <td data-label="Krát za"><input type="text" name="zkrapet_vetrat_pocet" value="<?= $zaznam['zkrapet_vetrat_pocet'] ?? null ?>"></td>
                         <th>Krát za</th>
-                        <td data-label="Hodin"><input type="text" name="zkrapet_vetrat_hod" value="<?= inputVal($zaznam['zkrapet_vetrat_hod'] ?? null, 'cas') ?>"></td>
+                        <td data-label="Hodin"><input type="text" name="zkrapet_vetrat_hod" value="<?= $zaznam['zkrapet_vetrat_hod'] ?? null ?>"></td>
                         <th>Hodin</th>
                         <th>V místě</th>
                         <td data-label="V místě"><input type="text" name="zkrapet_vetrat_misto" value="<?= $zaznam['zkrapet_vetrat_misto'] ?? null ?>"></td>
@@ -369,7 +371,7 @@
                         <th>Místo</th>
                         <td data-label="Místo"><input type="text" name="rozbor_ovzdusi_misto" value="<?= $zaznam['rozbor_ovzdusi_misto'] ?? null ?>"></td>
                         <th>Čas</th>
-                        <td data-label="Čas"><input type="text" name="rozbor_ovzdusi_cas" value="<?= inputVal($zaznam['rozbor_ovzdusi_cas'] ?? null, 'cas')?>"></td>
+                        <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor_ovzdusi_cas" value="<?= inputVal($zaznam['rozbor_ovzdusi_cas'] ?? null, 'cas') ?>"></td>
                         <th>Výsledek</th>
                         <td data-label="Výsledek"><input type="text" name="rozbor_ovzdusi_vysl" value="<?= $zaznam['rozbor_ovzdusi_vysl'] ?? null ?>"></td>
                     </tr>
@@ -474,11 +476,11 @@
                         <td rowspan="2">
                             <div class="panel">
                                 <label class="container">2.10 Napětí 220 V
-                                    <input type="checkbox" name="U_220" value="1" <?= inputVal($zaznam['U_220'] ?? null, "check") ?>>
+                                    <input type="checkbox" name="U_220" value="1" <?= inputVal($zaznam['U_220V'] ?? null, 'check') ?>>
                                     <span class="checkbox"></span>
                                 </label>
                                 <label class="container">2.11 Napětí 24 V
-                                    <input type="checkbox" name="U_24" value="1" <?= inputVal($zaznam['U_24'] ?? null, "check") ?>>
+                                    <input type="checkbox" name="U_24" value="1" <?= inputVal($zaznam['U_24V'] ?? null, "check") ?>>
                                     <span class="checkbox"></span>
                                 </label>
                             </div>
@@ -515,8 +517,8 @@
                     </tr>
                     <tr>
                         <th>Datum</th>
-                        <td data-label="Datum"><input type="date" name="odpovednost_dat" value="<?= inputVal($zaznam['dat_odpovedny'] ?? null, 'dat') ?>"></td>
-                        <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="odpovednost_cas" value="<?= inputVal($zaznam['dat_odpovedny'] ?? null, 'cas')?>" ></td>
+                        <td data-label="Datum"><input type="text" class="date" name="odpovednost_dat" value="<?= inputVal($zaznam['dat_odpovedny'] ?? null, 'dat') ?>" placeholder="Vyberte datum"></td>
+                        <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="odpovednost_cas" value="<?= inputVal($zaznam['dat_odpovedny'] ?? null, 'cas') ?>" ></td>
                         <th>Hodin</th>
                     </tr>
                     <tr>
@@ -554,9 +556,9 @@
                 <tbody>
                     <tr>
                         <th>Datum</th>
-                        <td data-label="Datum"><input type="date" name="prohl_prac_dat" value="<?= inputVal($zaznam['dat_odpov_provoz'] ?? null, 'dat')?>"></td>
+                        <td data-label="Datum"><input type="text" class="date" name="prohl_prac_dat" placeholder="Vyberte datum" value="<?= inputVal($zaznam['dat_odpov_provoz'] ?? null, 'dat')?>"></td>
                         <th>Datum</th>
-                        <td data-label="Datum"><input type="date" name="prohl_exter_dat" value="<?= inputVal($zaznam['dat_odpov_GB_exter'] ?? null, 'dat')?>"></td>
+                        <td data-label="Datum"><input type="text" class="date" name="prohl_exter_dat" placeholder="Vyberte datum" value="<?= inputVal($zaznam['dat_odpov_GB_exter'] ?? null, 'dat')?>"></td>
                         <th>Vyjádření přilehlého obvodu</th>
                         <td data-label="Vyjádření přilehlého obvodu" colspan="2"><input type="text" name="prohl_obvod" value="<?= $zaznam['prohl_obvod'] ?? null ?>"></td>
                     </tr>
@@ -565,7 +567,7 @@
                         <th rowspan="2" colspan="2">Podpis odpovědného pracovníka provádějícího útvaru GB nebo externí firmy:</th>
                         <th rowspan="2">Podpis vedoucího přilehlého obvodu:</th>
                         <th>Datum</th>
-                        <td data-label="Datum"><input type="date" name="prohl_vedouci_dat" value="<?= inputVal($zaznam['dat_vedouci'] ?? null, 'dat')?>"></td>
+                        <td data-label="Datum"><input type="text" class="date" name="prohl_vedouci_dat" placeholder="Vyberte datum" value="<?= inputVal($zaznam['dat_vedouci'] ?? null, 'dat')?>"></td>
                     </tr>
                 </tbody>
             </table>
@@ -595,7 +597,7 @@
                     <tr>
                         <th>4.3 Pracoviště připraveno pro práci s otevřeným ohněm:</th>
                         <th>Dne</th>
-                        <td data-label="4.3 Pracoviště připraveno pro práci s otevřeným ohněm dne"><input type="date" name="ohen_dat" value="<?= inputVal($zaznam['dat_ohen'] ?? null, 'dat')?>"></td>
+                        <td data-label="4.3 Pracoviště připraveno pro práci s otevřeným ohněm dne"><input type="text" class="date" name="ohen_dat" placeholder="Vyberte datum" value="<?= inputVal($zaznam['dat_ohen'] ?? null, 'dat')?>"></td>
                         <th>Hodin</th>
                         <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="ohen_cas" value="<?= inputVal($zaznam['dat_ohen'] ?? null, 'cas')?>"></td>
                     </tr>
@@ -624,7 +626,7 @@
                     <?php for($i = 0; $i < $rozborCount; $i++) : ?>
                     <tr class="rozboryTR" data-index="0">
                         <td data-label="Rozbor ovzduší"><input type="text" name="rozbor[<?= $i ?>][nazev]" value="<?= $rozbory[$i]['nazev'] ?? null ?>"></td>
-                        <td data-label="Datum"><input type="date" name="rozbor[<?= $i ?>][dat]" value="<?= $rozbory[$i]['dat'] ?? null ?>"></td>
+                        <td data-label="Datum"><input type="text" class="date" placeholder="Vyberte datum" name="rozbor[<?= $i ?>][dat]" value="<?= $rozbory[$i]['dat'] ?? null ?>"></td>
                         <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[<?= $i ?>][cas]" value="<?= $rozbory[$i]['cas'] ?? null ?>"></td>
                         <td data-label="Místo odběru vzorku ovzduší"><input type="text" name="rozbor[<?= $i ?>][misto]" value="<?= $rozbory[$i]['misto'] ?? null ?>"></td>
                         <td data-label="Naměřená hodnota"><input type="text" name="rozbor[<?= $i ?>][hodn]" value="<?= $rozbory[$i]['hodn'] ?? null ?>"></td>
@@ -658,7 +660,7 @@
                     </tr>
                     <tr>
                         <th>Dne</th>
-                        <td data-label="Dne"><input type="date" name="dalsi_jine_dat" value="<?= inputVal($zaznam['dalsi_jine_dat'] ?? null, 'dat')?>"></td>
+                        <td data-label="Dne"><input type="text" class="date" name="dalsi_jine_dat" placeholder="Vyberte datum" value="<?= inputVal($zaznam['dalsi_jine_dat'] ?? null, 'dat')?>"></td>
                         <th>Hodin</th>
                         <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="dalsi_jine_cas" value="<?= inputVal($zaznam['dalsi_jine_dat'] ?? null, 'cas')?>"></td>
                     </tr>
@@ -668,12 +670,12 @@
                 <thead>
                     <tr>
                         <th>7. Další nutná opatření - případně viz protokol ze dne</th>
-                        <th class="origo"><input type="date" name="nutna_dat" value="<?= inputVal($zaznam['nutna_dat'] ?? null, 'dat')?>"></th>
+                        <th class="origo"><input type="text" class="date" name="nutna_dat" placeholder="Vyberte datum" value="<?= inputVal($zaznam['nutna_dat'] ?? null, 'dat') ?? null ?>"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="respons"><input type="date" name="nutna_dat" value="<?= inputVal($zaznam['nutna_dat'] ?? null, 'dat')?>"></td>
+                        <td class="respons"><input type="text" class="date" name="nutna_dat" placeholder="Vyberte datum" value="<?= inputVal($zaznam['nutna_dat'] ?? null, 'dat')?>"></td>
                         <td colspan="2"><textarea name="nutna_opatreni" rows="4" style="resize: none; width: 100%;"><?= $zaznam['nutna_opatreni'] ?? null ?></textarea></td>
                     </tr>
                 </tbody>
@@ -693,15 +695,15 @@
                 <tbody class="origo">
                     <tr>
                         <th>Dne</th>
-                        <td><input type="date" name="oprava_dat"></td>
+                        <td><input type="text" class="date" placeholder="Vyberte datum" name="oprava_dat"></td>
                         <th>Hodina</th>
                         <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="oprava_cas"></td>
                         <th>Dne</th>
-                        <td><input type="date" name="svarec_ukon_dat"></td>
+                        <td><input type="text" class="date" placeholder="Vyberte datum" name="svarec_ukon_dat"></td>
                         <th>Hodina</th>
                         <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="svarec_ukon_cas"></td>
                         <th>Kontrola dne</th>
-                        <td><input type="date" name="kontrola_dat"></td>
+                        <td><input type="text" class="date" placeholder="Vyberte datum" name="kontrola_dat"></td>
                         <th>Hodina</th>
                         <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="kontrola_cas"></td>
                     </tr>
@@ -725,7 +727,7 @@
                     </tr>
                     <tr>
                         <th>Dne</th>
-                        <td><input type="date" name="z_opravy_dat"></td>
+                        <td><input type="text" class="date" placeholder="Vyberte datum" name="z_opravy_dat"></td>
                         <th>Hodina</th>
                         <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="z_opravy_cas"></td>
                         <th>Od</th>
@@ -751,7 +753,7 @@
                         <td><input type="text" name="oprava_protokol"></td>
                     </tr>
                     <tr>
-                        <td data-label="Dne"><input type="date" name="oprava_dat"></td>
+                        <td data-label="Dne"><input type="text" class="date" placeholder="Vyberte datum" name="oprava_dat"></td>
                         <td data-label="Hodina"><input type="text" class="time" maxlength="5" placeholder="00:00" name="oprava_cas"></td>
                     </tr>
                     <tr>
@@ -768,7 +770,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td data-label="Dne"><input type="date" name="oprava_dat"></td>
+                        <td data-label="Dne"><input type="text" class="date" placeholder="Vyberte datum" name="oprava_dat"></td>
                         <td data-label="Hodina"><input type="text" class="time" maxlength="5" placeholder="00:00" name="z_opravy_cas"></td>
                     </tr>
                     <tr>
@@ -785,7 +787,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td data-label="Dne"><input type="date" name="svarec_ukon_dat"></td>
+                        <td data-label="Dne"><input type="text" class="date" placeholder="Vyberte datum" name="svarec_ukon_dat"></td>
                         <td data-label="Hodina"><input type="text" class="time" maxlength="5" placeholder="00:00" name="svarec_ukon_cas"></td>
                     </tr>
                     <tr>
@@ -816,7 +818,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td data-label="Dne"><input type="date" name="kontrola_dat"></td>
+                        <td data-label="Dne"><input type="text" class="date" placeholder="Vyberte datum" name="kontrola_dat"></td>
                         <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="kontrola_cas"></td>
                     </tr>
                     <tr>
@@ -1041,7 +1043,7 @@
         }
         input[type="text"],
         input[type="date"],
-        input[type="time"],
+        input[type="number"],
         input[type="range"] {
             width: 100%;
             padding: 8px;
@@ -1052,6 +1054,7 @@
             font-size: 14px;
             outline: none;
             display: block;
+            transition: border-color 0.2s ease;
         }
         input[type="range"] {
             width: 85%; 
@@ -1060,13 +1063,13 @@
         }
         input[type="text"]:hover,
         input[type="date"]:hover,
-        input[type="time"]:hover {
+        input[type="number"]:hover{
             border-color:rgb(140, 200, 250); 
             box-shadow: 0 2px 6px rgba(0, 51, 102, 0.2);
         }
         input[type="text"]:focus,
         input[type="date"]:focus,
-        input[type="time"]:focus{
+        input[type="number"]:focus{
             border-color: #2196F3;
             box-shadow: 0 0 4px rgba(33, 150, 243, 0.5);
         }

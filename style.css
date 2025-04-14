@@ -15,6 +15,95 @@ h2 {
     height: 34px;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* jQuery UI Datepicker */
+/* Kalendář jako celek */
+.ui-datepicker {
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 15px !important;
+    width: 300px !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+    font-family: 'Segoe UI', Tahoma, sans-serif !important;
+}
+
+/* Název měsíce */
+.ui-datepicker-title {
+    font-weight: 600 !important;
+}
+
+/* Šipky */
+.ui-datepicker-prev, .ui-datepicker-next {
+    background: transparent !important;
+    border: none !important;
+    font-size: 18px !important;
+    cursor: pointer !important;
+    transition: opacity 0.2s !important;
+}
+.ui-datepicker-prev:hover, .ui-datepicker-next:hover {
+    opacity: 0.7 !important;
+}
+
+/* Nadpisy dní v týdnu */
+.ui-datepicker-calendar th {
+    color: #003366 !important;
+    font-weight: 500 !important;
+    padding-bottom: 5px !important;
+    font-size: 0.9em !important;
+}
+
+/* Č. týdnu */
+.ui-datepicker-calendar td {
+    text-align: center !important;
+    padding: 0 !important;
+}
+
+/* Každý den */
+.ui-datepicker-calendar .ui-state-default {
+    background: none !important;
+    border: none !important;
+    padding: 6px !important;
+    border-radius: 6px !important;
+    color: #003366 !important;
+    font-weight: 500 !important;
+    transition: background 0.2s ease !important;
+}
+.ui-datepicker-calendar .ui-state-default:hover {
+    background-color: rgba(0, 51, 102, 0.08) !important;
+    cursor: pointer !important;
+}
+
+/* Dnešní den */
+.ui-datepicker-calendar .ui-state-highlight {
+    font-weight: bold !important;
+    border-bottom: 1px solid #003366 !important;
+}
+
+/* Vybraný den */
+.ui-datepicker-calendar .ui-state-active {
+    background-color: #003366 !important;
+    color: white !important;
+    border-radius: 6px !important;
+}
+
+/* Neděle */
+.ui-datepicker-calendar tr td:last-child a {
+    color: #d40000 !important;
+}
+.ui-datepicker-calendar tr td:last-child .ui-state-active {
+    background-color: #d40000 !important;
+    color: white !important;
+}
+.ui-datepicker-calendar tr th:last-child {
+    color: #d40000 !important;
+}
+
+
 .header{
     background-color: #ffffff;
     display: flex;

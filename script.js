@@ -34,6 +34,26 @@ $(document).ready(function() {
         $(".modal").fadeOut(200).css("display", "none");
         window.location.href = "uvod.php";
     }
+    function initializeDatepicker(selector) {
+        $(selector).datepicker({
+            dateFormat: 'dd. mm. yy',
+            firstDay: 1, // Pondělí jako první den
+            dayNames: ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'],
+            dayNamesMin: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'],
+            dayNamesShort: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'],
+            monthNames: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'],
+            monthNamesShort: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čec', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'],
+            showWeek: true,
+            weekHeader: 'Týden'
+        });
+    }
+    initializeDatepicker('.date');
+
+    $(document).on('focus', '.date', function () {
+        if (!$(this).hasClass('hasDatepicker')) {
+            initializeDatepicker(this);
+        }
+    });
 
     if($(".respons").css("display") == "none"){
         $(".respons input").each(function() {
@@ -61,6 +81,15 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '#odeslat', function() {
+        $("#form").find(".date").each(function() {
+            const dateValue = $(this).val();
+            if (dateValue) {
+                const dateParts = dateValue.split('.');
+                const dateFinal = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+                $(this).val(dateFinal);
+            }
+        });
+        
         const formData = $("#form").serializeArray();
         $.ajax({
             url: "sub_povoleni.php",
@@ -128,27 +157,63 @@ $(document).ready(function() {
     $("#riziko").on('input', function () {
         $("#rizikoValue").text($(this).val());
     });
+
+    /*$(document).on('click', '.date', function () {
+        if ($(this).attr('type') !== 'date') {
+            if (this.value) { //dd. mm. yyyy
+                const dateParts = this.value.split('.');
+                const date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+                const den = String(date.getDate()).padStart(2, '0');
+                const mesic = String(date.getMonth() + 1).padStart(2, '0');
+                const rok = date.getFullYear();
+                const dateFinal = `${rok}-${mesic}-${den}`;
+                $(this).attr('type', 'date'); //yyyy-mm-dd
+                $(this).val(dateFinal);
+            }
+            else {
+                $(this).attr('type', 'date');
+            }
+        }
+    });
     
     $(document).on('input', '.date', function () {
-        const inputs = [
-            { datOd: '#povolOd', datDo: '#povolDo' },
-            { datOd: '#prodluzZarOd', datDo: '#prodluzZarDo' },
-            { datOd: '#prodluzOhOd', datDo: '#prodluzOhDo' }
-        ];
-        
-        inputs.forEach(({ datOd, datDo }) => {
-            const datDoEl = $(datDo);
-            const datOdVal = $(datOd).val();
-            
-            if (datOdVal) {
-                datDoEl.attr('min', datOdVal);
-                if (datOdVal > datDoEl.val()){
-                    datDoEl.attr('type', 'date')
-                    datDoEl.val(datOdVal);
-                }
+    const inputs = [
+        { datOd: '#povolOd', datDo: '#povolDo' },
+        { datOd: '#prodluzZarOd', datDo: '#prodluzZarDo' },
+        { datOd: '#prodluzOhOd', datDo: '#prodluzOhDo' }
+    ];
+    
+    // Funkce pro převod českého formátu data na Date objekt
+    function parseDate(dateStr) {
+        if (!dateStr) return null;
+        const parts = dateStr.split('.');
+        if (parts.length !== 3) return null;
+        // Vytvoření Date objektu (měsíc - 1 protože JavaScript počítá měsíce od 0)
+        return new Date(parts[2], parts[1].trim() - 1, parts[0].trim());
+    }
+
+    inputs.forEach(({ datOd, datDo }) => {
+        const datDoEl = $(datDo);
+        const datOdVal = $(datOd).val();
+        const currentVal = $(this).val();
+
+        // Převod obou datumů na Date objekty
+        const dateOd = parseDate(datOdVal);
+        const dateDo = parseDate(datDoEl.val());
+        const currentDate = parseDate(currentVal);
+
+        if (dateOd && currentDate) {
+            // Pokud je datDo prázdné nebo menší než aktuální datum
+            if (!dateDo || currentDate > dateDo) {
+                // Formátování data zpět do českého formátu
+                const den = String(currentDate.getDate()).padStart(2, '0');
+                const mesic = String(currentDate.getMonth() + 1).padStart(2, '0');
+                const rok = currentDate.getFullYear();
+                datDoEl.val(`${den}. ${mesic}. ${rok}`);
             }
-        });
+        }
     });
+});*/
     $(document).on('input', '.time', function () {
         let value = $(this).val().replace(/[^0-9]/g, "");
         
@@ -220,7 +285,7 @@ $(document).ready(function() {
         .attr("data-index", index)
         .html(`
             <td data-label="Rozbor ovzduší"><input type="text" name="rozbor[${index}][nazev]"></td>
-            <td data-label="Datum"><input type="date" name="rozbor[${index}][dat]"></td>
+            <td data-label="Datum"><input type="text" class="date" placeholder="Vyberte datum" name="rozbor[${index}][dat]"></td>
             <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[${index}][cas]"></td>
             <td data-label="Místo odběru vzorku ovzduší"><input type="text" name="rozbor[${index}][misto]"></td>
             <td data-label="Naměřená hodnota"><input type="text" name="rozbor[${index}][hodn]"></td>

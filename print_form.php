@@ -321,7 +321,7 @@
                 <td>místo</td>
                 <td><input type="text" name="" value="<?= $zaznam['rozbor_ovzdusi_misto'] ?>"></td>
                 <td>čas</td>
-                <td><input type="text" name="" value="<?= $zaznam['rozbor_ovzdusi_cas'] ?>"></td>
+                <td><input type="text" name="" value="<?= inputVal($zaznam['rozbor_ovzdusi_cas'], 'cas') ?>"></td>
                 <td>Výsledek</td>
                 <td><input type="text" name="" value="<?= $zaznam['rozbor_ovzdusi_vysl'] ?>"></td>
             </tr>
