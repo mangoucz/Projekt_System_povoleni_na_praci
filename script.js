@@ -47,6 +47,11 @@ $(document).ready(function() {
             weekHeader: 'Týden'
         });
     }
+    function parseDate(dateStr) {
+        dateStr = dateStr.trim();
+        const parts = dateStr.split('.');
+        return new Date(parts[2], parts[1].trim() - 1, parts[0].trim());
+    }
     initializeDatepicker('.date');
 
     $(document).on('focus', '.date', function () {
@@ -154,66 +159,27 @@ $(document).ready(function() {
         }
     });
     
-    $("#riziko").on('input', function () {
+    $(document).on('input', '#riziko', function () {
         $("#rizikoValue").text($(this).val());
     });
 
-    /*$(document).on('click', '.date', function () {
-        if ($(this).attr('type') !== 'date') {
-            if (this.value) { //dd. mm. yyyy
-                const dateParts = this.value.split('.');
-                const date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
-                const den = String(date.getDate()).padStart(2, '0');
-                const mesic = String(date.getMonth() + 1).padStart(2, '0');
-                const rok = date.getFullYear();
-                const dateFinal = `${rok}-${mesic}-${den}`;
-                $(this).attr('type', 'date'); //yyyy-mm-dd
-                $(this).val(dateFinal);
-            }
-            else {
-                $(this).attr('type', 'date');
+    $(document).on('change', '.date', function() {
+        const povolOd = $('#povolOd');
+        const povolDo = $('#povolDo');
+        if (!povolOd.val()) return;
+        
+        const dateOd = parseDate(povolOd.val());
+        if (povolDo.val()) {
+            const dateDo = parseDate(povolDo.val());            
+            
+            if (dateOd > dateDo) {
+                povolDo.val(povolOd.val());
             }
         }
-    });
-    
-    $(document).on('input', '.date', function () {
-    const inputs = [
-        { datOd: '#povolOd', datDo: '#povolDo' },
-        { datOd: '#prodluzZarOd', datDo: '#prodluzZarDo' },
-        { datOd: '#prodluzOhOd', datDo: '#prodluzOhDo' }
-    ];
-    
-    // Funkce pro převod českého formátu data na Date objekt
-    function parseDate(dateStr) {
-        if (!dateStr) return null;
-        const parts = dateStr.split('.');
-        if (parts.length !== 3) return null;
-        // Vytvoření Date objektu (měsíc - 1 protože JavaScript počítá měsíce od 0)
-        return new Date(parts[2], parts[1].trim() - 1, parts[0].trim());
-    }
-
-    inputs.forEach(({ datOd, datDo }) => {
-        const datDoEl = $(datDo);
-        const datOdVal = $(datOd).val();
-        const currentVal = $(this).val();
-
-        // Převod obou datumů na Date objekty
-        const dateOd = parseDate(datOdVal);
-        const dateDo = parseDate(datDoEl.val());
-        const currentDate = parseDate(currentVal);
-
-        if (dateOd && currentDate) {
-            // Pokud je datDo prázdné nebo menší než aktuální datum
-            if (!dateDo || currentDate > dateDo) {
-                // Formátování data zpět do českého formátu
-                const den = String(currentDate.getDate()).padStart(2, '0');
-                const mesic = String(currentDate.getMonth() + 1).padStart(2, '0');
-                const rok = currentDate.getFullYear();
-                datDoEl.val(`${den}. ${mesic}. ${rok}`);
-            }
+        else {
+            povolDo.val(povolOd.val());            
         }
     });
-});*/
     $(document).on('input', '.time', function () {
         let value = $(this).val().replace(/[^0-9]/g, "");
         
@@ -238,22 +204,35 @@ $(document).ready(function() {
         }
         $(this).val(value);
     });
-    $(document).on('blur', '.time', function() {
+    $(document).on('change', '.time', function() {
         const value = $(this).val();
-        const povolOd = $('#povolOd').val();
-        const povolDo = $('#povolDo').val();
-        const hodOd = $("#hodOd").val();
-        const hodDo = $("#hodDo").val();
-        const hodOdNum = hodOd ? parseInt(hodOd) : null;
-        const hodDoNum = hodDo ? parseInt(hodDo) : null;
         
         if (value.length == 2)
             $(this).val(value + ":00");
         else if(value.length == 1)
             $(this).val("0" + value + ":00");
-        
-        if (povolOd === povolDo && hodOdNum !== null && hodDoNum !== null && hodOdNum > hodDoNum) {
-            $("#hodDo").val("");
+    });
+    $(document).on('blur', '.time', function() {
+        const povolOd = $('#povolOd').val();
+        const povolDo = $('#povolDo').val();
+        const hodOd = $("#hodOd").val();
+        const hodDo = $("#hodDo").val();
+
+        console.log('od: ' + povolOd + ' ' + hodOd + ' do: ' + povolDo + ' ' + hodDo);
+        if (povolOd === povolDo && hodOd && hodDo) {
+            const dateOd = parseDate(povolOd);
+            const dateDo = parseDate(povolDo);
+            const timeOd = hodOd.split(":").map(Number);
+            const timeDo = hodDo.split(":").map(Number);
+            
+            const dateTimeOd = new Date(dateOd.getFullYear(), dateOd.getMonth(), dateOd.getDate(), timeOd[0], timeOd[1]);
+            const dateTimeDo = new Date(dateDo.getFullYear(), dateDo.getMonth(), dateDo.getDate(), timeDo[0], timeDo[1]);
+            console.log('od: ' + dateTimeOd + ' do: ' + dateTimeDo);
+            
+            if (dateTimeOd > dateTimeDo) {
+                $("#hodDo").val(hodOd);
+            }
+            
         }
     });
     
@@ -264,9 +243,8 @@ $(document).ready(function() {
         .addClass('svareciTR')
         .attr("data-index", index)
         .html(`
-            <td data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]"></td>
-            <td data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[${index}][prukaz]"></td>
-            <td class="origo" colspan="2"></td>
+            <td colspan="2" data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]"></td>
+            <td colspan="3" data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[${index}][prukaz]"></td>
             <td><button type="button" class="svarecDel del">-</button></td>
             `);
             

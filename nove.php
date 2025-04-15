@@ -161,16 +161,8 @@
                         <td data-label="Interní"><input type="text" name="interni" value="<?= $zaznam['interni'] ?? null ?>"></td>
                         <td data-label="Externí"><input type="text" name="externi" value="<?= $zaznam['externi'] ?? null ?>"></td>
                         <td data-label="Počet osob"><input type="number" name="pocetOs" value="<?= $zaznam['pocet_osob'] ?? null ?>"></td>
-                        <td class="origo"><input type="text" name="povolOd" id="povolOd" class="date" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
-                        <td data-label="Od" class="respons" rowspan="2">
-                            <input type="text" name="povolOd" id="povolOd" class="date" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum" style="margin-bottom: 10%;">
-                            <input type="text" name="hodOd" class="time" id="hodOd" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" maxlength="5" placeholder="00:00" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>>
-                        </td>
-                        <td class="origo"><input type="text" name="povolDo" id="povolDo" class="date" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
-                        <td data-label="Do" class="respons" rowspan="2">
-                            <input type="text" name="povolDo" id="povolDo" class="date" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum" style="margin-bottom: 10%;">
-                            <input type="text" name="hodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>   >
-                        </td>
+                        <td data-label="Od"><input type="text" name="povolOd" id="povolOd" class="date" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
+                        <td data-label="Do"><input type="text" name="povolDo" id="povolDo" class="date" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
                         <td data-label="Povolení" rowspan="5">
                             <div class="panel">
                                 <label class="container">K práci na zařízení
@@ -201,8 +193,8 @@
                         <td data-label="Provoz"><input type="text" name="provoz" value="<?= $zaznam['provoz'] ?? null ?>"></td>
                         <th>Název(číslo) objektu</th>
                         <td data-label="Název(číslo) objektu"><input type="text" name="objekt" value="<?= $zaznam['objekt'] ?? null ?>"></td>
-                        <td class="origo"><input type="text" name="hodOd" class="time" id="hodOd" maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>></td>
-                        <td class="origo"><input type="text" name="hodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>></td>
+                        <td data-label="Od"><input type="text" name="hodOd" class="time" id="hodOd" maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>></td>
+                        <td data-label="Do"><input type="text" name="hodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>></td>
                     </tr>
                     <tr>
                         <th>Název zařízení</th>
@@ -525,16 +517,14 @@
                         <td colspan="6" class="podnadpis">2.13 Sváření provedou</td>
                     </tr>
                     <tr>
-                        <th>Jméno</th>
-                        <th colspan="2">Č. svář. průkazu</th>
-                        <th colspan="3">Podpis</th>
+                        <th colspan="2">Jméno</th>
+                        <th colspan="4">Č. svář. průkazu</th>
                     </tr>
                     <?php $svarecCount = !empty($svareci) ? count($svareci) : 1; ?>
                     <?php for($i = 0; $i < $svarecCount; $i++) : ?>
                     <tr class="svareciTR" data-index="0">
-                        <td data-label="Jméno"><input type="text" name="svarec[<?= $i ?>][jmeno]" value="<?= $svareci[$i]['jmeno'] ?? null ?>"></td>
-                        <td data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[<?= $i ?>][prukaz]" value="<?= $svareci[$i]['c_prukazu'] ?? null ?>"></td>
-                        <td class="origo" colspan="3"></td>
+                        <td colspan="2" data-label="Jméno"><input type="text" name="svarec[<?= $i ?>][jmeno]" value="<?= $svareci[$i]['jmeno'] ?? null ?>"></td>
+                        <td colspan="3" data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[<?= $i ?>][prukaz]" value="<?= $svareci[$i]['c_prukazu'] ?? null ?>"></td>
                     </tr>
                     <?php endfor; ?>
                     <tr id="svarecAdd">
@@ -626,8 +616,8 @@
                     <?php for($i = 0; $i < $rozborCount; $i++) : ?>
                     <tr class="rozboryTR" data-index="0">
                         <td data-label="Rozbor ovzduší"><input type="text" name="rozbor[<?= $i ?>][nazev]" value="<?= $rozbory[$i]['nazev'] ?? null ?>"></td>
-                        <td data-label="Datum"><input type="text" class="date" placeholder="Vyberte datum" name="rozbor[<?= $i ?>][dat]" value="<?= $rozbory[$i]['dat'] ?? null ?>"></td>
-                        <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[<?= $i ?>][cas]" value="<?= $rozbory[$i]['cas'] ?? null ?>"></td>
+                        <td data-label="Datum"><input type="text" class="date" placeholder="Vyberte datum" name="rozbor[<?= $i ?>][dat]" value="<?= inputVal($rozbory[$i]['dat'] ?? null, 'dat') ?>"></td>
+                        <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[<?= $i ?>][cas]" value="<?= inputVal($rozbory[$i]['cas'] ?? null , 'cas') ?>"></td>
                         <td data-label="Místo odběru vzorku ovzduší"><input type="text" name="rozbor[<?= $i ?>][misto]" value="<?= $rozbory[$i]['misto'] ?? null ?>"></td>
                         <td data-label="Naměřená hodnota"><input type="text" name="rozbor[<?= $i ?>][hodn]" value="<?= $rozbory[$i]['hodn'] ?? null ?>"></td>
                         <td class="origo"></td>
@@ -952,7 +942,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td rowspan="5"><textarea name="doplnky" rows="5" style="resize: none; width: 100%;"></textarea></td>
+                        <td rowspan="5"><textarea name="doplnky" rows="5" style="resize: none; width: 100%;"><?= $zaznam['doplnky'] ?? null ?></textarea></td>
                     </tr>
                 </tbody>
             </table>
