@@ -61,12 +61,12 @@ $(document).ready(function() {
     });
 
     if($(".respons").css("display") == "none"){
-        $(".respons input").each(function() {
+        $(".respons input, .respons textarea").each(function() {
             $(this).attr("disabled", true);
         });
     }
     else{
-        $(".origo input").each(function() {
+        $(".origo input, .origo textarea").each(function() {
             $(this).attr("disabled", true);
         });
     }

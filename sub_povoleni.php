@@ -182,7 +182,6 @@
             $kontrola_jm = inputCheck($_POST['kontrola_jm']);
             // TAB 14
             $doplnky = inputCheck($_POST['doplnky']);
-            $odeslano = DATE("Y-m-d H:i:s");
 
             //EDIT
             if ($id_pov != null) {

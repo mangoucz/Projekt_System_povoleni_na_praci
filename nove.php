@@ -674,7 +674,7 @@
                 <thead class="origo">
                     <tr>
                         <th colspan="3">8. Předání do opravy - protokol č.</th>
-                        <th><input type="text" name="oprava_protokol"></th>
+                        <th><input type="text" name="oprava_protokol" value="<?= $zaznam['oprava_protokol'] ?? null ?>"></th>
                         <th colspan="4">10. Práce svářečské ukončeny</th>
                         <th colspan="4">12. Kontrola BT, PO, jiného orgánu</th>
                     </tr>
@@ -685,31 +685,31 @@
                 <tbody class="origo">
                     <tr>
                         <th>Dne</th>
-                        <td><input type="text" class="date" placeholder="Vyberte datum" name="oprava_dat"></td>
+                        <td><input type="text" class="date" placeholder="Vyberte datum" name="oprava_dat" value="<?= inputVal($zaznam['oprava_dat'] ?? null, 'dat')?>"></td>
                         <th>Hodina</th>
-                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="oprava_cas"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="oprava_cas" value="<?= inputVal($zaznam['oprava_dat'] ?? null, 'cas')?>"></td>
                         <th>Dne</th>
-                        <td><input type="text" class="date" placeholder="Vyberte datum" name="svarec_ukon_dat"></td>
+                        <td><input type="text" class="date" placeholder="Vyberte datum" name="svarec_ukon_dat" value="<?= inputVal($zaznam['svarec_ukon_dat'] ?? null, 'dat')?>"></td>
                         <th>Hodina</th>
-                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="svarec_ukon_cas"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="svarec_ukon_cas" value="<?= inputVal($zaznam['svarec_ukon_dat'] ?? null, 'cas')?>"></td>
                         <th>Kontrola dne</th>
-                        <td><input type="text" class="date" placeholder="Vyberte datum" name="kontrola_dat"></td>
+                        <td><input type="text" class="date" placeholder="Vyberte datum" name="kontrola_dat" value="<?= inputVal($zaznam['kontrola_dat'] ?? null, 'dat')?>"></td>
                         <th>Hodina</th>
-                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="kontrola_cas"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="kontrola_cas" value="<?= inputVal($zaznam['kontrola_dat'] ?? null, 'cas')?>"></td>
                     </tr>
                     <tr>
                         <th>Předal</th>
-                        <td colspan="3"><input type="text" name="oprava_predal"></td>
+                        <td colspan="3"><input type="text" name="oprava_predal" value="<?= $zaznam['oprava_predal'] ?? null ?>"></td>
                         <th>Předal</th>
-                        <td colspan="3"><input type="text" name="svarec_predal"></td>
+                        <td colspan="3"><input type="text" name="svarec_predal" value="<?= $zaznam['svarec_ukon_predal'] ?? null ?>"></td>
                         <th rowspan="4">Zjištěno</th>
-                        <td colspan="3" rowspan="4"><textarea name="kontrola_zjisteno" rows="10" style="resize: none; width: 100%; padding: 5% 0;"></textarea></td>
+                        <td colspan="3" rowspan="4"><textarea name="kontrola_zjisteno" rows="12" style="resize: none; width: 100%;"><?= $zaznam['kontrola_zjisteno'] ?? null ?></textarea></td>
                     </tr>
                     <tr>
                         <th>Převzal</th>
-                        <td colspan="3"><input type="text" name="oprava_prevzal"></td>
+                        <td colspan="3"><input type="text" name="oprava_prevzal" value="<?= $zaznam['oprava_prevzal'] ?? null ?>"></td>
                         <th>Převzal</th>
-                        <td colspan="3"><input type="text" name="svarec_prevzal"></td>
+                        <td colspan="3"><input type="text" name="svarec_prevzal" value="<?= $zaznam['svarec_ukon_prevzal'] ?? null ?>"></td>
                     </tr>
                     <tr>
                         <th colspan="4">9. Převzání z opravy</th>
@@ -717,40 +717,40 @@
                     </tr>
                     <tr>
                         <th>Dne</th>
-                        <td><input type="text" class="date" placeholder="Vyberte datum" name="z_opravy_dat"></td>
+                        <td><input type="text" class="date" placeholder="Vyberte datum" name="z_opravy_dat" value="<?= inputVal($zaznam['z_opravy_dat'] ?? null, 'dat')?>"></td>
                         <th>Hodina</th>
-                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="z_opravy_cas"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="z_opravy_cas" value="<?= inputVal($zaznam['z_opravy_dat'] ?? null, 'cas')?>"></td>
                         <th>Od</th>
-                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="dozor_od"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="dozor_od" value="<?= inputVal($zaznam['dozor_od'] ?? null, 'cas')?>"></td>
                         <th>Do</th>
-                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="dozor_do"></td>
+                        <td><input type="text" class="time" maxlength="5" placeholder="00:00" name="dozor_do" value="<?= inputVal($zaznam['dozor_do'] ?? null, 'cas')?>"></td>
                     </tr>
                     <tr>
                         <th>Předal</th>
-                        <td colspan="3"><input type="text" name="z_opravy_predal"></td>
+                        <td colspan="3"><input type="text" name="z_opravy_predal" value="<?= $zaznam['z_opravy_predal'] ?? null ?>"></td>
                         <th rowspan="2">Jméno</th>
-                        <td rowspan="2" colspan="3"><input type="text" name="dozor_jm"></td>
+                        <td rowspan="2" colspan="3"><input type="text" name="dozor_jm" value="<?= $zaznam['dozor_jm'] ?? null ?>"></td>
                         <th rowspan="2">Jméno</th>
-                        <td rowspan="2" colspan="3"><input type="text" name="kontrola_jm"></td>
+                        <td rowspan="2" colspan="3"><input type="text" name="kontrola_jm" value="<?= $zaznam['kontrola_jm'] ?? null ?>"></td>
                     </tr>
                     <tr>
                         <th>Převzal</th>
-                        <td colspan="3"><input type="text" name="z_opravy_prevzal"></td>
+                        <td colspan="3"><input type="text" name="z_opravy_prevzal" value="<?= $zaznam['z_opravy_prevzal'] ?? null ?>"></td>
                     </tr>
                 </tbody>
                 <tbody class="respons">
                     <tr>
-                        <td><input type="text" name="oprava_protokol"></td>
+                        <td><input type="text" name="oprava_protokol" value="<?= $zaznam['oprava_protokol'] ?? null ?>"></td>
                     </tr>
                     <tr>
-                        <td data-label="Dne"><input type="text" class="date" placeholder="Vyberte datum" name="oprava_dat"></td>
-                        <td data-label="Hodina"><input type="text" class="time" maxlength="5" placeholder="00:00" name="oprava_cas"></td>
+                        <td data-label="Dne"><input type="text" class="date" placeholder="Vyberte datum" name="oprava_dat" value="<?= inputVal($zaznam['oprava_dat'] ?? null, 'dat')?>"></td>
+                        <td data-label="Hodina"><input type="text" class="time" maxlength="5" placeholder="00:00" name="oprava_cas" value="<?= inputVal($zaznam['oprava_dat'] ?? null, 'cas')?>"></td>
                     </tr>
                     <tr>
-                        <td data-label="Předal" colspan="3"><input type="text" name="oprava_predal"></td>
+                        <td data-label="Předal" colspan="3"><input type="text" name="oprava_predal" value="<?= $zaznam['oprava_predal'] ?? null ?>"></td>
                     </tr>
                     <tr>
-                        <td data-label="Převzal" colspan="3"><input type="text" name="oprava_prevzal"></td>
+                        <td data-label="Převzal" colspan="3"><input type="text" name="oprava_prevzal" value="<?= $zaznam['oprava_prevzal'] ?? null ?>"></td>
                     </tr>
                 </tbody>
             </table>
@@ -760,14 +760,14 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td data-label="Dne"><input type="text" class="date" placeholder="Vyberte datum" name="oprava_dat"></td>
-                        <td data-label="Hodina"><input type="text" class="time" maxlength="5" placeholder="00:00" name="z_opravy_cas"></td>
+                        <td data-label="Dne"><input type="text" class="date" placeholder="Vyberte datum" name="oprava_dat" value="<?= inputVal($zaznam['z_opravy_dat'] ?? null, 'dat')?>"></td>
+                        <td data-label="Hodina"><input type="text" class="time" maxlength="5" placeholder="00:00" name="z_opravy_cas" value="<?= inputVal($zaznam['z_opravy_dat'] ?? null, 'cas')?>"></td>
                     </tr>
                     <tr>
-                        <td data-label="Předal"><input type="text" name="z_opravy_predal"></td>
+                        <td data-label="Předal"><input type="text" name="z_opravy_predal" value="<?= $zaznam['z_opravy_predal'] ?? null ?>"></td>
                     </tr>
                     <tr>
-                        <td data-label="Převzal"><input type="text" name="z_opravy_prevzal"></td>
+                        <td data-label="Převzal"><input type="text" name="z_opravy_prevzal" value="<?= $zaznam['z_opravy_prevzal'] ?? null ?>"></td>
                     </tr>
                 </tbody>
             </table>
@@ -777,14 +777,14 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td data-label="Dne"><input type="text" class="date" placeholder="Vyberte datum" name="svarec_ukon_dat"></td>
-                        <td data-label="Hodina"><input type="text" class="time" maxlength="5" placeholder="00:00" name="svarec_ukon_cas"></td>
+                        <td data-label="Dne"><input type="text" class="date" placeholder="Vyberte datum" name="svarec_ukon_dat" value="<?= inputVal($zaznam['svarec_ukon_dat'] ?? null, 'dat')?>"></td>
+                        <td data-label="Hodina"><input type="text" class="time" maxlength="5" placeholder="00:00" name="svarec_ukon_cas" value="<?= inputVal($zaznam['svarec_ukon_dat'] ?? null, 'cas')?>"></td>
                     </tr>
                     <tr>
-                        <td data-label="Předal"><input type="text" name="svarec_predal"></td>
+                        <td data-label="Předal"><input type="text" name="svarec_predal" value="<?= $zaznam['svarec_ukon_predal'] ?? null ?>"></td>
                     </tr>
                     <tr>
-                        <td data-label="Převzal"><input type="text" name="svarec_prevzal"></td>
+                        <td data-label="Převzal"><input type="text" name="svarec_prevzal" value="<?= $zaznam['svarec_ukon_prevzal'] ?? null ?>"></td>
                     </tr>
                 </tbody>
             </table>
@@ -794,11 +794,11 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td data-label="Od"><input type="text" class="time" maxlength="5" placeholder="00:00" name="dozor_od"></td>
-                        <td data-label="Do"><input type="text" class="time" maxlength="5" placeholder="00:00" name="dozor_do"></td>
+                        <td data-label="Od"><input type="text" class="time" maxlength="5" placeholder="00:00" name="dozor_od" value="<?= inputVal($zaznam['dozor_od'] ?? null, 'cas')?>"></td>
+                        <td data-label="Do"><input type="text" class="time" maxlength="5" placeholder="00:00" name="dozor_do" value="<?= inputVal($zaznam['dozor_do'] ?? null, 'cas')?>"></td>
                     </tr>
                     <tr>
-                        <td data-label="Jméno"><input type="text" name="dozor_jm"></td>
+                        <td data-label="Jméno"><input type="text" name="dozor_jm" value="<?= $zaznam['dozor_jm'] ?? null ?>"></td>
                     </tr>
                 </tbody>
             </table>
@@ -808,17 +808,17 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td data-label="Dne"><input type="text" class="date" placeholder="Vyberte datum" name="kontrola_dat"></td>
-                        <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="kontrola_cas"></td>
+                        <td data-label="Dne"><input type="text" class="date" placeholder="Vyberte datum" name="kontrola_dat" value="<?= inputVal($zaznam['kontrola_dat'] ?? null, 'dat')?>"></td>
+                        <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="kontrola_cas" value="<?= inputVal($zaznam['kontrola_dat'] ?? null, 'cas')?>"></td>
                     </tr>
                     <tr>
                         <td data-label="Zjištěno"></td>
                     </tr>
                     <tr>
-                        <td><textarea name="kontrola_zjisteno" rows="10" style="resize: none; width: 100%; padding: 5% 0;"></textarea></td>
+                        <td><textarea name="kontrola_zjisteno" rows="12" style="resize: none; width: 100%;"><?= $zaznam['kontrola_zjisteno'] ?? null ?></textarea></td>
                     </tr>
                     <tr>
-                        <td data-label="Jméno"><input type="text" name="kontrola_jm"></td>
+                        <td data-label="Jméno"><input type="text" name="kontrola_jm" value="<?= $zaznam['kontrola_jm'] ?? null ?>"></td>
                     </tr>
                 </tbody>
             </table>
