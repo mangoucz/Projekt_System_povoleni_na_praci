@@ -503,7 +503,7 @@
                 <td colspan="13">Podmínky: (doplňující bod č. 1)</td>
             </tr>
             <tr>
-                <td colspan="14"><textarea name="podminky" rows="4" value="<?= $zaznam['podminky_ohen'] ?>" style="resize: none; width: 95%; border: none;"></textarea></td>
+                <td colspan="14"><textarea name="podminky" rows="4" style="resize: none; width: 95%; border: none;"><?= $zaznam['podminky_ohen'] ?></textarea></td>
             </tr>
             <tr>
                 <td>4.2</td>
@@ -542,7 +542,7 @@
                 <td><input type="text" name="" value="<?= isset($rozbory[$i]['dat']) ? inputVal($rozbory[$i]['dat'], 'dat') : '' ?>"></td>
                 <td colspan="2"><input type="text" name="" value="<?= isset($rozbory[$i]['cas']) ? inputVal($rozbory[$i]['cas'], 'cas') : '' ?>"></td>
                 <td colspan="4"><input type="text" name="" value="<?= $rozbory[$i]['misto'] ?? '' ?>"></td>
-                <td colspan="2"><input type="text" name="" value="<?= $rozbory[$i]['nazev'] ?? '' ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= $rozbory[$i]['hodn'] ?? '' ?>"></td>
                 <td colspan="2"></td>
             </tr>
             <?php endfor; ?>
@@ -552,7 +552,7 @@
             </tr>
             <tr>
                 <td rowspan="3" colspan="2" class="svisly-text">Vystavovatel <br> nebo kontrolní <br> orgán</td>
-                <td rowspan="3" colspan="9"><textarea name="dalsi_jine" rows="4" value="<?= $zaznam['dalsi_jine'] ?>" style="resize: none; width: 95%; border: none;"></textarea></td>
+                <td rowspan="3" colspan="9"><textarea name="dalsi_jine" rows="4" style="resize: none; width: 95%; border: none;"><?= $zaznam['dalsi_jine'] ?></textarea></td>
                 <td>Jméno:</td>
                 <td colspan="3"><input type="text" name="" value="<?= $zaznam['dalsi_jine_jm'] ?>"></td>
             </tr>

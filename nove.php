@@ -520,16 +520,16 @@
                         <th colspan="2">Jméno</th>
                         <th colspan="4">Č. svář. průkazu</th>
                     </tr>
-                    <?php $svarecCount = !empty($svareci) ? count($svareci) : 1; ?>
+                    <?php $svarecCount = !empty($svareci) ? count($svareci) : 0; ?>
                     <?php for($i = 0; $i < $svarecCount; $i++) : ?>
-                    <tr class="svareciTR" data-index="0">
+                    <tr class="svareciTR" data-index="<?= $i ?>">
                         <td colspan="2" data-label="Jméno"><input type="text" name="svarec[<?= $i ?>][jmeno]" value="<?= $svareci[$i]['jmeno'] ?? null ?>"></td>
-                        <td colspan="3" data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[<?= $i ?>][prukaz]" value="<?= $svareci[$i]['c_prukazu'] ?? null ?>"></td>
+                        <td colspan="3" data-label="Č. svář. průkazu"><input type="text" name="svarec[<?= $i ?>][prukaz]" value="<?= $svareci[$i]['c_prukazu'] ?? null ?>"></td>
                     </tr>
                     <?php endfor; ?>
                     <tr id="svarecAdd">
                         <td colspan="6"><button type="button" id="svarecAddBut" class="add">+</button></td>
-                        <input type="hidden" name="svareciPocet" value="1">
+                        <input type="hidden" name="svareciPocet" value="0">
                     </tr>
                     <tr>
                         <th colspan="3">2.14 Osvědčení o způsobilosti k práci a sváření na plynové zařízení má pracovník:</th>
@@ -612,20 +612,19 @@
                     <th>5. Rozbor ovzduší</th>
                 </thead>
                 <tbody>
-                    <?php $rozborCount = !empty($rozbory) ? count($rozbory) : 1; ?>
+                    <?php $rozborCount = !empty($rozbory) ? count($rozbory) : 0; ?>
                     <?php for($i = 0; $i < $rozborCount; $i++) : ?>
-                    <tr class="rozboryTR" data-index="0">
+                    <tr class="rozboryTR" data-index="<?= $i ?>">
                         <td data-label="Rozbor ovzduší"><input type="text" name="rozbor[<?= $i ?>][nazev]" value="<?= $rozbory[$i]['nazev'] ?? null ?>"></td>
                         <td data-label="Datum"><input type="text" class="date" placeholder="Vyberte datum" name="rozbor[<?= $i ?>][dat]" value="<?= inputVal($rozbory[$i]['dat'] ?? null, 'dat') ?>"></td>
                         <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[<?= $i ?>][cas]" value="<?= inputVal($rozbory[$i]['cas'] ?? null , 'cas') ?>"></td>
                         <td data-label="Místo odběru vzorku ovzduší"><input type="text" name="rozbor[<?= $i ?>][misto]" value="<?= $rozbory[$i]['misto'] ?? null ?>"></td>
                         <td data-label="Naměřená hodnota"><input type="text" name="rozbor[<?= $i ?>][hodn]" value="<?= $rozbory[$i]['hodn'] ?? null ?>"></td>
-                        <td class="origo"></td>
                     </tr>
                     <?php endfor; ?>
                     <tr id="rozborAdd">
                         <td colspan="6"><button type="button" id="rozborAddBut" class="add">+</button></td>
-                        <input type="hidden" name="rozboryPocet" value="1">
+                        <input type="hidden" name="rozboryPocet" value="0">
                     </tr>
                 </tbody>
             </table>
@@ -948,7 +947,8 @@
             </table>
         </div>
         <div class="submit-container">
-            <input type="hidden" name="id_pov" value="<?= isset($_POST['id']) ? $_POST['id'] : ''?>">
+            <input type="hidden" name="id_pov" value="<?= isset($id) ? $id : ''?>">
+            <input type="hidden" name="ev_cislo" value="<?= isset($zaznam['ev_cislo']) ? $zaznam['ev_cislo'] : ''?>">
             <input type="button" class="add" id="odeslat" value="Odeslat" name="subOdeslat" style="font-size: 16px;">
         </div>
     </form>

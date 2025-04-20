@@ -30,6 +30,12 @@ $(document).ready(function() {
             });
         });
     }
+    function vytvorRadek(rowClass, index, html) {
+        return $("<tr>")
+            .addClass(rowClass)
+            .attr("data-index", index)
+            .html(html);
+    }
     function closeModal() {
         $(".modal").fadeOut(200).css("display", "none");
         window.location.href = "uvod.php";
@@ -80,6 +86,27 @@ $(document).ready(function() {
         "predani_prevzeti_zarizeni": [] 
     };
     zobrazTab();
+
+    let index = $("tr.svareciTR[data-index]").length;
+    if (index >= 3) {
+         $("#svarecAddBut").hide();
+    }
+    $("tr.svareciTR[data-index]").each(function() {
+        $(this).append('<td><button type="button" class="svarecDel del">-</button></td>');
+    });
+    $("#svarecAdd input[type=hidden]").attr("value", index);
+    updateIndex("tr.svareciTR[data-index]");
+    
+    index = $("tr.rozboryTR[data-index]").length;
+    if (index >= 5) {
+        $("#rozborAddBut").hide();
+    }
+    $("tr.rozboryTR[data-index]").each(function() {
+        $(this).append('<td><button type="button" class="rozborDel del">-</button></td>');
+    });
+    $("#rozborAdd input[type=hidden]").attr("value", index);
+    updateIndex("tr.rozboryTR[data-index]");
+
 
     $(document).on('change', '#intro input[type="checkbox"]', function() {
         zobrazTab();
@@ -235,33 +262,27 @@ $(document).ready(function() {
             
         }
     });
-    
+
     $(document).on('click', '#svarecAddBut', function() {
         const index = $("tr.svareciTR[data-index]").length;
         
-        const radek = $("<tr>")
-        .addClass('svareciTR')
-        .attr("data-index", index)
-        .html(`
+        const radek = vytvorRadek('svareciTR', index, `
             <td colspan="2" data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]"></td>
-            <td colspan="3" data-label="Č. svář. průkazu" colspan="2"><input type="text" name="svarec[${index}][prukaz]"></td>
+            <td colspan="3" data-label="Č. svář. průkazu"><input type="text" name="svarec[${index}][prukaz]"></td>
             <td><button type="button" class="svarecDel del">-</button></td>
-            `);
+        `);
             
             $("#svarecAdd").before(radek);
             $("#svarecAdd input[type=hidden]").attr("value", index + 1);
             
             if (index >= 2) {
-                $("#svarecAddBut").remove();
+                $(this).hide();
             }
     });
     $(document).on('click', '#rozborAddBut', function() {
         const index = $("tr.rozboryTR[data-index]").length;
             
-        const radek = $("<tr>")
-        .addClass('rozboryTR')
-        .attr("data-index", index)
-        .html(`
+        const radek = vytvorRadek('rozboryTR', index, `
             <td data-label="Rozbor ovzduší"><input type="text" name="rozbor[${index}][nazev]"></td>
             <td data-label="Datum"><input type="text" class="date" placeholder="Vyberte datum" name="rozbor[${index}][dat]"></td>
             <td data-label="Čas"><input type="text" class="time" maxlength="5" placeholder="00:00" name="rozbor[${index}][cas]"></td>
@@ -272,8 +293,8 @@ $(document).ready(function() {
         $("#rozborAdd").before(radek);
         $("#rozborAdd input[type=hidden]").attr("value", index + 1);
                 
-        if (index == 4) {
-            $("#rozborAddBut").remove();
+        if (index >= 4) {
+            $(this).hide();
         }
     });
             
@@ -300,7 +321,7 @@ $(document).ready(function() {
                 
         const index = $("tr.svareciTR[data-index]").length;
         if (index == 2) {
-            $("#svarecAdd td:first").html(`<button type="button" id="svarecAddBut" class="add">+</button>`);
+            $("#svarecAddBut").show();
         }
     });
     $(document).on('click', '.rozborDel', function() {
@@ -312,7 +333,7 @@ $(document).ready(function() {
                 
         const index = $("tr.rozboryTR[data-index]").length;
         if (index == 4) {
-            $("#rozborAdd td:first").html(`<button type="button" id="rozborAddBut" class="add">+</button>`);
+            $("#rozborAddBut").show();
         }
     });  
 });
