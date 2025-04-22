@@ -844,61 +844,55 @@
                 </thead>
                 <tbody class="origo">
                     <tr>
-                        <td class="podnadpis" colspan="6">Prodlužuje provozovatel</td>
+                        <td class="podnadpis" colspan="4">Prodlužuje provozovatel</td>
                     </tr>
                     <tr>
-                        <th colspan="6">13.1 Pro práci na zařízení</th>
+                        <th colspan="4">13.1 Pro práci na zařízení</th>
                     </tr>
                     <tr>
                         <th>Od</th>
                         <th>Do</th>
-                        <th colspan="4"></th>
+                        <th colspan="2"></th>
                     </tr>
                     <tr class="prodlZarTR">
                         <td data-label="Od" rowspan="2">
-                            <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?= $zarMin; ?>" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" placeholder="Vyberte datum" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzZarhodOd" class="time" id="prodluzZarhodOd" maxlength="5" placeholder="00:00" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
-                            <input type="text" name="prodluzZarDo" id="prodluzZarDo" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?= date("Y-m-d") ?>" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzZarDo" id="prodluzZarDo" class="date" placeholder="Vyberte datum" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzZarhodDo" class="time" id="prodluzZarhodDo" maxlength="5" placeholder="00:00" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <th>Přestávka</th>
                         <td data-label="Přestávka"><input type="text" name="prodluz_zar_prestavka" id="prodluzZarPrestavka" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>></td>
-                        <th>Podpis odpovědného prac. provozu</th>
-                        <td width="15%"></td>
                     </tr>
                     <tr>
                         <th>Počet osob</th>
                         <td data-label="Počet osob"><input type="text" name="prodluz_zar_os" id="prodluzZarOs" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>></td>
-                        <th>Podpis odpovědného prac. prov. útvaru</th>
-                        <td></td>
                     </tr>
                     <tr>
-                        <th colspan="6">13.2 Pro práci s otevřeným ohněm</th>
+                        <th colspan="4">13.2 Pro práci s otevřeným ohněm</th>
                     </tr>
                     <tr>
                         <th>Od</th>
-                        <th colspan="3">Do</th>
-                        <th colspan="2">Podpis Vystavovatele</th>
+                        <th>Do</th>
+                        <th colspan="2"></th>
                     </tr>
                     <tr class="prodlOhTR">
                         <td data-label="Od" rowspan="2">
-                            <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?= $ohMin; ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" placeholder="Vyberte datum" min="<?= $ohMin; ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzOhHodOd" class="time" id="hodOd" maxlength="5" placeholder="00:00" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
-                            <input type="text" name="prodluzOhDo" id="prodluzOhDo" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?= date("Y-m-d") ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzOhDo" id="prodluzOhDo" class="date" placeholder="Vyberte datum" min="<?= date("Y-m-d") ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzOhHodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <th>Přestávka</th>
                         <td data-label="Přestávka"><input type="text" name="prodluz_oh_prestavka" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>></td>
-                        <td rowspan="2"></td>
                     </tr>
                     <tr>
                         <th>Počet osob</th>
                         <td data-label="Počet osob"><input type="text" name="prodluz_oh_os" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>></td>
-                        <td colspan="2"></td>
                     </tr>
                 </tbody>
                 <tbody class="respons">
@@ -908,11 +902,11 @@
                     <tr class="prodlZarTR">
                         <td data-label="13.1 Pro práci na zařízení"></td>
                         <td data-label="Od" rowspan="2">
-                            <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?= (isset($zaznam['povolDo']) && date("Y-m-d") < $zaznam['povolDo']->format("Y-m-d")) ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d") ?>" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" placeholder="Vyberte datum" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzZarhodOd" class="prodluzZarhodOd" id="hodOd" maxlength="5" placeholder="00:00" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
-                            <input type="text" name="prodluzZarDo" id="prodluzZarDo" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?= date("Y-m-d") ?>" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzZarDo" id="prodluzZarDo" class="date" placeholder="Vyberte datum" min="<?= date("Y-m-d") ?>" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzZarhodDo" class="time" id="prodluzZarhodDo" maxlength="5" placeholder="00:00" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Přestávka"><input type="text" name="prodluz_zar_prestavka" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>></td>
@@ -921,11 +915,11 @@
                     <tr class="prodlOhTR">
                         <td data-label="13.2 Pro práci s otevřeným ohněm"></td>
                         <td data-label="Od" rowspan="2">
-                            <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?= (isset($zaznam['povolDo']) && date("Y-m-d") < $zaznam['povolDo']->format("Y-m-d")) ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d") ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" placeholder="Vyberte datum" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzOhhodOd" class="time" id="prodluzOhhodOd" maxlength="5" placeholder="00:00" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
-                            <input type="text" name="prodluzOhDo" id="prodluzOhDo" class="date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" placeholder="Vyberte datum" min="<?= date("Y-m-d") ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzOhDo" id="prodluzOhDo" class="date" placeholder="Vyberte datum" min="<?= date("Y-m-d") ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzOhhodDo" class="time" id="prodluzOhhodDo" maxlength="5" placeholder="00:00" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Přestávka"><input type="text" name="prodluz_oh_prestavka" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>></td>
@@ -1169,7 +1163,7 @@
         }
 
         <?php if(isset($_POST['subProdl'])){ ?>
-            table:not(#thirteenth){
+            table:not(#thirteenth):not(.ui-datepicker-calendar){
                 display: none;
             }
             #thirteenth{

@@ -190,21 +190,55 @@ $(document).ready(function() {
         $("#rizikoValue").text($(this).val());
     });
 
-    $(document).on('change', '.date', function() {
-        const povolOd = $('#povolOd');
-        const povolDo = $('#povolDo');
-        if (!povolOd.val()) return;
+    function dateCheck(inputOd, inputDo, toto) {
+        const dateOd = parseDate(inputOd.val());
+        if (dateOd < new Date()) {
+            inputOd.val(new Date().toLocaleDateString('cs-CZ'));
+        }
         
-        const dateOd = parseDate(povolOd.val());
-        if (povolDo.val()) {
-            const dateDo = parseDate(povolDo.val());            
-            
+        if (inputDo.val()) {
+            const dateDo = parseDate(inputDo.val());
             if (dateOd > dateDo) {
-                povolDo.val(povolOd.val());
+                if ($(toto).attr("id") == "povolDo") {
+                    inputOd.val(inputDo.val());
+                }
+                else {
+                    inputDo.val(inputOd.val());
+                }
             }
         }
         else {
-            povolDo.val(povolOd.val());            
+            inputDo.val(inputOd.val());
+        }
+    }
+
+    $(document).on('change', '.date', function() {
+        const povolOd = $('#povolOd');
+        const povolDo = $('#povolDo');
+        const prodluzZarOd = $('#prodluzZarOd');
+        const prodluzZarDo = $('#prodluzZarDo');
+        const prodluzOhOd = $('#prodluzOhOd');
+        const prodluzOhDo = $('#prodluzOhDo');
+
+        if (povolOd.val()){
+            dateCheck(povolOd, povolDo, this);
+        }
+        else if(povolDo.val()) {
+            dateCheck(povolDo, povolOd, this);
+        }
+        else if ($(this).attr("id") == "prodluzZarOd" || $(this).attr("id") == "prodluzZarDo") {
+            if (prodluzZarOd.val()) {
+                dateCheck(prodluzZarOd, prodluzZarDo, this);
+            } else if (prodluzZarDo.val()) {
+                dateCheck(prodluzZarDo, prodluzZarOd, this);
+            }
+        }
+        else if ($(this).attr("id") == "prodluzOhOd" || $(this).attr("id") == "prodluzOhDo") {
+            if (prodluzOhOd.val()) {
+                dateCheck(prodluzOhOd, prodluzOhDo, this);
+            } else if (prodluzOhDo.val()) {
+                dateCheck(prodluzOhDo, prodluzOhOd, this);
+            }
         }
     });
     $(document).on('input', '.time', function () {

@@ -50,7 +50,7 @@
         $params = [];
 
         if (empty($_POST['prodluzZarDo']) && empty($_POST['prodluzOhDo'])) {
-            $id_pov = $_POST['id_pov'] ?? null;
+            $id_pov = inputCheck($_POST['id_pov']);
             $svareciPocet = $_POST['svareciPocet'];
             $rozboryPocet = $_POST['rozboryPocet'];
             //INTRO 
