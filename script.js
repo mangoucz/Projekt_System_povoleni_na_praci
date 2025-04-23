@@ -58,6 +58,45 @@ $(document).ready(function() {
         const parts = dateStr.split('.');
         return new Date(parts[2], parts[1].trim() - 1, parts[0].trim());
     }
+    function dateCheck(inputOd, inputDo, toto) {
+        const dateOd = parseDate(inputOd.val());
+        if (dateOd < new Date()) {
+            inputOd.val(new Date().toLocaleDateString('cs-CZ'));
+        }
+        
+        if (inputDo.val()) {
+            const dateDo = parseDate(inputDo.val());
+            if (dateDo < new Date()) {
+                inputDo.val(new Date().toLocaleDateString('cs-CZ'));
+            }
+            if (dateOd > dateDo) {
+                if ($(toto).attr("id").includes("Do")) {
+                    inputOd.val(inputDo.val());
+                }
+                else {
+                    inputDo.val(inputOd.val());
+                }
+            }
+        }
+        else {
+            inputDo.val(inputOd.val());
+        }
+    }
+    function timeCheck(inputOd, inputDo, hodOd, hodDo) {
+        if (inputOd.val() === inputDo.val() && hodOd.val() && hodDo.val()) {
+            const dateOd = parseDate(inputOd.val());
+            const dateDo = parseDate(inputDo.val());
+            const timeOd = hodOd.val().split(":").map(Number);
+            const timeDo = hodDo.val().split(":").map(Number);
+            
+            const dateTimeOd = new Date(dateOd.getFullYear(), dateOd.getMonth(), dateOd.getDate(), timeOd[0], timeOd[1]);
+            const dateTimeDo = new Date(dateDo.getFullYear(), dateDo.getMonth(), dateDo.getDate(), timeDo[0], timeDo[1]);
+            
+            if (dateTimeOd > dateTimeDo) {
+                $(hodDo).val(hodOd.val());
+            }
+        }
+    }
     initializeDatepicker('.date');
 
     $(document).on('focus', '.date', function () {
@@ -190,28 +229,6 @@ $(document).ready(function() {
         $("#rizikoValue").text($(this).val());
     });
 
-    function dateCheck(inputOd, inputDo, toto) {
-        const dateOd = parseDate(inputOd.val());
-        if (dateOd < new Date()) {
-            inputOd.val(new Date().toLocaleDateString('cs-CZ'));
-        }
-        
-        if (inputDo.val()) {
-            const dateDo = parseDate(inputDo.val());
-            if (dateOd > dateDo) {
-                if ($(toto).attr("id") == "povolDo") {
-                    inputOd.val(inputDo.val());
-                }
-                else {
-                    inputDo.val(inputOd.val());
-                }
-            }
-        }
-        else {
-            inputDo.val(inputOd.val());
-        }
-    }
-
     $(document).on('change', '.date', function() {
         const povolOd = $('#povolOd');
         const povolDo = $('#povolDo');
@@ -241,6 +258,7 @@ $(document).ready(function() {
             }
         }
     });
+    
     $(document).on('input', '.time', function () {
         let value = $(this).val().replace(/[^0-9]/g, "");
         
@@ -274,26 +292,33 @@ $(document).ready(function() {
             $(this).val("0" + value + ":00");
     });
     $(document).on('blur', '.time', function() {
-        const povolOd = $('#povolOd').val();
-        const povolDo = $('#povolDo').val();
-        const hodOd = $("#hodOd").val();
-        const hodDo = $("#hodDo").val();
+        const povolOd = $('#povolOd');
+        const povolDo = $('#povolDo');
+        const hodOd = $("#hodOd");
+        const hodDo = $("#hodDo");
 
-        console.log('od: ' + povolOd + ' ' + hodOd + ' do: ' + povolDo + ' ' + hodDo);
-        if (povolOd === povolDo && hodOd && hodDo) {
-            const dateOd = parseDate(povolOd);
-            const dateDo = parseDate(povolDo);
-            const timeOd = hodOd.split(":").map(Number);
-            const timeDo = hodDo.split(":").map(Number);
-            
-            const dateTimeOd = new Date(dateOd.getFullYear(), dateOd.getMonth(), dateOd.getDate(), timeOd[0], timeOd[1]);
-            const dateTimeDo = new Date(dateDo.getFullYear(), dateDo.getMonth(), dateDo.getDate(), timeDo[0], timeDo[1]);
-            console.log('od: ' + dateTimeOd + ' do: ' + dateTimeDo);
-            
-            if (dateTimeOd > dateTimeDo) {
-                $("#hodDo").val(hodOd);
+        const prodluzZarOd = $('#prodluzZarOd');
+        const prodluzZarDo = $('#prodluzZarDo');
+        const prodluzZarHodOd = $("#prodluzZarhodOd");
+        const prodluzZarHodDo = $("#prodluzZarhodDo");
+
+        const prodluzOhOd = $('#prodluzOhOd');
+        const prodluzOhDo = $('#prodluzOhDo');
+        const prodluzOhHodOd = $("#prodluzOhHodOd");
+        const prodluzOhHodDo = $("#prodluzOhHodDo");
+
+        if (povolOd.val() && povolDo.val() && hodOd.val() && hodDo.val()) {
+            timeCheck(povolOd, povolDo, hodOd, hodDo);
+        }
+        else if ($(this).attr("id") == "prodluzZarhodOd" || $(this).attr("id") == "prodluzZarhodDo") {
+            if (prodluzZarOd.val() && prodluzZarDo.val() && prodluzZarHodOd.val() && prodluzZarHodDo.val()) {
+                timeCheck(prodluzZarOd, prodluzZarDo, prodluzZarHodOd, prodluzZarHodDo);
             }
-            
+        }
+        else if ($(this).attr("id") == "prodluzOhHodOd" || $(this).attr("id") == "prodluzOhHodDo") {
+            if (prodluzOhOd.val() && prodluzOhDo.val() && prodluzOhHodOd.val() && prodluzOhHodDo.val()) {
+                timeCheck(prodluzOhOd, prodluzOhDo, prodluzOhHodOd, prodluzOhHodDo);
+            }
         }
     });
 
