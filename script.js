@@ -58,24 +58,20 @@ $(document).ready(function() {
         const parts = dateStr.split('.');
         return new Date(parts[2], parts[1].trim() - 1, parts[0].trim());
     }
-    function dateCheck(inputOd, inputDo, toto) {
+    function dateCheck(inputOd, inputDo) {
         const dateOd = parseDate(inputOd.val());
-        if (dateOd < new Date()) {
-            inputOd.val(new Date().toLocaleDateString('cs-CZ'));
+        const min = typeof $(inputOd).attr("data-min") !== "undefined" ? new Date($(inputOd).attr("data-min")) : new Date();
+        if (dateOd < min) {
+            inputOd.val(min.toLocaleDateString('cs-CZ'));
         }
         
         if (inputDo.val()) {
             const dateDo = parseDate(inputDo.val());
-            if (dateDo < new Date()) {
-                inputDo.val(new Date().toLocaleDateString('cs-CZ'));
+            if (dateDo < min) {
+                inputDo.val(min.toLocaleDateString('cs-CZ'));
             }
             if (dateOd > dateDo) {
-                if ($(toto).attr("id").includes("Do")) {
-                    inputOd.val(inputDo.val());
-                }
-                else {
-                    inputDo.val(inputOd.val());
-                }
+                inputDo.val(inputOd.val());
             }
         }
         else {
@@ -238,23 +234,23 @@ $(document).ready(function() {
         const prodluzOhDo = $('#prodluzOhDo');
 
         if (povolOd.val()){
-            dateCheck(povolOd, povolDo, this);
+            dateCheck(povolOd, povolDo);
         }
         else if(povolDo.val()) {
-            dateCheck(povolDo, povolOd, this);
+            dateCheck(povolDo, povolOd);
         }
         else if ($(this).attr("id") == "prodluzZarOd" || $(this).attr("id") == "prodluzZarDo") {
             if (prodluzZarOd.val()) {
-                dateCheck(prodluzZarOd, prodluzZarDo, this);
+                dateCheck(prodluzZarOd, prodluzZarDo);
             } else if (prodluzZarDo.val()) {
-                dateCheck(prodluzZarDo, prodluzZarOd, this);
+                dateCheck(prodluzZarDo, prodluzZarOd);
             }
         }
         else if ($(this).attr("id") == "prodluzOhOd" || $(this).attr("id") == "prodluzOhDo") {
             if (prodluzOhOd.val()) {
-                dateCheck(prodluzOhOd, prodluzOhDo, this);
+                dateCheck(prodluzOhOd, prodluzOhDo);
             } else if (prodluzOhDo.val()) {
-                dateCheck(prodluzOhDo, prodluzOhOd, this);
+                dateCheck(prodluzOhDo, prodluzOhOd);
             }
         }
     });
