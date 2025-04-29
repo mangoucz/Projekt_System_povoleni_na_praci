@@ -495,16 +495,15 @@
         else if(!empty($_POST['prodluzZarDo'])){
             $id_pov = $_POST['id_pov'];
             $typ = "zařízení";
-            $pro_praci = $_POST['prodluz_zarizeni'];
             $od = $_POST['prodluzZarOd'] . ' ' . $_POST['prodluzZarhodOd'];
             $do = $_POST['prodluzZarDo'] . ' ' . $_POST['prodluzZarhodDo'];
             $prestavka = $_POST['prodluz_zar_prestavka'];
             $pocet_os = $_POST['prodluz_zar_os'];
             $dat_zadosti = DATE("Y-m-d");
     
-            $sql = "INSERT INTO Prodlouzeni (id_pov, typ, pro_praci, od, do, prestavka, pocet_os, dat_zadosti)
+            $sql = "INSERT INTO Prodlouzeni (id_pov, typ, od, do, prestavka, pocet_os, dat_zadosti)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-            $params = [$id_pov, $typ, $pro_praci, $od, $do, $prestavka, $pocet_os, $dat_zadosti];
+            $params = [$id_pov, $typ, $od, $do, $prestavka, $pocet_os, $dat_zadosti];
             $result = sqlsrv_query($conn, $sql, $params);
             if ($result === FALSE){
                 echo json_encode([

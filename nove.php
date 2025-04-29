@@ -54,6 +54,7 @@
             if (isset($_POST['subProdl'])) {
                 $sql[0] = "SELECT
                             p.id_pov as id,
+                            p.ev_cislo,
                             p.prace_na_zarizeni as zar,
                             p.svarovani_ohen as oh,
                             p.povol_do as povolDo,
@@ -824,18 +825,16 @@
             <table id="thirteenth">
                 <?php 
                     $prodlZarDo = isset($zaznam['prodlZarDo']) && $zaznam['prodlZarDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['prodlZarDo']->format("Y-m-d") : date("Y-m-d");
+                    $prodlZarHodDo = isset($zaznam['prodlZarDo']) && $zaznam['prodlZarDo']->format("H:i") > date("H:i") ? $zaznam['prodlZarDo']->format("H:i") : date("H:i");
                     $prodlOhDo = isset($zaznam['prodlOhDo']) && $zaznam['prodlOhDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['prodlOhDo']->format("Y-m-d") : date("Y-m-d"); 
+                    $prodlOhHodDo = isset($zaznam['prodlOhDo']) && $zaznam['prodlOhDo']->format("H:i") > date("H:i") ? $zaznam['prodlOhDo']->format("H:i") : date("H:i");
                     $povolDo = isset($zaznam['povolDo']) && $zaznam['povolDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d");
-
-                    if ($prodlZarDo >= $povolDo) 
-                        $zarMin = $prodlZarDo;
-                    else
-                        $zarMin = $povolDo;
-
-                    if ($prodlOhDo >= $povolDo) 
-                        $ohMin = $prodlOhDo;
-                    else
-                        $ohMin = $povolDo;
+                    $povolHodDo = isset($zaznam['povolDo']) && $zaznam['povolDo']->format("H:i") > date("H:i") ? $zaznam['povolDo']->format("H:i") : date("H:i");
+                    
+                    $zarMin = max($prodlZarDo, $povolDo);
+                    $ohMin = max($prodlOhDo, $povolDo);
+                    $zarHodMin = max($prodlZarHodDo, $povolHodDo);
+                    $ohHodMin = max($prodlOhHodDo, $povolHodDo);
                 ?>
                 <thead>
                     <tr>
@@ -857,7 +856,7 @@
                     <tr class="prodlZarTR">
                         <td data-label="Od" rowspan="2">
                             <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" data-min="<?= $zarMin ?>" placeholder="Vyberte datum" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
-                            <input type="text" name="prodluzZarhodOd" class="time" id="prodluzZarhodOd" maxlength="5" placeholder="00:00" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
+                            <input type="text" name="prodluzZarhodOd" class="time" id="prodluzZarhodOd" data-min="<?= $zarHodMin ?>" maxlength="5" placeholder="00:00" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
                             <input type="text" name="prodluzZarDo" id="prodluzZarDo" class="date" placeholder="Vyberte datum" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
@@ -881,7 +880,7 @@
                     <tr class="prodlOhTR">
                         <td data-label="Od" rowspan="2">
                             <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" data-min="<?= $ohMin ?>" placeholder="Vyberte datum" min="<?= $ohMin; ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
-                            <input type="text" name="prodluzOhHodOd" class="time" id="prodluzOhHodOd" maxlength="5" placeholder="00:00" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
+                            <input type="text" name="prodluzOhHodOd" class="time" id="prodluzOhHodOd" data-min="<?= $ohHodMin ?>" maxlength="5" placeholder="00:00" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
                             <input type="text" name="prodluzOhDo" id="prodluzOhDo" class="date" placeholder="Vyberte datum" min="<?= date("Y-m-d") ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
@@ -903,7 +902,7 @@
                         <td data-label="13.1 Pro práci na zařízení"></td>
                         <td data-label="Od" rowspan="2">
                             <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" data-min="<?= $zarMin ?>" placeholder="Vyberte datum" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
-                            <input type="text" name="prodluzZarhodOd" class="prodluzZarhodOd" id="hodOd" maxlength="5" placeholder="00:00" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
+                            <input type="text" name="prodluzZarhodOd" class="time" id="prodluzZarhodOd" data-min="<?= $zarHodMin ?>" maxlength="5" placeholder="00:00" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
                             <input type="text" name="prodluzZarDo" id="prodluzZarDo" class="date" placeholder="Vyberte datum" min="<?= date("Y-m-d") ?>" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
@@ -916,7 +915,7 @@
                         <td data-label="13.2 Pro práci s otevřeným ohněm"></td>
                         <td data-label="Od" rowspan="2">
                             <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" data-min="<?= $ohMin ?>" placeholder="Vyberte datum" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
-                            <input type="text" name="prodluzOhHodOd" class="time" id="prodluzOhHodOd" maxlength="5" placeholder="00:00" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
+                            <input type="text" name="prodluzOhHodOd" class="time" id="prodluzOhHodOd" data-min="<?= $ohHodMin ?>" maxlength="5" placeholder="00:00" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
                             <input type="text" name="prodluzOhDo" id="prodluzOhDo" class="date" placeholder="Vyberte datum" min="<?= date("Y-m-d") ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">

@@ -71,6 +71,7 @@
         <?php
             $mesic = isset($_GET['mesic']) ? $_GET['mesic'] : date('n');
             $rok = isset($_GET['rok']) ? $_GET['rok'] : date('Y');
+            $archiv = isset($_GET['archiv']) ? $_GET['archiv'] : 0;
             $mesicCZ = [
                 1 => 'Leden',
                 2 => 'Únor',
@@ -104,24 +105,54 @@
                             </option>
                         <?php endfor; ?>
                     </select>
+                    <label class="container-check">Zahrnout archiv
+                        <input type="checkbox" name="archiv" value="1" <?= ($archiv == 1) ? 'checked' : '' ?>>
+                        <span class="checkbox"></span>
+                    </label>
                     <input type="submit" value="Zobrazit" class="defButt">
                 </div>
             </form>
             <div class="prehledy">
-                <?php 
-                    $sql = "SELECT 
-                                p.id_pov,
-                                p.ev_cislo,
-                                p.odeslano,
-                                p.povol_do,
-                                p.povol_od,
-                                Concat(z.jmeno, ' ', z.prijmeni) as Zam,
-                                (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'zařízení') as prodlZarDo,
-                                (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'oheň') as prodlOhDo
-                            FROM Povolenka as p JOIN Zamestnanci as z ON p.id_zam = z.id_zam 
-                            WHERE p.id_zam = ? AND MONTH(p.odeslano) = ? AND YEAR(p.odeslano) = ?
-                            ORDER BY p.odeslano DESC;";
-                    $params = [$uziv, $mesic, $rok];
+                <?php
+                    if($archiv == 0){
+                        $sql = "SELECT 
+                                    p.id_pov,
+                                    p.ev_cislo,
+                                    p.odeslano,
+                                    p.povol_do,
+                                    p.povol_od,
+                                    CONCAT(z.jmeno, ' ', z.prijmeni) AS Zam,
+                                    prdZ.prodlZarDo,
+                                    prdO.prodlOhDo
+                                FROM Povolenka AS p JOIN Zamestnanci AS z ON p.id_zam = z.id_zam
+                                OUTER APPLY (
+                                    SELECT MAX(prd.do) AS prodlZarDo
+                                    FROM Prodlouzeni AS prd
+                                    WHERE prd.id_pov = p.id_pov AND prd.typ = 'zařízení') AS prdZ
+                                OUTER APPLY (
+                                    SELECT MAX(prd.do) AS prodlOhDo
+                                    FROM Prodlouzeni AS prd
+                                    WHERE prd.id_pov = p.id_pov AND prd.typ = 'oheň') AS prdO
+                                WHERE 
+                                    p.id_zam = ? AND ((MONTH(p.povol_od) = ? AND YEAR(p.povol_od) = ?) OR (MONTH(p.povol_do) = ? AND YEAR(p.povol_do) = ?)) AND (p.povol_do > GETDATE() OR prdZ.prodlZarDo > GETDATE() OR prdO.prodlOhDo > GETDATE())
+                                ORDER BY p.odeslano DESC;";
+                    } 
+                    else{
+                        $sql = "SELECT 
+                                    p.id_pov,
+                                    p.ev_cislo,
+                                    p.odeslano,
+                                    p.povol_do,
+                                    p.povol_od,
+                                    Concat(z.jmeno, ' ', z.prijmeni) as Zam,
+                                    (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'zařízení') as prodlZarDo,
+                                    (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'oheň') as prodlOhDo
+                                FROM Povolenka as p JOIN Zamestnanci as z ON p.id_zam = z.id_zam 
+                                WHERE
+                                    p.id_zam = ? AND ((MONTH(p.povol_od) = ? AND YEAR(p.povol_od) = ?) OR (MONTH(p.povol_do) = ? AND YEAR(p.povol_do) = ?))
+                                ORDER BY p.odeslano DESC;";
+                    }
+                    $params = [$uziv, $mesic, $rok, $mesic, $rok];
                     $result = sqlsrv_query($conn, $sql, $params);
                     if ($result === FALSE)
                         die(print_r(sqlsrv_errors(), true));
@@ -233,6 +264,66 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin: 20px auto;
             max-width: 800px;
+        }
+
+        .container-check {
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+            padding-left: 35px;
+            margin: 0 20px;
+            cursor: pointer;
+            font-size: 13px;
+            user-select: none;
+        }
+        .container-check input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        .checkbox {
+            position: absolute;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #ffffff;
+            border-radius: 4px;
+            border: 1px solid #cccccc;
+            transition: all 0.2s ease;
+        }
+        .container-check:hover input ~ .checkbox {
+            border-color: #003366;
+        }
+        .container-check input:checked ~ .checkbox {
+            background-color: #2196F3;
+            border-color: #2196F3;
+        }
+        .checkbox:after {
+            content: '';
+            position: absolute;
+            display: none;
+            left: 9px;
+            top: 3px;
+            width: 6.25px;
+            height: 12.5px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+            transition: all 0.2s ease;
+        }
+        .container-check input:checked ~ .checkbox:after {
+            display: block;
+        }
+        .container-check input:focus ~ .checkbox {
+            box-shadow: 0 0 0 2px rgba(0, 51, 102, 0.2);
+        }
+        .panel{
+            padding: 18px 18px;
+            background-color: #f9fcff;
+            border: 1px solid #e6ecf2;
+            border-radius: 8px;
         }
 
         .date-selection {

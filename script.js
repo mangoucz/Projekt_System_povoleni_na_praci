@@ -38,7 +38,9 @@ $(document).ready(function() {
     }
     function closeModal() {
         $(".modal").fadeOut(200).css("display", "none");
-        window.location.href = "uvod.php";
+        if (!window.location.href.includes("uvod.php")) {
+            window.location.href = "uvod.php";            
+        }
     }
     function initializeDatepicker(selector) {
         $(selector).datepicker({
@@ -79,6 +81,8 @@ $(document).ready(function() {
         }
     }
     function timeCheck(inputOd, inputDo, hodOd, hodDo) {
+        const min = typeof $(inputOd).attr("data-min") !== "undefined" ? new Date($(inputOd).attr("data-min")) : new Date();
+        
         if (inputOd.val() === inputDo.val() && hodOd.val() && hodDo.val()) {
             const dateOd = parseDate(inputOd.val());
             const dateDo = parseDate(inputDo.val());
