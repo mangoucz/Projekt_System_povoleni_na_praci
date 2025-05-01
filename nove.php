@@ -942,6 +942,7 @@
         <div class="submit-container">
             <input type="hidden" name="id_pov" value="<?= isset($id) ? $id : ''?>">
             <input type="hidden" name="ev_cislo" value="<?= isset($zaznam['ev_cislo']) ? $zaznam['ev_cislo'] : ''?>">
+            <input type="hidden" name="prodl" value="<?= isset($_POST['subProdl']) ? 1 : 0?>">
             <input type="button" class="add" id="odeslat" value="Odeslat" name="subOdeslat" style="font-size: 16px;">
         </div>
     </form>

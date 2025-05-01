@@ -147,8 +147,12 @@ $(document).ready(function() {
     updateIndex("tr.rozboryTR[data-index]");
 
 
-    $(document).on('change', '#intro input[type="checkbox"]', function() {
-        zobrazTab();
+    $(document).on('change', '#intro input[type="checkbox"]', zobrazTab);
+    
+    $(document).on('change', '#archiv', function() {
+        $("select").each(function() {
+            $(this).attr("disabled", !$(this).is(":disabled"));
+        });
     });
 
     $(document).on('click', '#odeslat', function() {

@@ -18,7 +18,8 @@
                         popis_prace,
                         odeslano, 
                         upraveno,
-                        (select CONCAT(COUNT(prd.id_prodl),'x') from Prodlouzeni as prd where prd.id_pov = p.id_pov) as pocet_prodl,
+                        (select count(prd.id_prodl) from Prodlouzeni as prd where prd.id_pov = p.id_pov and prd.typ = 'zařízení') as pocet_zar,
+                        (select count(prd.id_prodl) from Prodlouzeni as prd where prd.id_pov = p.id_pov and prd.typ = 'oheň') as pocet_oh,
                         (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov) as prodl_do
                     FROM Povolenka AS p JOIN Zamestnanci as z on p.id_zam = z.id_zam
                     WHERE p.id_pov = ?;";
@@ -41,6 +42,7 @@
                 $zaznam["prodl_do"] = isset($zaznam["prodl_do"]) ? $zaznam["prodl_do"]->format("d.m.Y H:i") : "-";
                 $zaznam["odeslano"] = $zaznam["odeslano"]->format("d.m.Y H:i");
                 $zaznam["upraveno"] = isset($zaznam["upraveno"]) ? $zaznam["upraveno"]->format("d.m.Y H:i") : "Ne";
+                $zaznam["pocet_prodl"] = max($zaznam["pocet_zar"], $zaznam["pocet_oh"]) . 'x';
                 $zaznam["pocet_prodl"] = $zaznam["pocet_prodl"] != "0x" ? $zaznam["pocet_prodl"] : "Ne";
                 $zaznam["popis_prace"] = $zaznam["popis_prace"] != null ? $zaznam["popis_prace"] : "-"; 
                 

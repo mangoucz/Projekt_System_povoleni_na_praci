@@ -91,24 +91,26 @@
         <fieldset>
             <form method="get" style="width: 60%;">
                 <div class="date-selection">
-                    <select name="mesic">
+                    <select name="mesic" <?= isset($_GET['archiv']) ? '' : 'disabled' ?>>
                         <?php for ($m = 1; $m <= 12; $m++): ?>
                             <option value="<?= $m ?>" <?= ($m == $mesic) ? 'selected' : '' ?>>
                                 <?= $mesicCZ[$m] ?>
                             </option>
                         <?php endfor; ?>
                     </select>
-                    <select name="rok">
+                    <select name="rok" <?= isset($_GET['archiv']) ? '' : 'disabled' ?>>
                         <?php for ($y = date('Y') - 5; $y <= date('Y'); $y++): ?>
                             <option value="<?= $y ?>" <?= ($y == $rok) ? 'selected' : '' ?>>
                                 <?= $y ?>
                             </option>
                         <?php endfor; ?>
                     </select>
-                    <label class="container-check">Zahrnout archiv
-                        <input type="checkbox" name="archiv" value="1" <?= ($archiv == 1) ? 'checked' : '' ?>>
-                        <span class="checkbox"></span>
-                    </label>
+                    <div class="panel">
+                        <label class="container-check">Zahrnout archiv
+                            <input type="checkbox" name="archiv" id="archiv" value="1" <?= ($archiv == 1) ? 'checked' : '' ?>>
+                            <span class="checkbox"></span>
+                        </label>
+                    </div>
                     <input type="submit" value="Zobrazit" class="defButt">
                 </div>
             </form>
@@ -133,9 +135,9 @@
                                     SELECT MAX(prd.do) AS prodlOhDo
                                     FROM Prodlouzeni AS prd
                                     WHERE prd.id_pov = p.id_pov AND prd.typ = 'oheň') AS prdO
-                                WHERE 
-                                    p.id_zam = ? AND ((MONTH(p.povol_od) = ? AND YEAR(p.povol_od) = ?) OR (MONTH(p.povol_do) = ? AND YEAR(p.povol_do) = ?)) AND (p.povol_do > GETDATE() OR prdZ.prodlZarDo > GETDATE() OR prdO.prodlOhDo > GETDATE())
+                                WHERE p.id_zam = ? AND (COALESCE(prdZ.prodlZarDo, p.povol_do) >= GETDATE() OR COALESCE(prdO.prodlOhDo, p.povol_do) >= GETDATE())
                                 ORDER BY p.odeslano DESC;";
+                        $params = [$uziv];
                     } 
                     else{
                         $sql = "SELECT 
@@ -144,15 +146,26 @@
                                     p.odeslano,
                                     p.povol_do,
                                     p.povol_od,
-                                    Concat(z.jmeno, ' ', z.prijmeni) as Zam,
-                                    (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'zařízení') as prodlZarDo,
-                                    (select MAX(prd.do) from Prodlouzeni as prd where prd.id_pov = p.id_pov AND prd.typ = 'oheň') as prodlOhDo
-                                FROM Povolenka as p JOIN Zamestnanci as z ON p.id_zam = z.id_zam 
-                                WHERE
-                                    p.id_zam = ? AND ((MONTH(p.povol_od) = ? AND YEAR(p.povol_od) = ?) OR (MONTH(p.povol_do) = ? AND YEAR(p.povol_do) = ?))
+                                    CONCAT(z.jmeno, ' ', z.prijmeni) AS Zam,
+                                    prdZ.prodlZarDo,
+                                    prdO.prodlOhDo
+                                FROM Povolenka AS p JOIN Zamestnanci AS z ON p.id_zam = z.id_zam
+                                OUTER APPLY (
+                                    SELECT MAX(prd.do) AS prodlZarDo
+                                    FROM Prodlouzeni AS prd
+                                    WHERE prd.id_pov = p.id_pov AND prd.typ = 'zařízení') AS prdZ
+                                OUTER APPLY (
+                                    SELECT MAX(prd.do) AS prodlOhDo
+                                    FROM Prodlouzeni AS prd
+                                    WHERE prd.id_pov = p.id_pov AND prd.typ = 'oheň') AS prdO
+                                WHERE p.id_zam = ? AND (
+                                        (MONTH(p.povol_od) = ? AND YEAR(p.povol_od) = ?)
+                                        OR (MONTH(p.povol_do) = ? AND YEAR(p.povol_do) = ?)
+                                        OR (MONTH(prdZ.prodlZarDo) = ? AND YEAR(prdZ.prodlZarDo) = ?)
+                                        OR (MONTH(prdO.prodlOhDo) = ? AND YEAR(prdO.prodlOhDo) = ?))
                                 ORDER BY p.odeslano DESC;";
+                        $params = [$uziv, $mesic, $rok, $mesic, $rok, $mesic, $rok, $mesic, $rok];
                     }
-                    $params = [$uziv, $mesic, $rok, $mesic, $rok];
                     $result = sqlsrv_query($conn, $sql, $params);
                     if ($result === FALSE)
                         die(print_r(sqlsrv_errors(), true));
@@ -225,7 +238,6 @@
                     <input type="hidden" name="id" value="">
                     <input type="submit" class="defButt print" name="subTisk" value="Tisk"></button>
                 </form>
-                <!-- <button id="generatePDF">Stáhnout</button> -->
                 <iframe id="frame" name="printFrame" style="display: none;"></iframe>
                 <form action="nove.php" method="post">
                     <input type="submit" value="Prodloužit" name="subProdl" id="subProdl" class="defButt extend">
@@ -266,15 +278,26 @@
             max-width: 800px;
         }
 
+        .panel {
+            padding: 4px 20px;
+            background-color: #ffffff;
+            border: 1px solid #e6ecf2;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
         .container-check {
             display: inline-flex;
             align-items: center;
             position: relative;
             padding-left: 35px;
-            margin: 0 20px;
+            margin: 0;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
+            color: #003366;
             user-select: none;
+            transition: color 0.3s ease;
         }
         .container-check input {
             position: absolute;
@@ -283,31 +306,32 @@
             height: 0;
             width: 0;
         }
-        .checkbox {
+        .container-check .checkbox {
             position: absolute;
             left: 0;
-            height: 25px;
-            width: 25px;
+            height: 22px;
+            width: 22px;
             background-color: #ffffff;
+            border: 2px solid #cccccc;
             border-radius: 4px;
-            border: 1px solid #cccccc;
             transition: all 0.2s ease;
         }
         .container-check:hover input ~ .checkbox {
+            background-color: #EAF3FF;
             border-color: #003366;
         }
         .container-check input:checked ~ .checkbox {
             background-color: #2196F3;
             border-color: #2196F3;
         }
-        .checkbox:after {
+        .container-check .checkbox:after {
             content: '';
             position: absolute;
             display: none;
-            left: 9px;
+            left: 8px;
             top: 3px;
-            width: 6.25px;
-            height: 12.5px;
+            width: 5px;
+            height: 10px;
             border: solid white;
             border-width: 0 3px 3px 0;
             transform: rotate(45deg);
@@ -316,20 +340,15 @@
         .container-check input:checked ~ .checkbox:after {
             display: block;
         }
-        .container-check input:focus ~ .checkbox {
-            box-shadow: 0 0 0 2px rgba(0, 51, 102, 0.2);
-        }
-        .panel{
-            padding: 18px 18px;
-            background-color: #f9fcff;
-            border: 1px solid #e6ecf2;
-            border-radius: 8px;
-        }
+
 
         .date-selection {
             display: flex;
             align-items: center;
+            gap: 15px;
+            flex-wrap: nowrap;
         }
+
         select {
             background-color: #ffffff;
             border: 1px solid #cccccc;

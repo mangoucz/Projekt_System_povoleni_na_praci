@@ -38,7 +38,8 @@
             $sql[0] = "SELECT * FROM Povolenka as p WHERE p.id_pov = ?;";
             $sql[1] = "SELECT * FROM Pov_Svar as ps LEFT JOIN Svareci AS s ON s.id_svar = ps.id_svar WHERE ps.id_pov = ?;"; 
             $sql[2] = "SELECT * FROM Pov_Roz as pr LEFT JOIN Rozbory AS r ON r.id_roz = pr.id_roz WHERE pr.id_pov = ?;"; 
-            $sql[3] = "SELECT * FROM Prodlouzeni as prodl WHERE prodl.id_pov = ? ORDER BY prodl.od;";          
+            $sql[3] = "SELECT * FROM Prodlouzeni as prodl WHERE prodl.id_pov = ? ORDER BY prodl.typ DESC, prodl.od;";
+            $sql[4] = "SELECT count(*) as pocet_zar FROM Prodlouzeni as prodl WHERE prodl.id_pov = ? AND prodl.typ = 'zařízení';"; 
             $params = [$id];
 
             for ($i = 0; $i < count($sql); $i++) { 
@@ -58,6 +59,9 @@
                     }
                     else if ($i === 3) {
                         $prodl[] = $row;
+                    }
+                    else if ($i === 4) {
+                        $pocetZar = $row['pocet_zar'];
                     }
                 }
                 sqlsrv_free_stmt($result);
@@ -667,7 +671,7 @@
                 <td colspan="2" style="text-align: center;">Počet osob</td>
                 <td colspan="3" style="text-align: center;">Podpis vystavovatele</td>
             </tr>
-            <?php for ($i = 0; $i < 6; $i++) : ?>
+            <?php for ($i = $pocetZar; $i < $pocetZar + 6; $i++) : ?>
             <tr>
                 <td colspan="3"><input type="text" name="" <?php if (isset($prodl[$i]) && $prodl[$i]['typ'] === 'oheň') : ?> value="<?= inputVal($prodl[$i]['dat_zadosti'], 'dat') ?>" <?php endif; ?>></td>
                 <td colspan="2"><input type="text" name="" <?php if (isset($prodl[$i]) && $prodl[$i]['typ'] === 'oheň') : ?> value="<?= inputVal($prodl[$i]['od'], 'dat') . " - " . inputVal($prodl[$i]['do'], 'dat') ?>" <?php endif; ?>></td>

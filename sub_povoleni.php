@@ -49,7 +49,7 @@
         $sql = "";
         $params = [];
 
-        if (empty($_POST['prodluzZarDo']) && empty($_POST['prodluzOhDo'])) {
+        if ($_POST['prodl'] == 0) {
             $id_pov = inputCheck($_POST['id_pov']);
             $svareciPocet = $_POST['svareciPocet'];
             $rozboryPocet = $_POST['rozboryPocet'];
@@ -492,49 +492,71 @@
             }
         }
         //TAB 13
-        else if(!empty($_POST['prodluzZarDo'])){
+        else{
             $id_pov = $_POST['id_pov'];
-            $typ = "zařízení";
-            $od = $_POST['prodluzZarOd'] . ' ' . $_POST['prodluzZarhodOd'];
-            $do = $_POST['prodluzZarDo'] . ' ' . $_POST['prodluzZarhodDo'];
-            $prestavka = $_POST['prodluz_zar_prestavka'];
-            $pocet_os = $_POST['prodluz_zar_os'];
+            $ev_cislo = $_POST['ev_cislo'];
             $dat_zadosti = DATE("Y-m-d");
-    
-            $sql = "INSERT INTO Prodlouzeni (id_pov, typ, od, do, prestavka, pocet_os, dat_zadosti)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-            $params = [$id_pov, $typ, $od, $do, $prestavka, $pocet_os, $dat_zadosti];
-            $result = sqlsrv_query($conn, $sql, $params);
-            if ($result === FALSE){
-                echo json_encode([
-                    "success" => false,
-                    "message" => "Chyba SQL dotazu!",
-                    "error" => sqlsrv_errors()
-                ]);     
-                exit;
+            //oboje
+            if (!empty($_POST['prodluzZarDo']) && !empty($_POST['prodluzOhDo'])) {
+                for ($i=0; $i < 2; $i++) { 
+                    if ($i == 0) {
+                        $typ = "zařízení";
+                        $od = $_POST['prodluzZarOd'] . ' ' . $_POST['prodluzZarhodOd'];
+                        $do = $_POST['prodluzZarDo'] . ' ' . $_POST['prodluzZarhodDo'];
+                        $prestavka = $_POST['prodluz_zar_prestavka'];
+                        $pocet_os = $_POST['prodluz_zar_os'];
+                    } else {
+                        $typ = "oheň";
+                        $od = $_POST['prodluzOhOd'] . ' ' . $_POST['prodluzOhHodOd'];
+                        $do = $_POST['prodluzOhDo'] . ' ' . $_POST['prodluzOhHodDo'];
+                        $prestavka = $_POST['prodluz_oh_prestavka'];
+                        $pocet_os = $_POST['prodluz_oh_os'];
+                    }
+                    $sql = "INSERT INTO Prodlouzeni (id_pov, typ, od, do, prestavka, pocet_os, dat_zadosti)
+                            VALUES (?, ?, ?, ?, ?, ?, ?);";
+                    $params = [$id_pov, $typ, $od, $do, $prestavka, $pocet_os, $dat_zadosti];
+                    $result = sqlsrv_query($conn, $sql, $params);
+                    if ($result === FALSE){
+                        echo json_encode([
+                            "success" => false,
+                            "message" => "Chyba SQL dotazu pro prodloužení zařízení a ohně!",
+                            "error" => sqlsrv_errors()
+                        ]);     
+                        exit;
+                    }
+                    sqlsrv_free_stmt($result);
+                }
             }
-        }
-        else if(!empty($_POST['prodluzOhDo'])) {
-            $id_pov = $_POST['id_pov'];
-            $typ = "oheň";
-            $pro_praci = $_POST['prodluz_ohen'];
-            $od = $_POST['prodluzOhOd'] . ' ' . $_POST['prodluzOhHodOd'];
-            $do = $_POST['prodluzOhDo'] . ' ' . $_POST['prodluzOhHodDo'];
-            $prestavka = $_POST['prodluz_oh_prestavka'];
-            $pocet_os = $_POST['prodluz_oh_os'];
-            $dat_zadosti = DATE("Y-m-d");
-    
-            $sql = "INSERT INTO Prodlouzeni (id_pov, typ, pro_praci, od, do, prestavka, pocet_os, dat_zadosti)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-            $params = [$id_pov, $typ, $pro_praci, $od, $do, $prestavka, $pocet_os, $dat_zadosti];
-            $result = sqlsrv_query($conn, $sql, $params);
-            if ($result === FALSE){
-                echo json_encode([
-                    "success" => false,
-                    "message" => "Chyba SQL dotazu!",
-                    "error" => sqlsrv_errors()
-                ]);     
-                exit;
+            else{
+                //zařízení
+                if (!empty($_POST['prodluzZarDo'])) {
+                    $typ = "zařízení";
+                    $od = $_POST['prodluzZarOd'] . ' ' . $_POST['prodluzZarhodOd'];
+                    $do = $_POST['prodluzZarDo'] . ' ' . $_POST['prodluzZarhodDo'];
+                    $prestavka = $_POST['prodluz_zar_prestavka'];
+                    $pocet_os = $_POST['prodluz_zar_os'];
+                }
+                else { //oheň
+                    $typ = "oheň";
+                    $od = $_POST['prodluzOhOd'] . ' ' . $_POST['prodluzOhHodOd'];
+                    $do = $_POST['prodluzOhDo'] . ' ' . $_POST['prodluzOhHodDo'];
+                    $prestavka = $_POST['prodluz_oh_prestavka'];
+                    $pocet_os = $_POST['prodluz_oh_os'];
+            
+                } 
+                $sql = "INSERT INTO Prodlouzeni (id_pov, typ, od, do, prestavka, pocet_os, dat_zadosti)
+                        VALUES (?, ?, ?, ?, ?, ?, ?);";
+                $params = [$id_pov, $typ, $od, $do, $prestavka, $pocet_os, $dat_zadosti];
+                $result = sqlsrv_query($conn, $sql, $params);
+                if ($result === FALSE){
+                    echo json_encode([
+                        "success" => false,
+                        "message" => "Chyba SQL dotazu pro prodloužení zařízení nebo ohně!",
+                        "error" => sqlsrv_errors()
+                    ]);     
+                    exit;
+                }
+                sqlsrv_free_stmt($result);
             }
         }
 
