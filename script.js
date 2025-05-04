@@ -55,6 +55,19 @@ $(document).ready(function() {
             weekHeader: 'Týden'
         });
     }
+    function initializeRange(selector, output, input) {
+        $(selector).slider({
+            min: 1,
+            max: 10,
+            step: 1,
+            value: $(selector).val() || 5,
+            slide: function(event, ui) {
+                $(output).text(ui.value);
+                $(input).val(ui.value);
+                $(this).val(ui.value);
+            }
+        });
+    }
     function parseDate(dateStr) {
         dateStr = dateStr.trim();
         const parts = dateStr.split('.');
@@ -98,6 +111,7 @@ $(document).ready(function() {
         }
     }
     initializeDatepicker('.date');
+    initializeRange('#riziko', '#rizikoValue', '#rizikoInput');
 
     $(document).on('focus', '.date', function () {
         if (!$(this).hasClass('hasDatepicker')) {

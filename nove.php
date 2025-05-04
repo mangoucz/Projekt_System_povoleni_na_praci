@@ -155,7 +155,8 @@
                     <tr>
                         <td data-label="Rizikovost">
                             <div class="riziko-container">
-                                <input type="range" id="riziko" name="riziko" min="1" max="10" step="1" value="<?= $zaznam['rizikovost'] ?? 5 ?>">
+                                <div id="riziko" class="slider-range"></div>
+                                    <input type="hidden" name="riziko" id="rizikoInput" value="<?= $zaznam['rizikovost'] ?? 5 ?>">
                                 <b id="rizikoValue"><?= isset($zaznam['rizikovost']) ? $zaznam['rizikovost'] : 5 ?></b>
                             </div>
                         </td>
@@ -1020,15 +1021,44 @@
             padding: 1% 0 1% 1%;
             background-color: #EEEEEE;
         }
+
         .riziko-container{
             display: flex;
             align-items: center;
             gap: 10px;
         }
+        .slider-range {
+            width: 85%;
+            margin: 10px 15px;
+        }
+
+        /* Customize jQuery UI Slider */
+        .ui-slider {
+            background: #e6ecf2 !important;
+            border: none !important;
+            height: 6px !important;
+        }
+        .ui-slider .ui-slider-handle {
+            width: 18px !important;
+            height: 18px !important;
+            background: #2196F3 !important;
+            border: 1px solid #ffffff !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+            margin-top: -2px !important;
+            transition: transform 0.2s ease !important;
+        }
+        .ui-slider .ui-slider-handle:hover {
+            transform: scale(1.1) !important;
+        }
+        #rizikoValue {
+            min-width: 25px;
+            text-align: center;
+        }
+
         input[type="text"],
-        input[type="date"],
-        input[type="number"],
-        input[type="range"] {
+        input[type="number"] {
             width: 100%;
             padding: 8px;
             margin: 2px 0;
@@ -1040,19 +1070,12 @@
             display: block;
             transition: border-color 0.2s ease;
         }
-        input[type="range"] {
-            width: 85%; 
-            height: 5px; 
-            background-color: #EEEEEE; 
-        }
         input[type="text"]:hover,
-        input[type="date"]:hover,
         input[type="number"]:hover{
             border-color:rgb(140, 200, 250); 
             box-shadow: 0 2px 6px rgba(0, 51, 102, 0.2);
         }
         input[type="text"]:focus,
-        input[type="date"]:focus,
         input[type="number"]:focus{
             border-color: #2196F3;
             box-shadow: 0 0 4px rgba(33, 150, 243, 0.5);
