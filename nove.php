@@ -1250,7 +1250,7 @@
                 content: attr(data-label);
                 position: absolute;
                 left: 0;
-                width: 50%;
+                width: 100%;
                 padding-left: 8px;
                 font-weight: bold;
                 text-align: left;   

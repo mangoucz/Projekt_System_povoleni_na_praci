@@ -89,29 +89,33 @@
         ?>
         <h2>Moje povolení</h2>
         <fieldset>
-            <form method="get" style="width: 60%;">
+            <form method="get">
                 <div class="date-selection">
-                    <select name="mesic" <?= isset($_GET['archiv']) ? '' : 'disabled' ?>>
-                        <?php for ($m = 1; $m <= 12; $m++): ?>
-                            <option value="<?= $m ?>" <?= ($m == $mesic) ? 'selected' : '' ?>>
-                                <?= $mesicCZ[$m] ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
-                    <select name="rok" <?= isset($_GET['archiv']) ? '' : 'disabled' ?>>
-                        <?php for ($y = date('Y') - 5; $y <= date('Y'); $y++): ?>
-                            <option value="<?= $y ?>" <?= ($y == $rok) ? 'selected' : '' ?>>
-                                <?= $y ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
-                    <div class="panel">
-                        <label class="container-check">Zahrnout archiv
-                            <input type="checkbox" name="archiv" id="archiv" value="1" <?= ($archiv == 1) ? 'checked' : '' ?>>
-                            <span class="checkbox"></span>
-                        </label>
+                    <div class="date-selection-A">
+                        <select name="mesic" <?= isset($_GET['archiv']) ? '' : 'disabled' ?>>
+                            <?php for ($m = 1; $m <= 12; $m++): ?>
+                                <option value="<?= $m ?>" <?= ($m == $mesic) ? 'selected' : '' ?>>
+                                    <?= $mesicCZ[$m] ?>
+                                </option>
+                            <?php endfor; ?>
+                        </select>
+                        <select name="rok" <?= isset($_GET['archiv']) ? '' : 'disabled' ?>>
+                            <?php for ($y = date('Y') - 5; $y <= date('Y'); $y++): ?>
+                                <option value="<?= $y ?>" <?= ($y == $rok) ? 'selected' : '' ?>>
+                                    <?= $y ?>
+                                </option>
+                            <?php endfor; ?>
+                        </select>
+                        <div class="panel">
+                            <label class="container-check">Zahrnout archiv
+                                <input type="checkbox" name="archiv" id="archiv" value="1" <?= ($archiv == 1) ? 'checked' : '' ?>>
+                                <span class="checkbox"></span>
+                            </label>
+                        </div>
                     </div>
-                    <input type="submit" value="Zobrazit" class="defButt">
+                    <div class="date-selection-B">
+                        <input type="submit" value="Zobrazit" class="defButt">
+                    </div>
                 </div>
             </form>
             <div class="prehledy">
@@ -277,6 +281,9 @@
             margin: 20px auto;
             max-width: 800px;
         }
+        form{
+            width: 60%;
+        }
 
         .panel {
             padding: 4px 20px;
@@ -341,12 +348,16 @@
             display: block;
         }
 
-
         .date-selection {
             display: flex;
             align-items: center;
-            gap: 15px;
             flex-wrap: nowrap;
+            gap: 20px;
+        }
+        .date-selection-A, .date-selection-B{
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         select {
@@ -478,6 +489,23 @@
             h1 {
                 margin: 5% 0;
                 font-size: 1.5em;
+            }
+            .date-selection {
+                display: block;
+                width: 100%;                
+            }
+            .date-selection-A, .date-selection-B{
+                width: 100%;
+                justify-content: center;
+            }
+            .date-selection-A select{
+                margin: 0;
+            }
+            .date-selection-B{
+                margin-top: 10px;
+            }
+            form {
+                width: 100%;
             }
         }
     </style>

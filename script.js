@@ -67,6 +67,24 @@ $(document).ready(function() {
                 $(this).val(ui.value);
             }
         });
+        $(selector).on("touchstart touchmove", function(e) {
+            e.preventDefault();
+            
+            const touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+            const slider = $(this);
+            const offset = slider.offset();
+            const width = slider.width();
+            const x = touch.pageX - offset.left;
+            
+            const min = slider.slider("option", "min");
+            const max = slider.slider("option", "max");
+            let value = Math.round((x / width) * (max - min)) + min;
+            value = Math.min(Math.max(value, 1), 10);
+            
+            slider.slider("value", value);
+            $(output).text(value);
+            $(input).val(value);
+        });
     }
     function parseDate(dateStr) {
         dateStr = dateStr.trim();
