@@ -1220,24 +1220,22 @@
             #rizikoValue{
                 margin: 1.5% 0 0 1.5%
             }
-            table{
+            table:not(.ui-datepicker-calendar){
                 width: 90%;
-                display: block;
                 padding: 0;
             }
             tbody th, .logo, .origo {
-                display: none;
+                display: none !important;
             }
-            table, thead, thead th, tbody, tr, td, .respons {
+            table:not(.ui-datepicker-calendar), table:not(.ui-datepicker-calendar) thead, table:not(.ui-datepicker-calendar)  thead th, table:not(.ui-datepicker-calendar) tbody, table:not(.ui-datepicker-calendar) tr, table:not(.ui-datepicker-calendar) td, .respons {
                 display: block;
             }
-            tbody{
-                display: block;
+            table:not(.ui-datepicker-calendar) tbody{
                 padding: 0;
                 width: 90%;
                 margin-left: 5%;
             }
-            tr {
+            table:not(.ui-datepicker-calendar) tr {
                 margin-bottom: 1rem;
             }
             td[data-label]{
@@ -1250,7 +1248,7 @@
                 content: attr(data-label);
                 position: absolute;
                 left: 0;
-                width: 100%;
+                width: 45%;
                 padding-left: 8px;
                 font-weight: bold;
                 text-align: left;   
