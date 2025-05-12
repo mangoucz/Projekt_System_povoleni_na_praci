@@ -75,29 +75,29 @@
             </a>
         </div>
     </div>
-    <div class="container">
-        <?php
-            $mesic = isset($_GET['mesic']) ? $_GET['mesic'] : date('n');
-            $rok = isset($_GET['rok']) ? $_GET['rok'] : date('Y');
-            $archiv = isset($_GET['archiv']) ? $_GET['archiv'] : 0;
-            $mesicCZ = [
-                1 => 'Leden',
-                2 => 'Únor',
-                3 => 'Březen',
-                4 => 'Duben',
-                5 => 'Květen',
-                6 => 'Červen',
-                7 => 'Červenec',
-                8 => 'Srpen',
-                9 => 'Září',
-                10 => 'Říjen',
-                11 => 'Listopad',
-                12 => 'Prosinec'
-            ];
-        ?>
-        <h2>Moje povolení</h2>
-        <fieldset>
-            <form method="get">
+    <form method="get">
+        <div class="container" id="my">
+            <?php
+                $mesic = isset($_GET['mesic']) ? $_GET['mesic'] : date('n');
+                $rok = isset($_GET['rok']) ? $_GET['rok'] : date('Y');
+                $archiv = isset($_GET['archiv']) ? $_GET['archiv'] : 0;
+                $mesicCZ = [
+                    1 => 'Leden',
+                    2 => 'Únor',
+                    3 => 'Březen',
+                    4 => 'Duben',
+                    5 => 'Květen',
+                    6 => 'Červen',
+                    7 => 'Červenec',
+                    8 => 'Srpen',
+                    9 => 'Září',
+                    10 => 'Říjen',
+                    11 => 'Listopad',
+                    12 => 'Prosinec'
+                ];
+            ?>
+            <h2>Moje povolení</h2>
+            <fieldset>
                 <div class="date-selection">
                     <div class="date-selection-A">
                         <select name="mesic" <?= isset($_GET['archiv']) ? '' : 'disabled' ?>>
@@ -125,256 +125,240 @@
                         <input type="submit" value="Zobrazit" class="defButt">
                     </div>
                 </div>
-            </form>
-            <div class="prehledy">
-                <?php
-                    if($archiv == 0){
-                        $sql = "SELECT 
-                                    p.id_pov,
-                                    p.ev_cislo,
-                                    p.odeslano,
-                                    p.povol_do,
-                                    p.povol_od,
-                                    CONCAT(z.jmeno, ' ', z.prijmeni) AS Zam,
-                                    prdZ.prodlZarDo,
-                                    prdO.prodlOhDo
-                                FROM Povolenka AS p JOIN Zamestnanci AS z ON p.id_zam = z.id_zam
-                                OUTER APPLY (
-                                    SELECT MAX(prd.do) AS prodlZarDo
-                                    FROM Prodlouzeni AS prd
-                                    WHERE prd.id_pov = p.id_pov AND prd.typ = 'zařízení') AS prdZ
-                                OUTER APPLY (
-                                    SELECT MAX(prd.do) AS prodlOhDo
-                                    FROM Prodlouzeni AS prd
-                                    WHERE prd.id_pov = p.id_pov AND prd.typ = 'oheň') AS prdO
-                                WHERE p.id_zam = ? AND (COALESCE(prdZ.prodlZarDo, p.povol_do) >= GETDATE() OR COALESCE(prdO.prodlOhDo, p.povol_do) >= GETDATE())
-                                ORDER BY p.odeslano DESC;";
-                        $params = [$uziv];
-                    } 
-                    else{
-                        $sql = "SELECT 
-                                    p.id_pov,
-                                    p.ev_cislo,
-                                    p.odeslano,
-                                    p.povol_do,
-                                    p.povol_od,
-                                    CONCAT(z.jmeno, ' ', z.prijmeni) AS Zam,
-                                    prdZ.prodlZarDo,
-                                    prdO.prodlOhDo
-                                FROM Povolenka AS p JOIN Zamestnanci AS z ON p.id_zam = z.id_zam
-                                OUTER APPLY (
-                                    SELECT MAX(prd.do) AS prodlZarDo
-                                    FROM Prodlouzeni AS prd
-                                    WHERE prd.id_pov = p.id_pov AND prd.typ = 'zařízení') AS prdZ
-                                OUTER APPLY (
-                                    SELECT MAX(prd.do) AS prodlOhDo
-                                    FROM Prodlouzeni AS prd
-                                    WHERE prd.id_pov = p.id_pov AND prd.typ = 'oheň') AS prdO
-                                WHERE p.id_zam = ? AND (
-                                        (MONTH(p.povol_od) = ? AND YEAR(p.povol_od) = ?)
-                                        OR (MONTH(p.povol_do) = ? AND YEAR(p.povol_do) = ?)
-                                        OR (MONTH(prdZ.prodlZarDo) = ? AND YEAR(prdZ.prodlZarDo) = ?)
-                                        OR (MONTH(prdO.prodlOhDo) = ? AND YEAR(prdO.prodlOhDo) = ?))
-                                ORDER BY p.odeslano DESC;";
-                        $params = [$uziv, $mesic, $rok, $mesic, $rok, $mesic, $rok, $mesic, $rok];
-                    }
-                    $result = sqlsrv_query($conn, $sql, $params);
-                    if ($result === FALSE)
-                        die(print_r(sqlsrv_errors(), true));
- 
-                    if (!sqlsrv_has_rows($result)) 
-                        echo '<p style="font-style: italic;">Nebyl nalezen žádný záznam!</p>';
-                    else {
-                        while ($zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
-                            if (isset($zaznam['prodlZarDo']) && isset($zaznam['prodlOhDo'])) {
-                                $povolDo = $zaznam['prodlZarDo'] < $zaznam['prodlOhDo'] ? $zaznam['prodlOhDo'] : $zaznam['prodlZarDo'];
-                            }
-                            elseif(isset($zaznam['prodlZarDo'])){
-                                $povolDo = $zaznam['prodlZarDo'];
-                            }
-                            elseif (isset($zaznam['prodlOhDo'])) {
-                                $povolDo = $zaznam['prodlOhDo'];
-                            }
-                            else 
-                                $povolDo = $zaznam['povol_do'];
-
-                            echo'<div class="prehled">';
-                            echo '<div class="prehled-head">';
-                            echo '<p>Ev. č. ' . $zaznam['ev_cislo'] . '</p>';
-                            echo '</div>';
-                            echo '<div class="prehled-body">';
-                            echo '<div>';
-                            echo '<p>Podal: ' . $zaznam['Zam'] . '</p>';
-                            echo '<p>Na: '. $zaznam['povol_od']->format("d.m.Y") . ' - ' . $povolDo->format("d.m.Y") . '</p>';
-                            echo '<div class="stav">';
-                            echo '<p>Stav: <span class="status">Odesláno</span></p>';
-                            echo '<span class="icon"></span>';
-                            echo '<p class="odeslano">' . $zaznam['odeslano']->format('d.m.Y') . '</p>';
-                            echo '</div>';
-                            echo '</div>';
-                            echo '<div>';
-                            echo '<a class="link" id="' . $zaznam['id_pov'] . '" style="cursor: pointer;">Podrobnosti &gt;</a>';
-                            echo '</div>';
-                            echo '</div>';
-                            echo '</div>';
+                <div class="prehledy">
+                    <?php
+                        if($archiv == 0){
+                            $sql = "SELECT 
+                                        p.id_pov,
+                                        p.ev_cislo,
+                                        p.odeslano,
+                                        p.povol_do,
+                                        p.povol_od,
+                                        CONCAT(z.jmeno, ' ', z.prijmeni) AS Zam,
+                                        prdZ.prodlZarDo,
+                                        prdO.prodlOhDo
+                                    FROM Povolenka AS p JOIN Zamestnanci AS z ON p.id_zam = z.id_zam
+                                    OUTER APPLY (
+                                        SELECT MAX(prd.do) AS prodlZarDo
+                                        FROM Prodlouzeni AS prd
+                                        WHERE prd.id_pov = p.id_pov AND prd.typ = 'zařízení') AS prdZ
+                                    OUTER APPLY (
+                                        SELECT MAX(prd.do) AS prodlOhDo
+                                        FROM Prodlouzeni AS prd
+                                        WHERE prd.id_pov = p.id_pov AND prd.typ = 'oheň') AS prdO
+                                    WHERE p.id_zam = ? AND (COALESCE(prdZ.prodlZarDo, p.povol_do) >= GETDATE() OR COALESCE(prdO.prodlOhDo, p.povol_do) >= GETDATE())
+                                    ORDER BY p.odeslano DESC;";
+                            $params = [$uziv];
+                        } 
+                        else{
+                            $sql = "SELECT 
+                                        p.id_pov,
+                                        p.ev_cislo,
+                                        p.odeslano,
+                                        p.povol_do,
+                                        p.povol_od,
+                                        CONCAT(z.jmeno, ' ', z.prijmeni) AS Zam,
+                                        prdZ.prodlZarDo,
+                                        prdO.prodlOhDo
+                                    FROM Povolenka AS p JOIN Zamestnanci AS z ON p.id_zam = z.id_zam
+                                    OUTER APPLY (
+                                        SELECT MAX(prd.do) AS prodlZarDo
+                                        FROM Prodlouzeni AS prd
+                                        WHERE prd.id_pov = p.id_pov AND prd.typ = 'zařízení') AS prdZ
+                                    OUTER APPLY (
+                                        SELECT MAX(prd.do) AS prodlOhDo
+                                        FROM Prodlouzeni AS prd
+                                        WHERE prd.id_pov = p.id_pov AND prd.typ = 'oheň') AS prdO
+                                    WHERE p.id_zam = ? AND (
+                                            (MONTH(p.povol_od) = ? AND YEAR(p.povol_od) = ?)
+                                            OR (MONTH(p.povol_do) = ? AND YEAR(p.povol_do) = ?)
+                                            OR (MONTH(prdZ.prodlZarDo) = ? AND YEAR(prdZ.prodlZarDo) = ?)
+                                            OR (MONTH(prdO.prodlOhDo) = ? AND YEAR(prdO.prodlOhDo) = ?))
+                                    ORDER BY p.odeslano DESC;";
+                            $params = [$uziv, $mesic, $rok, $mesic, $rok, $mesic, $rok, $mesic, $rok];
                         }
-                    }
-                    sqlsrv_free_stmt($result);
+                        $result = sqlsrv_query($conn, $sql, $params);
+                        if ($result === FALSE)
+                            die(print_r(sqlsrv_errors(), true));
+    
+                        if (!sqlsrv_has_rows($result)) 
+                            echo '<p style="font-style: italic;">Nebyl nalezen žádný záznam!</p>';
+                        else {
+                            while ($zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+                                if (isset($zaznam['prodlZarDo']) && isset($zaznam['prodlOhDo'])) {
+                                    $povolDo = $zaznam['prodlZarDo'] < $zaznam['prodlOhDo'] ? $zaznam['prodlOhDo'] : $zaznam['prodlZarDo'];
+                                }
+                                elseif(isset($zaznam['prodlZarDo'])){
+                                    $povolDo = $zaznam['prodlZarDo'];
+                                }
+                                elseif (isset($zaznam['prodlOhDo'])) {
+                                    $povolDo = $zaznam['prodlOhDo'];
+                                }
+                                else 
+                                    $povolDo = $zaznam['povol_do'];
+
+                                echo'<div class="prehled">';
+                                echo '<div class="prehled-head">';
+                                echo '<p>Ev. č. ' . $zaznam['ev_cislo'] . '</p>';
+                                echo '</div>';
+                                echo '<div class="prehled-body">';
+                                echo '<div>';
+                                echo '<p>Podal: ' . $zaznam['Zam'] . '</p>';
+                                echo '<p>Na: '. $zaznam['povol_od']->format("d.m.Y") . ' - ' . $povolDo->format("d.m.Y") . '</p>';
+                                echo '<div class="stav">';
+                                echo '<p>Stav: <span class="status">Odesláno</span></p>';
+                                echo '<span class="icon"></span>';
+                                echo '<p class="odeslano">' . $zaznam['odeslano']->format('d.m.Y') . '</p>';
+                                echo '</div>';
+                                echo '</div>';
+                                echo '<div>';
+                                echo '<a class="link" id="' . $zaznam['id_pov'] . '" style="cursor: pointer;">Podrobnosti &gt;</a>';
+                                echo '</div>';
+                                echo '</div>';
+                                echo '</div>';
+                            }
+                        }
+                        sqlsrv_free_stmt($result);
+                    ?>
+                </div>
+            </fieldset>
+        </div>
+        <?php if ($schval) : ?>
+            <div class="container" id="team">
+                <?php
+                    $mesic = isset($_GET['mesicT']) ? $_GET['mesicT'] : date('n');
+                    $rok = isset($_GET['rokT']) ? $_GET['rokT'] : date('Y');
+                    $archiv = isset($_GET['archivT']) ? $_GET['archivT'] : 0;
                 ?>
-            </div>
-        </fieldset>
-    </div>
-    <?php if ($schval) : ?>
-    <div class="container">
-        <?php
-            $mesic = isset($_GET['mesic']) ? $_GET['mesic'] : date('n');
-            $rok = isset($_GET['rok']) ? $_GET['rok'] : date('Y');
-            $archiv = isset($_GET['archiv']) ? $_GET['archiv'] : 0;
-            $mesicCZ = [
-                1 => 'Leden',
-                2 => 'Únor',
-                3 => 'Březen',
-                4 => 'Duben',
-                5 => 'Květen',
-                6 => 'Červen',
-                7 => 'Červenec',
-                8 => 'Srpen',
-                9 => 'Září',
-                10 => 'Říjen',
-                11 => 'Listopad',
-                12 => 'Prosinec'
-            ];
-        ?>
-        <h2>Povolení týmu</h2>
-        <fieldset>
-            <form method="get">
-                <div class="date-selection">
-                    <div class="date-selection-A">
-                        <select name="mesic" <?= isset($_GET['archiv']) ? '' : 'disabled' ?>>
-                            <?php for ($m = 1; $m <= 12; $m++): ?>
-                                <option value="<?= $m ?>" <?= ($m == $mesic) ? 'selected' : '' ?>>
-                                    <?= $mesicCZ[$m] ?>
-                                </option>
-                            <?php endfor; ?>
-                        </select>
-                        <select name="rok" <?= isset($_GET['archiv']) ? '' : 'disabled' ?>>
-                            <?php for ($y = date('Y') - 5; $y <= date('Y'); $y++): ?>
-                                <option value="<?= $y ?>" <?= ($y == $rok) ? 'selected' : '' ?>>
-                                    <?= $y ?>
-                                </option>
-                            <?php endfor; ?>
-                        </select>
-                        <div class="panel">
-                            <label class="container-check">Zahrnout archiv
-                                <input type="checkbox" name="archiv" id="archiv" value="1" <?= ($archiv == 1) ? 'checked' : '' ?>>
-                                <span class="checkbox"></span>
-                            </label>
+                <h2>Povolení týmu</h2>
+                <fieldset>
+                    <div class="date-selection">
+                        <div class="date-selection-A">
+                            <select name="mesicT" <?= isset($_GET['archivT']) ? '' : 'disabled' ?>>
+                                <?php for ($m = 1; $m <= 12; $m++): ?>
+                                    <option value="<?= $m ?>" <?= ($m == $mesic) ? 'selected' : '' ?>>
+                                        <?= $mesicCZ[$m] ?>
+                                    </option>
+                                <?php endfor; ?>
+                            </select>
+                            <select name="rokT" <?= isset($_GET['archivT']) ? '' : 'disabled' ?>>
+                                <?php for ($y = date('Y') - 5; $y <= date('Y'); $y++): ?>
+                                    <option value="<?= $y ?>" <?= ($y == $rok) ? 'selected' : '' ?>>
+                                        <?= $y ?>
+                                    </option>
+                                <?php endfor; ?>
+                            </select>
+                            <div class="panel">
+                                <label class="container-check">Zahrnout archiv
+                                    <input type="checkbox" name="archivT" id="archivT" value="1" <?= ($archiv == 1) ? 'checked' : '' ?>>
+                                    <span class="checkbox"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="date-selection-B">
+                            <input type="submit" value="Zobrazit" class="defButt">
                         </div>
                     </div>
-                    <div class="date-selection-B">
-                        <input type="submit" value="Zobrazit" class="defButt">
-                    </div>
-                </div>
-            </form>
-            <div class="prehledy">
-                <?php
-                    if($archiv == 0){
-                        $sql = "SELECT 
-                                    p.id_pov,
-                                    p.ev_cislo,
-                                    p.odeslano,
-                                    p.povol_do,
-                                    p.povol_od,
-                                    CONCAT(z.jmeno, ' ', z.prijmeni) AS Zam,
-                                    prdZ.prodlZarDo,
-                                    prdO.prodlOhDo
-                                FROM (Povolenka AS p JOIN Zamestnanci AS z ON p.id_zam = z.id_zam) JOIN Schvalovani as zs ON z.id_zam = zs.id_zam
-                                OUTER APPLY (
-                                    SELECT MAX(prd.do) AS prodlZarDo
-                                    FROM Prodlouzeni AS prd
-                                    WHERE prd.id_pov = p.id_pov AND prd.typ = 'zařízení') AS prdZ
-                                OUTER APPLY (
-                                    SELECT MAX(prd.do) AS prodlOhDo
-                                    FROM Prodlouzeni AS prd
-                                    WHERE prd.id_pov = p.id_pov AND prd.typ = 'oheň') AS prdO
-                                WHERE zs.id_schval = ? AND (COALESCE(prdZ.prodlZarDo, p.povol_do) >= GETDATE() OR COALESCE(prdO.prodlOhDo, p.povol_do) >= GETDATE())
-                                ORDER BY p.odeslano DESC;;";
-                        $params = [$uziv];
-                    } 
-                    else{
-                        $sql = "SELECT 
-                                    p.id_pov,
-                                    p.ev_cislo,
-                                    p.odeslano,
-                                    p.povol_do,
-                                    p.povol_od,
-                                    CONCAT(z.jmeno, ' ', z.prijmeni) AS Zam,
-                                    prdZ.prodlZarDo,
-                                    prdO.prodlOhDo
-                                FROM (Povolenka AS p JOIN Zamestnanci AS z ON p.id_zam = z.id_zam) JOIN Schvalovani as zs ON z.id_zam = zs.id_zam
-                                OUTER APPLY (
-                                    SELECT MAX(prd.do) AS prodlZarDo
-                                    FROM Prodlouzeni AS prd
-                                    WHERE prd.id_pov = p.id_pov AND prd.typ = 'zařízení') AS prdZ
-                                OUTER APPLY (
-                                    SELECT MAX(prd.do) AS prodlOhDo
-                                    FROM Prodlouzeni AS prd
-                                    WHERE prd.id_pov = p.id_pov AND prd.typ = 'oheň') AS prdO
-                                WHERE zs.id_schval = ? AND (
-                                        (MONTH(p.povol_od) = ? AND YEAR(p.povol_od) = ?)
-                                        OR (MONTH(p.povol_do) = ? AND YEAR(p.povol_do) = ?)
-                                        OR (MONTH(prdZ.prodlZarDo) = ? AND YEAR(prdZ.prodlZarDo) = ?)
-                                        OR (MONTH(prdO.prodlOhDo) = ? AND YEAR(prdO.prodlOhDo) = ?))
-                                ORDER BY p.odeslano DESC;";
-                        $params = [$uziv, $mesic, $rok, $mesic, $rok, $mesic, $rok, $mesic, $rok];
-                    }
-                    $result = sqlsrv_query($conn, $sql, $params);
-                    if ($result === FALSE)
-                        die(print_r(sqlsrv_errors(), true));
- 
-                    if (!sqlsrv_has_rows($result)) 
-                        echo '<p style="font-style: italic;">Nebyl nalezen žádný záznam!</p>';
-                    else {
-                        while ($zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
-                            if (isset($zaznam['prodlZarDo']) && isset($zaznam['prodlOhDo'])) {
-                                $povolDo = $zaznam['prodlZarDo'] < $zaznam['prodlOhDo'] ? $zaznam['prodlOhDo'] : $zaznam['prodlZarDo'];
+                    <div class="prehledy">
+                        <?php
+                            if($archiv == 0){
+                                $sql = "SELECT 
+                                            p.id_pov,
+                                            p.ev_cislo,
+                                            p.odeslano,
+                                            p.povol_do,
+                                            p.povol_od,
+                                            CONCAT(z.jmeno, ' ', z.prijmeni) AS Zam,
+                                            prdZ.prodlZarDo,
+                                            prdO.prodlOhDo
+                                        FROM (Povolenka AS p JOIN Zamestnanci AS z ON p.id_zam = z.id_zam) JOIN Schvalovani as zs ON z.id_zam = zs.id_zam
+                                        OUTER APPLY (
+                                            SELECT MAX(prd.do) AS prodlZarDo
+                                            FROM Prodlouzeni AS prd
+                                            WHERE prd.id_pov = p.id_pov AND prd.typ = 'zařízení') AS prdZ
+                                        OUTER APPLY (
+                                            SELECT MAX(prd.do) AS prodlOhDo
+                                            FROM Prodlouzeni AS prd
+                                            WHERE prd.id_pov = p.id_pov AND prd.typ = 'oheň') AS prdO
+                                        WHERE zs.id_schval = ? AND (COALESCE(prdZ.prodlZarDo, p.povol_do) >= GETDATE() OR COALESCE(prdO.prodlOhDo, p.povol_do) >= GETDATE())
+                                        ORDER BY p.odeslano DESC;;";
+                                $params = [$uziv];
+                            } 
+                            else{
+                                $sql = "SELECT 
+                                            p.id_pov,
+                                            p.ev_cislo,
+                                            p.odeslano,
+                                            p.povol_do,
+                                            p.povol_od,
+                                            CONCAT(z.jmeno, ' ', z.prijmeni) AS Zam,
+                                            prdZ.prodlZarDo,
+                                            prdO.prodlOhDo
+                                        FROM (Povolenka AS p JOIN Zamestnanci AS z ON p.id_zam = z.id_zam) JOIN Schvalovani as zs ON z.id_zam = zs.id_zam
+                                        OUTER APPLY (
+                                            SELECT MAX(prd.do) AS prodlZarDo
+                                            FROM Prodlouzeni AS prd
+                                            WHERE prd.id_pov = p.id_pov AND prd.typ = 'zařízení') AS prdZ
+                                        OUTER APPLY (
+                                            SELECT MAX(prd.do) AS prodlOhDo
+                                            FROM Prodlouzeni AS prd
+                                            WHERE prd.id_pov = p.id_pov AND prd.typ = 'oheň') AS prdO
+                                        WHERE zs.id_schval = ? AND (
+                                                (MONTH(p.povol_od) = ? AND YEAR(p.povol_od) = ?)
+                                                OR (MONTH(p.povol_do) = ? AND YEAR(p.povol_do) = ?)
+                                                OR (MONTH(prdZ.prodlZarDo) = ? AND YEAR(prdZ.prodlZarDo) = ?)
+                                                OR (MONTH(prdO.prodlOhDo) = ? AND YEAR(prdO.prodlOhDo) = ?))
+                                        ORDER BY p.odeslano DESC;";
+                                $params = [$uziv, $mesic, $rok, $mesic, $rok, $mesic, $rok, $mesic, $rok];
                             }
-                            elseif(isset($zaznam['prodlZarDo'])){
-                                $povolDo = $zaznam['prodlZarDo'];
-                            }
-                            elseif (isset($zaznam['prodlOhDo'])) {
-                                $povolDo = $zaznam['prodlOhDo'];
-                            }
-                            else 
-                                $povolDo = $zaznam['povol_do'];
+                            $result = sqlsrv_query($conn, $sql, $params);
+                            if ($result === FALSE)
+                                die(print_r(sqlsrv_errors(), true));
+        
+                            if (!sqlsrv_has_rows($result)) 
+                                echo '<p style="font-style: italic;">Nebyl nalezen žádný záznam!</p>';
+                            else {
+                                while ($zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)){
+                                    if (isset($zaznam['prodlZarDo']) && isset($zaznam['prodlOhDo'])) {
+                                        $povolDo = $zaznam['prodlZarDo'] < $zaznam['prodlOhDo'] ? $zaznam['prodlOhDo'] : $zaznam['prodlZarDo'];
+                                    }
+                                    elseif(isset($zaznam['prodlZarDo'])){
+                                        $povolDo = $zaznam['prodlZarDo'];
+                                    }
+                                    elseif (isset($zaznam['prodlOhDo'])) {
+                                        $povolDo = $zaznam['prodlOhDo'];
+                                    }
+                                    else 
+                                        $povolDo = $zaznam['povol_do'];
 
-                            echo'<div class="prehled">';
-                            echo '<div class="prehled-head">';
-                            echo '<p>Ev. č. ' . $zaznam['ev_cislo'] . '</p>';
-                            echo '</div>';
-                            echo '<div class="prehled-body">';
-                            echo '<div>';
-                            echo '<p>Podal: ' . $zaznam['Zam'] . '</p>';
-                            echo '<p>Na: '. $zaznam['povol_od']->format("d.m.Y") . ' - ' . $povolDo->format("d.m.Y") . '</p>';
-                            echo '<div class="stav">';
-                            echo '<p>Stav: <span class="status">Odesláno</span></p>';
-                            echo '<span class="icon"></span>';
-                            echo '<p class="odeslano">' . $zaznam['odeslano']->format('d.m.Y') . '</p>';
-                            echo '</div>';
-                            echo '</div>';
-                            echo '<div>';
-                            echo '<a class="link" id="' . $zaznam['id_pov'] . '" style="cursor: pointer;">Podrobnosti &gt;</a>';
-                            echo '</div>';
-                            echo '</div>';
-                            echo '</div>';
-                        }
-                    }
-                    sqlsrv_free_stmt($result);
-                ?>
+                                    echo'<div class="prehled">';
+                                    echo '<div class="prehled-head">';
+                                    echo '<p>Ev. č. ' . $zaznam['ev_cislo'] . '</p>';
+                                    echo '</div>';
+                                    echo '<div class="prehled-body">';
+                                    echo '<div>';
+                                    echo '<p>Podal: ' . $zaznam['Zam'] . '</p>';
+                                    echo '<p>Na: '. $zaznam['povol_od']->format("d.m.Y") . ' - ' . $povolDo->format("d.m.Y") . '</p>';
+                                    echo '<div class="stav">';
+                                    echo '<p>Stav: <span class="status">Odesláno</span></p>';
+                                    echo '<span class="icon"></span>';
+                                    echo '<p class="odeslano">' . $zaznam['odeslano']->format('d.m.Y') . '</p>';
+                                    echo '</div>';
+                                    echo '</div>';
+                                    echo '<div>';
+                                    echo '<a class="link" id="' . $zaznam['id_pov'] . '" style="cursor: pointer;">Podrobnosti &gt;</a>';
+                                    echo '</div>';
+                                    echo '</div>';
+                                    echo '</div>';
+                                }
+                            }
+                            sqlsrv_free_stmt($result);
+                        ?>
+                    </div>
+                </fieldset>
             </div>
-        </fieldset>
-    </div>
-    <?php endif; ?>
+        <?php endif; ?>
+    </form>
     <div class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -418,7 +402,7 @@
             display: block;
             width: 25%;
             height: 3px; 
-            background-color: #d40000; 
+            background: #d40000; 
             margin-top: 5px;
             border-radius: 2px;
         }
@@ -435,19 +419,16 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             padding: 20px;
-            background-color: #ffffff;
+            background: #ffffff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin: 20px auto;
             max-width: 800px;
         }
-        form{
-            width: 60%;
-        }
 
         .panel {
-            padding: 4px 20px;
-            background-color: #ffffff;
-            border: 1px solid #e6ecf2;
+            padding: 10px 10px;
+            background: #ffffff;
+            border: 1px solid #cccccc;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
@@ -477,17 +458,17 @@
             left: 0;
             height: 22px;
             width: 22px;
-            background-color: #ffffff;
+            background: #ffffff;
             border: 2px solid #cccccc;
             border-radius: 4px;
             transition: all 0.2s ease;
         }
         .container-check:hover input ~ .checkbox {
-            background-color: #EAF3FF;
+            background: #EAF3FF;
             border-color: #003366;
         }
         .container-check input:checked ~ .checkbox {
-            background-color: #2196F3;
+            background: #2196F3;
             border-color: #2196F3;
         }
         .container-check .checkbox:after {
@@ -520,7 +501,7 @@
         }
 
         select {
-            background-color: #ffffff;
+            background: #ffffff;
             border: 1px solid #cccccc;
             border-radius: 5px;
             padding: 10px;
@@ -538,7 +519,7 @@
             margin-top: 20px;
             border: 1px solid #dddddd;
             border-radius: 8px;
-            background-color: #fafafa;
+            background: #fafafa;
             padding: 10px;
             max-height: 380px;
             overflow-y: auto;
@@ -547,10 +528,10 @@
         .prehled {
             border-bottom: 1px solid #dddddd;
             padding: 10px 0 5px 0;
-            transition: background-color 0.3s ease;
+            transition: background 0.3s ease;
         }
         .prehled:hover {
-            background-color: #f1f1f1;
+            background: #f1f1f1;
         }
         .prehled:last-child {
             border-bottom: none;
@@ -592,7 +573,7 @@
         .icon {
             width: 16px;
             height: 16px;
-            background-color: #39B54A;
+            background: #39B54A;
             border-radius: 50%;
             position: relative;
             margin-left: 5px;
@@ -623,9 +604,6 @@
             color: #003366;
         }
         
-        form {
-            text-align: center;
-        }
         .footer{
             display: none;
         }
@@ -637,7 +615,7 @@
             .container{
                 background: unset;
                 box-shadow: unset;
-                margin: 20px 10px;
+                margin: 0 10px;
             }
             .footer{
                 display: flex;  

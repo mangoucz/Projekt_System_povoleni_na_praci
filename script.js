@@ -43,6 +43,8 @@ $(document).ready(function() {
         }
     }
     function initializeDatepicker(selector) {
+        $('.date').attr('autocomplete', 'off');
+        
         $(selector).datepicker({
             dateFormat: 'dd. mm. yy',
             firstDay: 1, // Pondělí jako první den
@@ -85,6 +87,25 @@ $(document).ready(function() {
             $(output).text(value);
             $(input).val(value);
         });
+    }
+    function initializeTitle(selector) {
+        $(selector).tooltip({
+            position: {
+                my: "center bottom-10",
+                at: "center top"
+            },
+            content: $(this).attr("title"), 
+            tooltipClass: "custom-tooltip",
+            show: {
+                effect: "fadeIn",
+                duration: 200
+            },
+            hide: {
+                effect: "fadeOut",
+                duration: 200
+            }
+        });
+        
     }
     function parseDate(dateStr) {
         dateStr = dateStr.trim();
@@ -178,11 +199,18 @@ $(document).ready(function() {
     $("#rozborAdd input[type=hidden]").attr("value", index);
     updateIndex("tr.rozboryTR[data-index]");
 
+    initializeTitle("input");
+    initializeTitle("textarea");
 
     $(document).on('change', '#intro input[type="checkbox"]', zobrazTab);
     
     $(document).on('change', '#archiv', function() {
-        $("select").each(function() {
+        $("#my select").each(function() {
+            $(this).attr("disabled", !$(this).is(":disabled"));
+        });
+    });
+    $(document).on('change', '#archivT', function() {
+        $("#team select").each(function() {
             $(this).attr("disabled", !$(this).is(":disabled"));
         });
     });

@@ -74,7 +74,7 @@ input[type="number"]::-webkit-outer-spin-button {
     transition: background 0.2s ease !important;
 }
 .ui-datepicker-calendar .ui-state-default:hover {
-    background-color: rgba(0, 51, 102, 0.08) !important;
+    background: rgba(0, 51, 102, 0.08) !important;
     cursor: pointer !important;
 }
 
@@ -86,7 +86,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 /* Vybraný den */
 .ui-datepicker-calendar .ui-state-active {
-    background-color: #003366 !important;
+    background: #003366 !important;
     color: white !important;
     border-radius: 6px !important;
 }
@@ -96,16 +96,52 @@ input[type="number"]::-webkit-outer-spin-button {
     color: #d40000 !important;
 }
 .ui-datepicker-calendar tr td:last-child .ui-state-active {
-    background-color: #d40000 !important;
+    background: #d40000 !important;
     color: white !important;
 }
 .ui-datepicker-calendar tr th:last-child {
     color: #d40000 !important;
 }
 
+/* jQuery UI Slider */
+.ui-slider {
+    background: #e6ecf2 !important;
+    border: none !important;
+    height: 6px !important;
+}
+.ui-slider .ui-slider-handle {
+    width: 18px !important;
+    height: 18px !important;
+    background: #2196F3 !important;
+    border: 1px solid #ffffff !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    margin-top: -2px !important;
+    transition: transform 0.2s ease !important;
+}
+.ui-slider .ui-slider-handle:hover {
+    transform: scale(1.1) !important;
+}
+
+/* jQuery UI Title */
+.custom-tooltip {
+    background: #333 !important;
+    color: white !important;
+    border: none !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+    font-weight: bold !important;
+}
+.custom-tooltip::before {
+    border-top-color: #333 !important;
+}
+
 
 .header{
-    background-color: #ffffff;
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -136,7 +172,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }  
 
 .defButt {
-    background-color: #003366; 
+    background: #003366; 
     color: #FFFFFF;
     border: none;
     padding: 10px 20px;
@@ -146,7 +182,7 @@ input[type="number"]::-webkit-outer-spin-button {
     transition: background-color 0.3s ease;
 }
 .defButt:hover {
-    background-color: #d40000;
+    background: #d40000;
 }
 .defButt:active{
     box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
@@ -154,7 +190,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .footer{
     justify-content: center;
-    background-color: #FFFFFF;
+    background: #FFFFFF;
     padding: 1% 0;
     position: fixed;
     bottom: 0;

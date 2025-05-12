@@ -160,8 +160,8 @@
                                 <b id="rizikoValue"><?= isset($zaznam['rizikovost']) ? $zaznam['rizikovost'] : 5 ?></b>
                             </div>
                         </td>
-                        <td data-label="Interní"><input type="text" name="interni" value="<?= $zaznam['interni'] ?? null ?>"></td>
-                        <td data-label="Externí"><input type="text" name="externi" value="<?= $zaznam['externi'] ?? null ?>"></td>
+                        <td data-label="Interní"><input type="text" name="interni" title="interni" value="<?= $zaznam['interni'] ?? null ?>"></td>
+                        <td data-label="Externí"><input type="text" name="externi" title="externi" value="<?= $zaznam['externi'] ?? null ?>"></td>
                         <td data-label="Počet osob"><input type="number" name="pocetOs" value="<?= $zaznam['pocet_osob'] ?? null ?>"></td>
                         <td data-label="Od"><input type="text" name="povolOd" id="povolOd" class="date" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
                         <td data-label="Do"><input type="text" name="povolDo" id="povolDo" class="date" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
@@ -667,7 +667,7 @@
                 <tbody>
                     <tr>
                         <td class="respons"><input type="text" class="date" name="nutna_dat" placeholder="Vyberte datum" value="<?= inputVal($zaznam['nutna_dat'] ?? null, 'dat')?>"></td>
-                        <td colspan="2"><textarea name="nutna_opatreni" rows="4" style="resize: none; width: 100%;"><?= $zaznam['nutna_opatreni'] ?? null ?></textarea></td>
+                        <td colspan="2"><textarea name="nutna_opatreni" title="Nutná opatření" rows="4" style="resize: none; width: 100%;"><?= $zaznam['nutna_opatreni'] ?? null ?></textarea></td>
                     </tr>
                 </tbody>
             </table>
@@ -972,11 +972,10 @@
     </div>
     <style>
         body{
-            background: unset;
-            background-color: #F0F8FF; 
+            background: unset #F0F8FF;
         }
         table{
-            background-color: white;
+            background: #FFFFFF;
             padding: 20px;
             border: 1px solid #BCD4EF;
             border-radius: 8px;
@@ -986,14 +985,14 @@
             border-collapse: collapse;
         }
         thead th {
-            background-color: #EAF3FF;
+            background: #EAF3FF;
             text-align: center;
             font-weight: bold;
             padding: 10px;
             border-bottom: 2px solid #BCD4EF;
         }
         tbody th {
-            background-color: #f7faff;
+            background: #f7faff;
             font-weight: bold;
             text-align: left;
             padding: 10px;
@@ -1009,7 +1008,7 @@
             display: block;
             width: 25%;
             height: 3px; 
-            background-color: #d40000; 
+            background: #d40000; 
             margin-top: 5px;
             border-radius: 2px;
         }
@@ -1019,7 +1018,7 @@
         .podnadpis{
             font-weight: bold;
             padding: 1% 0 1% 1%;
-            background-color: #EEEEEE;
+            background: #EEEEEE;
         }
 
         .riziko-container{
@@ -1032,26 +1031,6 @@
             margin: 10px 15px;
         }
 
-        /* Customize jQuery UI Slider */
-        .ui-slider {
-            background: #e6ecf2 !important;
-            border: none !important;
-            height: 6px !important;
-        }
-        .ui-slider .ui-slider-handle {
-            width: 18px !important;
-            height: 18px !important;
-            background: #2196F3 !important;
-            border: 1px solid #ffffff !important;
-            border-radius: 50% !important;
-            cursor: pointer !important;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-            margin-top: -2px !important;
-            transition: transform 0.2s ease !important;
-        }
-        .ui-slider .ui-slider-handle:hover {
-            transform: scale(1.1) !important;
-        }
         #rizikoValue {
             min-width: 25px;
             text-align: center;
@@ -1098,22 +1077,22 @@
             box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
         }
         .add {
-            background-color: #39B54A;
+            background: #39B54A;
         }
         .del {
-            background-color: #FF2C55;
+            background: #FF2C55;
         }
         .add:hover {
-            background-color: #34A343;
+            background: #34A343;
         }
         .add:active {
-            background-color: #2E8E3B;
+            background: #2E8E3B;
         }
         .del:hover {
-            background-color: #E62A4E;
+            background: #E62A4E;
         }
         .del:active {
-            background-color: #CC2444;
+            background: #CC2444;
         }
 
         td:has(button), th:has(button){
@@ -1121,7 +1100,7 @@
         }
         .panel {
             padding: 18px 18px;
-            background-color: #f9fcff;
+            background: #f9fcff;
             border: 1px solid #e6ecf2;
             border-radius: 8px;
         }
@@ -1148,15 +1127,15 @@
             top: 0;
             height: 20px;
             width: 20px;
-            background-color: #eeeeee;
+            background: #eeeeee;
             border-radius: 4px;
             border: 1px solid #bcd4ef;
         }
         .container:hover input ~ .checkbox {
-            background-color: #cccccc;
+            background: #cccccc;
         }
         .container input:checked ~ .checkbox {
-            background-color: #2196F3;
+            background: #2196F3;
             border-color: #2196F3;
         }
         .checkbox:after {
