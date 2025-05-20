@@ -95,7 +95,6 @@ $(document).ready(function() {
                 at: "center top"
             },
             content: $(this).attr("title"), 
-            tooltipClass: "custom-tooltip",
             show: {
                 effect: "fadeIn",
                 duration: 200
@@ -105,7 +104,6 @@ $(document).ready(function() {
                 duration: 200
             }
         });
-        
     }
     function parseDate(dateStr) {
         dateStr = dateStr.trim();

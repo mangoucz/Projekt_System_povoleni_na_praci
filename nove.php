@@ -160,11 +160,11 @@
                                 <b id="rizikoValue"><?= isset($zaznam['rizikovost']) ? $zaznam['rizikovost'] : 5 ?></b>
                             </div>
                         </td>
-                        <td data-label="Interní"><input type="text" name="interni" title="interni" value="<?= $zaznam['interni'] ?? null ?>"></td>
-                        <td data-label="Externí"><input type="text" name="externi" title="externi" value="<?= $zaznam['externi'] ?? null ?>"></td>
-                        <td data-label="Počet osob"><input type="number" name="pocetOs" value="<?= $zaznam['pocet_osob'] ?? null ?>"></td>
-                        <td data-label="Od"><input type="text" name="povolOd" id="povolOd" class="date" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
-                        <td data-label="Do"><input type="text" name="povolDo" id="povolDo" class="date" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
+                        <td data-label="Interní"><input type="text" name="interni" title="Interní" value="<?= $zaznam['interni'] ?? null ?>"></td>
+                        <td data-label="Externí"><input type="text" name="externi" title="Externí" value="<?= $zaznam['externi'] ?? null ?>"></td>
+                        <td data-label="Počet osob"><input type="number" name="pocetOs" title="Zadejte počet os." value="<?= $zaznam['pocet_osob'] ?? null ?>"></td>
+                        <td data-label="Od"><input type="text" name="povolOd" id="povolOd" class="date" title="Datum začátku platnosti povolení" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
+                        <td data-label="Do"><input type="text" name="povolDo" id="povolDo" class="date" title="Datum konce platnosti povolení (lze prodloužit)" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
                         <td data-label="Povolení" rowspan="5">
                             <div class="panel">
                                 <label class="container">K práci na zařízení
@@ -192,25 +192,25 @@
                     </tr>
                     <tr >
                         <th>Provoz</th>
-                        <td data-label="Provoz"><input type="text" name="provoz" value="<?= $zaznam['provoz'] ?? null ?>"></td>
+                        <td data-label="Provoz"><input type="text" name="provoz" title="Provoz" value="<?= $zaznam['provoz'] ?? null ?>"></td>
                         <th>Název(číslo) objektu</th>
-                        <td data-label="Název(číslo) objektu"><input type="text" name="objekt" value="<?= $zaznam['objekt'] ?? null ?>"></td>
-                        <td data-label="Od"><input type="text" name="hodOd" class="time" id="hodOd" maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>></td>
-                        <td data-label="Do"><input type="text" name="hodDo" class="time" id="hodDo" maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>></td>
+                        <td data-label="Název(číslo) objektu"><input type="text" name="objekt" title="Název nebo č. objektu" value="<?= $zaznam['objekt'] ?? null ?>"></td>
+                        <td data-label="Od"><input type="text" name="hodOd" class="time" id="hodOd" title="Čas začátku platnosti" maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>></td>
+                        <td data-label="Do"><input type="text" name="hodDo" class="time" id="hodDo" title="Čas konce platnosti" maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>></td>
                     </tr>
                     <tr>
                         <th>Název zařízení</th>
-                        <td data-label="Název zařízení" colspan="2"><input type="text" name="NZarizeni" value="<?= $zaznam['nazev_zarizeni'] ?? null ?>"></td>
+                        <td data-label="Název zařízení" colspan="2"><input type="text" name="NZarizeni" title="Název zařízení" value="<?= $zaznam['nazev_zarizeni'] ?? null ?>"></td>
                         <th>Číslo zařízení</th>
-                        <td data-label="Číslo zařízení" colspan="2"><input type="number" name="CZarizeni" value="<?= $zaznam['c_zarizeni'] ?? null ?>"></td>
+                        <td data-label="Číslo zařízení" colspan="2"><input type="text" name="CZarizeni" title="Číslo zařízení" value="<?= $zaznam['c_zarizeni'] ?? null ?>"></td>
                     </tr>
                     <tr>
                         <th>Popis, druh a rozsah práce</th>
-                        <td data-label="Popis, druh a rozsah práce" colspan="5"><input type="text" name="prace" value="<?= $zaznam['popis_prace'] ?? null ?>"></td>
+                        <td data-label="Popis, druh a rozsah práce" colspan="5"><input type="text" name="prace" title="Popis, druh a rozsah práce" value="<?= $zaznam['popis_prace'] ?? null ?>"></td>
                     </tr>
                     <tr>
                         <th>Seznámení s riziky pracoviště dle karty č.</th>
-                        <td data-label="Seznámení s riziky pracov. dle karty č." colspan="5"><input type="number" name="rizikaPrac" value="<?= $zaznam['c_karty'] ?? null ?>"></td>
+                        <td data-label="Seznámení s riziky pracov. dle karty č." colspan="5"><input type="number" name="rizikaPrac" title="Číslo karty" value="<?= $zaznam['c_karty'] ?? null ?>"></td>
                     </tr>   
                 </tbody>
             </table>
@@ -972,7 +972,8 @@
     </div>
     <style>
         body{
-            background: unset #F0F8FF;
+            background: unset;
+            background-color: #F0F8FF;
         }
         table{
             background: #FFFFFF;
