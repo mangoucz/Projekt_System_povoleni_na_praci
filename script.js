@@ -388,7 +388,8 @@ $(document).ready(function() {
         const index = $("tr.svareciTR[data-index]").length;
         
         const radek = vytvorRadek('svareciTR', index, `
-            <td colspan="2" data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]"></td>
+            <td data-label="Jméno"><input type="text" name="svarec[${index}][jmeno]"></td>
+            <td data-label="Příjmení"><input type="text" name="svarec[${index}][prijmeni]"></td>
             <td colspan="3" data-label="Č. svář. průkazu"><input type="text" name="svarec[${index}][prukaz]"></td>
             <td><button type="button" class="svarecDel del">-</button></td>
         `);

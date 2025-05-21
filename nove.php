@@ -519,13 +519,15 @@
                         <td colspan="6" class="podnadpis">2.13 Sváření provedou</td>
                     </tr>
                     <tr>
-                        <th colspan="2">Jméno</th>
+                        <th>Jméno</th>
+                        <th>Příjmení</th>
                         <th colspan="4">Č. svář. průkazu</th>
                     </tr>
                     <?php $svarecCount = !empty($svareci) ? count($svareci) : 0; ?>
                     <?php for($i = 0; $i < $svarecCount; $i++) : ?>
                     <tr class="svareciTR" data-index="<?= $i ?>">
-                        <td colspan="2" data-label="Jméno"><input type="text" name="svarec[<?= $i ?>][jmeno]" value="<?= $svareci[$i]['jmeno'] ?? null ?>"></td>
+                        <td data-label="Jméno"><input type="text" name="svarec[<?= $i ?>][jmeno]" value="<?= $svareci[$i]['jmeno'] ?? null ?>"></td>
+                        <td data-label="Příjmení"><input type="text" name="svarec[<?= $i ?>][prijmeni]" value="<?= $svareci[$i]['prijmeni'] ?? null ?>"></td>
                         <td colspan="3" data-label="Č. svář. průkazu"><input type="text" name="svarec[<?= $i ?>][prukaz]" value="<?= $svareci[$i]['c_prukazu'] ?? null ?>"></td>
                     </tr>
                     <?php endfor; ?>

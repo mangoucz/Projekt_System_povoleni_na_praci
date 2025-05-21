@@ -322,6 +322,7 @@
                 sqlsrv_free_stmt($result);
             for ($i = 0; $i < $svareciPocet; $i++) {
                 $svarecJmeno = $_POST['svarec'][$i]['jmeno'];
+                $svarecPrijmeni = $_POST['svarec'][$i]['prijmeni'];
                 $svarecPrukaz = $_POST['svarec'][$i]['prukaz'];
 
                 $sql = "SELECT * FROM Svareci AS s WHERE s.c_prukazu = ?;";
@@ -340,10 +341,24 @@
                     $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
                     sqlsrv_free_stmt($result);
                     $svarecID = $zaznam['id_svar'];
+                    if ($zaznam['jmeno'] != $svarecJmeno || $zaznam['prijmeni'] != $svarecPrijmeni) {
+                        $sql = "UPDATE Svareci SET jmeno = ?, prijmeni = ? WHERE id_svar = ?;";
+                        $params = [$svarecJmeno, $svarecPrijmeni, $svarecID];
+                        $result = sqlsrv_query($conn, $sql, $params);
+                        if ($result === FALSE) {
+                            echo json_encode([
+                                "success" => false,
+                                "message" => "Chyba SQL dotazu!",
+                                "error" => sqlsrv_errors()
+                            ]);
+                            exit;
+                        }
+                        sqlsrv_free_stmt($result);
+                    }
                 } else {
                     sqlsrv_free_stmt($result);
-                    $sql = "INSERT INTO Svareci (jmeno, c_prukazu) VALUES (?, ?);";
-                    $params = [$svarecJmeno, $svarecPrukaz];
+                    $sql = "INSERT INTO Svareci (jmeno, prijmeni, c_prukazu) VALUES (?, ?, ?);";
+                    $params = [$svarecJmeno, $svarecPrijmeni, $svarecPrukaz];
                     $result = sqlsrv_query($conn, $sql, $params);
                     if ($result === FALSE) {
                         echo json_encode([
@@ -370,20 +385,6 @@
 
                 $sql = "INSERT INTO Pov_Svar (id_pov, id_svar) VALUES (?, ?);";
                 $params = [$id_pov, $svarecID];
-                $result = sqlsrv_query($conn, $sql, $params);
-                if ($result === FALSE) {
-                    echo json_encode([
-                        "success" => false,
-                        "message" => "Chyba SQL dotazu!",
-                        "error" => sqlsrv_errors()
-                    ]);
-                    exit;
-                }
-                sqlsrv_free_stmt($result);
-            }
-            if($svareciPocet == 0) {
-                $sql = "DELETE FROM Pov_svar WHERE Pov_svar.id_pov = ?;";
-                $params = [$id_pov];
                 $result = sqlsrv_query($conn, $sql, $params);
                 if ($result === FALSE) {
                     echo json_encode([

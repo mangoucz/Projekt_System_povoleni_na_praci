@@ -466,7 +466,7 @@
             </tr>
             <?php for ($i = 0; $i < 3; $i++) : ?>
                 <tr>
-                    <td colspan="5"><input type="text" name="" value="<?= $svareci[$i]['jmeno'] ?? '' ?>"></td>
+                    <td colspan="5"><input type="text" name="" value="<?= ($svareci[$i]['jmeno'] ?? '') . ' ' . ($svareci[$i]['prijmeni'] ?? '') ?>"></td>
                     <td colspan="4"><input type="text" name="" value="<?= $svareci[$i]['c_prukazu'] ?? '' ?>"></td>
                     <td colspan="5"></td>
                 </tr>
