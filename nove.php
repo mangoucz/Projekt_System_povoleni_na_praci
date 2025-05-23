@@ -15,7 +15,6 @@
         }
         return "";
     }
-
     session_start();
 
     if (isset($_SESSION['uziv']))
@@ -41,13 +40,15 @@
 
     $jmeno = $zaznam['jmeno'];
     $funkce = $zaznam['funkce'];
-
+    
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $sql = [];
-        $params = [];
+        $ochrana = [];
+        $ochrana_typy = ['nohy', 'telo', 'hlava', 'oci', 'dychadel', 'pas', 'rukavice', 'hasicak'];
+        $edit = false;
 
         if(isset($_POST['subEdit']) || isset($_POST['subProdl'])){
             $id = $_POST['id'];
+            $sql = [];
             $svareci = [];
             $rozbory = [];
             
@@ -72,6 +73,7 @@
                             WHERE Povolenka.id_pov = ?;";
                 $sql[1] = "SELECT * FROM Pov_Svar as ps LEFT JOIN Svareci AS s ON s.id_svar = ps.id_svar WHERE ps.id_pov = ?;"; 
                 $sql[2] = "SELECT * FROM Pov_Roz as pr LEFT JOIN Rozbory AS r ON r.id_roz = pr.id_roz WHERE pr.id_pov = ?;"; 
+                $sql[3] = "SELECT o.id_och, o.typ FROM Pov_Ochran as po LEFT JOIN Ochrana AS o ON o.id_och = po.id_och WHERE po.id_pov = ?;";
             }
             $params = [$id];
 
@@ -90,14 +92,37 @@
                     else if ($i === 2) {
                         $rozbory[] = $row;
                     }
+                   else if ($i === 3) {
+                        $ochrana[rtrim($row['typ'])] = $row['id_och'];
+                    }
+
                 }
                 sqlsrv_free_stmt($result);
             }
             if (isset($_POST['subEdit'])) {
                 $poleDat = [$zaznam['povol_do'], $zaznam['prodlZarDo'], $zaznam['prodlOhDo']];
                 $nejDo = max(array_filter($poleDat));
+                
+                isset($ochrana['nohy']) ? $edit = true : $edit = false;
             }
         }
+        $sql = "SELECT * FROM Ochrana WHERE typ = ?;";
+        for ($i=0; $i < count($ochrana_typy); $i++) {   
+            $params = [$ochrana_typy[$i]];
+            $result = sqlsrv_query($conn, $sql, $params);
+            if ($result === false) 
+                die(print_r(sqlsrv_errors(), true));
+
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                $ochrany[$ochrana_typy[$i]][] = $row;
+            }
+            sqlsrv_free_stmt($result);
+        }  
+        if ($edit) {
+            $ochranaZDB = [$ochrana['nohy'], $ochrana['telo'], $ochrana['hlava'], $ochrana['oci'], $ochrana['dychadel'], $ochrana['pas'], $ochrana['rukavice']];
+        }
+        else
+            $ochranaZDB = [null, null, null, null, null, null, null];
     }
 ?>
 <!DOCTYPE html>
@@ -429,31 +454,83 @@
                     </tr>
                     <tr>
                         <th>2.1 Ochrana nohou - jaká</th>
-                        <td data-label="2.1 Ochrana nohou - jaká" colspan="5"><input type="text" name="ochran_nohy" value="<?= $zaznam['ochran_nohy'] ?? null ?>"></td>
+                        <td data-label="2.1 Ochrana nohou - jaká" colspan="5"><select name="ochran_nohy">
+                            <?php foreach ($ochrany['nohy'] as $item): ?>
+                                <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[0]) ? 'selected' : $item['ochrana'][0] ?>>
+                                    <?= $item['ochrana'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select></td>
                     </tr>
                     <tr>
                         <th>2.2 Ochrana těla - jaká</th>
-                        <td data-label="2.2 Ochrana těla - jaká" colspan="6"><input type="text" name="ochran_telo" value="<?= $zaznam['ochran_telo'] ?? null ?>" ></td>
+                        <td data-label="2.2 Ochrana těla - jaká" colspan="6"><select name="ochran_telo">
+                            <?php foreach ($ochrany['telo'] as $item): ?>
+                                <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[1]) ? 'selected' : $item['ochrana'][0] ?>>
+                                    <?= $item['ochrana'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select></td>
                     </tr>
                     <tr>
                         <th>2.3 Ochrana hlavy - jaká</th>
-                        <td data-label="2.3 Ochrana hlavy - jaká" colspan="6"><input type="text" name="ochran_hlava" value="<?= $zaznam['ochran_hlava'] ?? null ?>"></td>
+                        <td data-label="2.3 Ochrana hlavy - jaká" colspan="6">  
+                            <select name="ochran_hlava">
+                                <?php foreach ($ochrany['hlava'] as $item): ?>
+                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[2]) ? 'selected' : $item['ochrana'][0] ?>>
+                                        <?= $item['ochrana'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <th>2.4 Ochrana oči - jaká - druh</th>
-                        <td data-label="2.4 Ochrana oči - jaká - druh" colspan="6"><input type="text" name="ochran_oci" value="<?= $zaznam['ochran_oci'] ?? null ?>"></td>
+                        <td data-label="2.4 Ochrana oči - jaká - druh" colspan="6">
+                            <select name="ochran_oci">
+                                <?php foreach ($ochrany['oci'] as $item): ?>
+                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[3]) ? 'selected' : $item['ochrana'][0] ?>>
+                                        <?= $item['ochrana'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <th>2.5 Ochrana dýchadel - jaká</th>
-                        <td data-label="2.5 Ochrana dýchadel - jaká" colspan="6"><input type="text" name="ochran_dychadel" value="<?= $zaznam['ochran_dychadel'] ?? null ?>"></td>
+                        <td data-label="2.5 Ochrana dýchadel - jaká" colspan="6">
+                            <select name="ochran_dychadel">
+                                <?php foreach ($ochrany['dychadel'] as $item): ?>
+                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[4]) ? 'selected' : $item['ochrana'][0] ?>>
+                                        <?= $item['ochrana'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <th>2.6 Ochranný pás - druh</th>
-                        <td data-label="2.6 Ochranný pás - druh" colspan="6"><input type="text" name="ochran_pas" value="<?= $zaznam['ochran_pas'] ?? null ?>"></td>
+                        <td data-label="2.6 Ochranný pás - druh" colspan="6">
+                            <select name="ochran_pas">
+                                <?php foreach ($ochrany['pas'] as $item): ?>
+                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[5]) ? 'selected' : $item['ochrana'][0] ?>>
+                                        <?= $item['ochrana'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <th>2.7 Ochranné rukavice - druh</th>
-                        <td data-label="2.7 Ochranné rukavice - druh" colspan="6"><input type="text" name="ochran_rukavice" value="<?= $zaznam['ochran_rukavice'] ?? null ?>"></td>
+                        <td data-label="2.7 Ochranné rukavice - druh" colspan="6">
+                            <select name="ochran_rukavice">
+                                <?php foreach ($ochrany['rukavice'] as $item): ?>
+                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[6]) ? 'selected' : $item['ochrana'][0] ?>>
+                                        <?= $item['ochrana'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <th>2.8 Dozor jmenovitě</th>

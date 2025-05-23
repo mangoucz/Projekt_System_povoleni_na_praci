@@ -21,6 +21,21 @@ input[type="number"]::-webkit-outer-spin-button {
     margin: 0;
 }
 
+select {
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    color: #2C3E50;
+    cursor: pointer;
+    margin-right: 20px;
+    transition: border-color 0.3s ease;
+}
+select:hover {
+    border-color: #003366;
+}
+
 /* jQuery UI Datepicker */
 /* Kalendář jako celek */
 .ui-datepicker {
@@ -123,9 +138,6 @@ input[type="number"]::-webkit-outer-spin-button {
 .ui-slider .ui-slider-handle:hover {
     transform: scale(1.1) !important;
 }
-
-
-/* Add these styles after your existing jQuery UI styles */
 
 /* Tooltip container */
 .ui-tooltip {   

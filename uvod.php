@@ -31,17 +31,6 @@
 
     $schval = sqlsrv_has_rows($result);
     sqlsrv_free_stmt($result);
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if ($_POST['subNove']) {
-            header("Location: nove.php");
-            exit();
-        }
-        else {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
-        }
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +49,7 @@
         <img src="Indorama.png" class="logo">
         <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
         <div class="headerB">
-            <form action="" method="post" style="width: 60%;">
+            <form action="nove.php" method="post" style="width: 60%;">
                 <input type="submit" value="Nové povolení" name="subNove" class="defButt">
             </form>
             <div class="uziv">
@@ -498,21 +487,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        select {
-            background: #ffffff;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 14px;
-            color: #2C3E50;
-            cursor: pointer;
-            margin-right: 20px;
-            transition: border-color 0.3s ease;
-        }
-        select:hover {
-            border-color: #003366;
         }
 
         .prehledy {

@@ -122,14 +122,16 @@
             $jine_zab_pozar = $_POST['jine_zab_pozar'] ?? 0;
             $jine_zab_pozar_kom = $_POST['jine_zab_pozar_kom'] ?? null;
             // TAB 2 1-8 Osobní ochranné pracovní prostředky
-            $ochran_nohy = inputCheck($_POST['ochran_nohy']);
-            $ochran_telo = inputCheck($_POST['ochran_telo']);
-            $ochran_hlava = inputCheck($_POST['ochran_hlava']);
-            $ochran_oci = inputCheck($_POST['ochran_oci']);
-            $ochran_dychadel = inputCheck($_POST['ochran_dychadel']);
-            $ochran_pas = inputCheck($_POST['ochran_pas']);
-            $ochran_rukavice = inputCheck($_POST['ochran_rukavice']);
-            $ochran_dozor =inputCheck($_POST['ochran_dozor']);
+            $ochrana = [
+                $_POST['ochran_nohy'] ?? null,
+                $_POST['ochran_telo'] ?? null,
+                $_POST['ochran_hlava'] ?? null,
+                $_POST['ochran_oci'] ?? null,
+                $_POST['ochran_dychadel'] ?? null,
+                $_POST['ochran_pas'] ?? null,
+                $_POST['ochran_rukavice'] ?? null
+            ];           
+            $ochran_dozor = inputCheck($_POST['ochran_dozor']);
             // TAB 2 9-14 Jiné příkazy
             $jine_prikazy = inputCheck($_POST['jine_prikazy']);
             $U_220 = $_POST['U_220'] ?? 0;
@@ -190,7 +192,7 @@
                                 rizikovost = ?, interni = ?, externi = ?, pocet_osob = ?, prace_na_zarizeni = ?, svarovani_ohen = ?, vstup_zarizeni_teren = ?, prostredi_vybuch = ?, predani_prevzeti_zarizeni = ?, provoz = ?, objekt = ?, c_zarizeni = ?, nazev_zarizeni = ?, popis_prace = ?, c_karty = ?,
                                 vycisteni = ?, vycisteni_kom = ?, vyparene = ?, vyparene_hod = ?, vyparene_kom = ?, vyplachnute = ?, vyplachnute_kom = ?, plyn_vytesnen = ?, plyn_vytesnen_kom = ?, vyvetrane = ?, vyvetrane_hod = ?, vyvetrane_kom = ?, profouk_dusik = ?, profouk_dusik_hod = ?, profouk_dusik_kom = ?, profouk_vzd = ?, profouk_vzd_hod = ?, profouk_vzd_kom = ?, odpojeno_od_el = ?, odpojeno_od_el_kym = ?, oddelene_zaslep = ?, oddelene_zaslep_kym = ?, jinak_zab = ?, jinak_zab_jak = ?,
                                 nejiskrive_naradi = ?, nejiskrive_naradi_kom = ?, zkrapet_vetrat = ?, zkrapet_vetrat_pocet = ?, zkrapet_vetrat_hod = ?, zkrapet_vetrat_misto = ?, rozbor_ovzdusi = ?, rozbor_ovzdusi_misto = ?, rozbor_ovzdusi_cas = ?, rozbor_ovzdusi_vysl = ?, zab_dozor = ?, zab_dozor_pocet = ?, pozar_hlidka = ?, pozar_hlidka_pocet = ?, pozar_hlidka_jmeno = ?, hasici_pristroj = ?, hasici_pristroj_pocet = ?, hasici_pristroj_druh = ?, hasici_pristroj_typ = ?, jine_zab_pozar = ?, jine_zab_pozar_kom = ?,
-                                ochran_nohy = ?, ochran_telo = ?, ochran_hlava = ?, ochran_oci = ?, ochran_dychadel = ?, ochran_pas = ?, ochran_rukavice = ?, dozor = ?,
+                                dozor = ?,
                                 jine_prikazy = ?, U_220V = ?, U_24V = ?, kryt = ?, bez_krytu = ?, bez_krytu_kom = ?, bez_krytu_kom2 = ?, odpovida = ?, dat_odpovedny = ?, osvedceni_ma = ?,
                                 dat_odpov_provoz = ?, dat_odpov_GB_exter = ?, prohl_obvod = ?, dat_vedouci = ?,
                                 podminky_ohen = ?, ohen_jmeno = ?, dat_ohen = ?, zkontroloval = ?,
@@ -206,7 +208,7 @@
                 $params = [$riziko, $interni, $externi, $pocetOs, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $provoz, $objekt, $CZarizeni, $NZarizeni, $prace, $rizikaPrac,
                         $vycisteni, $vycisteni_kom, $vyparene, $vyparene_hod, $vyparene_kom, $vyplachnute, $vyplachnute_kom, $plyn_vytesnen, $plyn_vytesnen_kom, $vyvetrane, $vyvetrane_hod, $vyvetrane_kom, $profouk_dusik, $profouk_dusik_hod, $profouk_dusik_kom, $profouk_vzd, $profouk_vzd_hod, $profouk_vzd_kom, $odpojeno_od_el, $odpojeno_od_el_kym, $oddelene_zaslep, $oddelene_zaslep_kym, $jinak_zab, $jinak_zab_jak,
                         $nejiskrive_naradi, $nejiskrive_naradi_kom, $zkrapet_vetrat, $zkrapet_vetrat_pocet, $zkrapet_vetrat_hod, $zkrapet_vetrat_misto, $rozbor_ovzdusi, $rozbor_ovzdusi_misto, $rozbor_ovzdusi_cas, $rozbor_ovzdusi_vysl, $zab_dozor, $zab_dozor_pocet, $pozar_hlidka, $pozar_hlidka_pocet, $pozar_hlidka_jmeno, $hasici_pristroj, $hasici_pristroj_pocet, $hasici_pristroj_druh, $hasici_pristroj_typ, $jine_zab_pozar, $jine_zab_pozar_kom,
-                        $ochran_nohy, $ochran_telo, $ochran_hlava, $ochran_oci, $ochran_dychadel, $ochran_pas, $ochran_rukavice, $ochran_dozor,
+                        $ochran_dozor,
                         $jine_prikazy, $U_220, $U_24, $kryt, $bez_krytu, $bez_krytu_kom, $bez_krytu_kom2, $za_praci_odpovida, $odpovednost_dat, $osvedceny_prac,
                         $prohl_prac_dat, $prohl_exter_dat, $prohl_obvod, $prohl_vedouci_dat,
                         $podminky, $podminky_jm, $ohen_dat, $zkontroloval_jm,
@@ -235,7 +237,7 @@
                 $sql = "INSERT INTO Povolenka (id_zam, ev_cislo, rizikovost, interni, externi, pocet_osob, povol_od, povol_do, prace_na_zarizeni, svarovani_ohen, vstup_zarizeni_teren, prostredi_vybuch, predani_prevzeti_zarizeni, provoz, objekt, c_zarizeni, nazev_zarizeni, popis_prace, c_karty,
                                             vycisteni, vycisteni_kom, vyparene, vyparene_hod, vyparene_kom, vyplachnute, vyplachnute_kom, plyn_vytesnen, plyn_vytesnen_kom, vyvetrane, vyvetrane_hod, vyvetrane_kom, profouk_dusik, profouk_dusik_hod, profouk_dusik_kom, profouk_vzd, profouk_vzd_hod, profouk_vzd_kom, odpojeno_od_el, odpojeno_od_el_kym, oddelene_zaslep, oddelene_zaslep_kym, jinak_zab, jinak_zab_jak,
                                             nejiskrive_naradi, nejiskrive_naradi_kom, zkrapet_vetrat, zkrapet_vetrat_pocet, zkrapet_vetrat_hod, zkrapet_vetrat_misto, rozbor_ovzdusi, rozbor_ovzdusi_misto, rozbor_ovzdusi_cas, rozbor_ovzdusi_vysl, zab_dozor, zab_dozor_pocet, pozar_hlidka, pozar_hlidka_pocet, pozar_hlidka_jmeno, hasici_pristroj, hasici_pristroj_pocet, hasici_pristroj_druh, hasici_pristroj_typ, jine_zab_pozar, jine_zab_pozar_kom,
-                                            ochran_nohy, ochran_telo, ochran_hlava, ochran_oci, ochran_dychadel, ochran_pas, ochran_rukavice, dozor,
+                                            dozor,
                                             jine_prikazy, U_220V, U_24V, kryt, bez_krytu, bez_krytu_kom, bez_krytu_kom2, odpovida, dat_odpovedny, osvedceni_ma,
                                             dat_odpov_provoz, dat_odpov_GB_exter, prohl_obvod, dat_vedouci,
                                             podminky_ohen, ohen_jmeno, dat_ohen, zkontroloval,
@@ -251,7 +253,7 @@
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                            ?, ?, ?, ?, ?, ?, ?, ?,
+                            ?,
                             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                             ?, ?, ?, ?,
                             ?, ?, ?, ?,
@@ -267,7 +269,7 @@
                 $params = [$uziv, $ev_cislo, $riziko, $interni, $externi, $pocetOs, $povolOd, $povolDo, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $provoz, $objekt, $CZarizeni, $NZarizeni, $prace, $rizikaPrac,
                         $vycisteni, $vycisteni_kom, $vyparene, $vyparene_hod, $vyparene_kom, $vyplachnute, $vyplachnute_kom, $plyn_vytesnen, $plyn_vytesnen_kom, $vyvetrane, $vyvetrane_hod, $vyvetrane_kom, $profouk_dusik, $profouk_dusik_hod, $profouk_dusik_kom, $profouk_vzd, $profouk_vzd_hod, $profouk_vzd_kom, $odpojeno_od_el, $odpojeno_od_el_kym, $oddelene_zaslep, $oddelene_zaslep_kym, $jinak_zab, $jinak_zab_jak,
                         $nejiskrive_naradi, $nejiskrive_naradi_kom, $zkrapet_vetrat, $zkrapet_vetrat_pocet, $zkrapet_vetrat_hod, $zkrapet_vetrat_misto, $rozbor_ovzdusi, $rozbor_ovzdusi_misto, $rozbor_ovzdusi_cas, $rozbor_ovzdusi_vysl, $zab_dozor, $zab_dozor_pocet, $pozar_hlidka, $pozar_hlidka_pocet, $pozar_hlidka_jmeno, $hasici_pristroj, $hasici_pristroj_pocet, $hasici_pristroj_druh, $hasici_pristroj_typ, $jine_zab_pozar, $jine_zab_pozar_kom,
-                        $ochran_nohy, $ochran_telo, $ochran_hlava, $ochran_oci, $ochran_dychadel, $ochran_pas, $ochran_rukavice, $ochran_dozor,
+                        $ochran_dozor,
                         $jine_prikazy, $U_220, $U_24, $kryt, $bez_krytu, $bez_krytu_kom, $bez_krytu_kom2, $za_praci_odpovida, $odpovednost_dat, $osvedceny_prac,
                         $prohl_prac_dat, $prohl_exter_dat, $prohl_obvod, $prohl_vedouci_dat,
                         $podminky, $podminky_jm, $ohen_dat, $zkontroloval_jm,
@@ -284,7 +286,7 @@
                 if ($result === FALSE) {
                     echo json_encode([
                         "success" => false,
-                        "message" => "Chyba SQL dotazu!",
+                        "message" => "Chyba SQL dotazu pro INSERT Povolení!",
                         "error" => sqlsrv_errors()
                     ]);
                     exit;
@@ -304,11 +306,37 @@
                 $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
                 sqlsrv_free_stmt($result);
                 $id_pov = $zaznam['id_pov'];
-
-
             }
             //TAB 2
-            $sql = "DELETE FROM Pov_svar WHERE Pov_svar.id_pov = ?;";
+            $sql = "DELETE FROM Pov_Ochran WHERE Pov_Ochran.id_pov = ?;";
+                $params = [$id_pov];
+                $result = sqlsrv_query($conn, $sql, $params);
+                if ($result === FALSE) {
+                    echo json_encode([
+                        "success" => false,
+                        "message" => "Chyba SQL dotazu pro DELETE Pov_Ochran!",
+                        "error" => sqlsrv_errors()
+                    ]);
+                    exit;
+                }
+                sqlsrv_free_stmt($result);
+
+            for ($i = 0; $i < count($ochrana); $i++) {
+                $sql = "INSERT INTO Pov_Ochran (id_pov, id_och) VALUES (?, ?);";
+                $params = [$id_pov, $ochrana[$i]];
+                $result = sqlsrv_query($conn, $sql, $params);
+                if ($result === FALSE) {
+                    echo json_encode([
+                        "success" => false,
+                        "message" => "Chyba SQL dotazu pro INSERT do Pov_Ochran!",
+                        "error" => sqlsrv_errors()
+                    ]);
+                    exit;
+                }
+                sqlsrv_free_stmt($result);
+            }
+
+            $sql = "DELETE FROM Pov_Svar WHERE Pov_svar.id_pov = ?;";
                 $params = [$id_pov];
                 $result = sqlsrv_query($conn, $sql, $params);
                 if ($result === FALSE) {

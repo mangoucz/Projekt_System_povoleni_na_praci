@@ -9,7 +9,7 @@ $(document).ready(function() {
                 visibleTables[id] = true;
             });
         });
-        $("#first, #sec, #third, #fourth, #fifth, #sixth").each(function() {
+        $("#first, #third, #fourth, #fifth, #sixth").each(function() {
             if (visibleTables[$(this).attr("id")]) 
                 $(this).stop().fadeIn(250);
             else 
@@ -167,12 +167,12 @@ $(document).ready(function() {
         });
     }
 
-    $("#first, #sec, #third, #fourth, #fifth, #sixth").hide();
+    $("#first, #third, #fourth, #fifth, #sixth").hide();
     const checkboxMap = {
         "prace_na_zarizeni": ["first", "third", "sixth"],
-        "svarovani_ohen": ["sec", "third", "fourth", "fifth"],
-        "vstup_zarizeni_teren": ["first", "sec", "third"],
-        "prostredi_vybuch": ["sec", "third", "fifth"],
+        "svarovani_ohen": ["third", "fourth", "fifth"],
+        "vstup_zarizeni_teren": ["first", "third"],
+        "prostredi_vybuch": ["third", "fifth"],
         "predani_prevzeti_zarizeni": [] 
     };
     zobrazTab();

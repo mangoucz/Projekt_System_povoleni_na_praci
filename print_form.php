@@ -31,6 +31,7 @@
 
         if (isset($_POST['id'])) {
             $id = $_POST['id']; 
+            $ochrana_typy = ['nohy', 'telo', 'hlava', 'oci', 'dychadel', 'pas', 'rukavice', 'hasicak'];
             $rozbory = [];
             $svareci = [];
             $prodl = [];
@@ -40,6 +41,7 @@
             $sql[2] = "SELECT * FROM Pov_Roz as pr LEFT JOIN Rozbory AS r ON r.id_roz = pr.id_roz WHERE pr.id_pov = ?;"; 
             $sql[3] = "SELECT * FROM Prodlouzeni as prodl WHERE prodl.id_pov = ? ORDER BY prodl.typ DESC, prodl.od;";
             $sql[4] = "SELECT count(*) as pocet_zar FROM Prodlouzeni as prodl WHERE prodl.id_pov = ? AND prodl.typ = 'zařízení';"; 
+
             $params = [$id];
 
             for ($i = 0; $i < count($sql); $i++) { 
@@ -66,6 +68,18 @@
                 }
                 sqlsrv_free_stmt($result);
             }
+            $sql = "SELECT ochrana from Pov_Ochran as po JOIN Ochrana as o ON po.id_och = o.id_och where id_pov = ? AND o.typ = ?;";
+            for ($i=0; $i < count($ochrana_typy); $i++) {   
+                $params = [$id, $ochrana_typy[$i]];
+                $result = sqlsrv_query($conn, $sql, $params);
+                if ($result === false) 
+                    die(print_r(sqlsrv_errors(), true));
+
+                while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                    $ochrany[$ochrana_typy[$i]] = $row;
+                }
+                sqlsrv_free_stmt($result);
+            }  
         }
         else {
             header("Location: uvod.php");
@@ -371,37 +385,37 @@
                 <td rowspan="7" class="svisly-text">Osobní ochranné <br> pracovní prostředky</td>
                 <td>2.1</td>
                 <td colspan="3">Ochrana nohou - jaká</td>
-                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ochran_nohy'] ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany['nohy']['ochrana'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.2</td>
                 <td colspan="3">Ochrana těla - jaká</td>
-                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ochran_telo'] ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany['telo']['ochrana'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.3</td>
                 <td colspan="3">Ochrana hlavy - jaká</td>
-                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ochran_hlava'] ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany['hlava']['ochrana'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.4</td>
                 <td colspan="3">Ochrana očí - jaká - druh</td>
-                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ochran_oci'] ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany['oci']['ochrana'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.5</td>
                 <td colspan="3">Ochrana dýchadel - jaká</td>
-                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ochran_dychadel'] ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany['dychadel']['ochrana'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.6</td>
                 <td colspan="3">Ochranný pás - druh</td>
-                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ochran_pas'] ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany['pas']['ochrana'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.7</td>
                 <td colspan="3">Ochranné rukavice - druh</td>
-                <td colspan="9"><input type="text" name="" value="<?= $zaznam['ochran_rukavice'] ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany['rukavice']['ochrana'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.8</td>
