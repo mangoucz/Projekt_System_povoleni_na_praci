@@ -64,6 +64,49 @@
             }
             sqlsrv_free_stmt($result);
         }
+        else if(isset($_POST['hlaseni'])) {
+            $page = (int)$_POST['page'] ?? 1;
+            $pageSize = (int)$_POST['pageSize'] ?? 5;
+            $offset = ($page - 1) * $pageSize;
+
+            if ($pageSize <= 0) {
+                
+            }
+            else{
+                $sql = "SELECT COUNT(*) as total FROM Hlaseni
+                        WHERE Vyrizeno = 0 AND Odsunuto = 1 AND Prevzato = 0;";
+                $result = sqlsrv_query($conn, $sql);
+                $pocetHlaseni = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)['total'];
+                $pocetStranek = ceil($pocetHlaseni / $pageSize);
+    
+                sqlsrv_free_stmt($result);
+    
+                $sql = "SELECT * FROM Hlaseni
+                        WHERE Vyrizeno = 0 AND Odsunuto = 1 AND Prevzato = 0
+                        ORDER BY NaklStredisko ASC, id_hlas DESC
+                        OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
+                $params = [$offset, $pageSize];
+                $result = sqlsrv_query($conn, $sql, $params);
+            }
+            if ($result === false) {
+                echo json_encode([
+                    "success" => false,
+                    "message" => "Chyba SQL dotazu!",
+                    "error" => sqlsrv_errors()
+                ]);     
+                exit;
+            }
+            $data = [];            
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                $data[] = $row;
+            }
+            echo json_encode([
+                    "success" => true,
+                    "data" => $data,
+                    "pocetStran" => $pocetStranek,
+                    "velStranky" => $pageSize
+                ]);
+        }
         else {
             echo json_encode(["success" => false, "message" => "Neplatné ID"]);
         }

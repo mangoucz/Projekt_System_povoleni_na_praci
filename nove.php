@@ -1026,7 +1026,7 @@
             <input type="button" class="add" id="odeslat" value="Odeslat" name="subOdeslat" style="font-size: 16px;">
         </div>
     </form>
-    <div class="modal">
+    <div class="modal" id="modalOdeslano>
         <div class="modal-content">
             <div class="modal-header">
                 <span id="closeBtn" class="close">&times;</span>
@@ -1046,6 +1046,35 @@
             </div>
         </div>
     </div>
+    <div class="modal" id="modalHlaseni">
+        <form action="" method="post">
+            <div class="modal-content" style="width: 90%; max-width: 1200px; height: 80vh;">  
+                <div class="modal-header">
+                    <span id="closeBtn" class="close">&times;</span>
+                    <h2>Vyberte hlášení</h2>
+                </div>
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                    <Table id="hlaseniTable">
+                        <thead>
+                            <tr>
+                                <th>Evid.č.</th>
+                                <th>Název</th>
+                                <th>Nakl. stř.</th>
+                                <th>Umístění</th>
+                                <th>Popis</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </Table>
+                    <div id="strankovani">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
     <div class="footer">
         <img src="Indorama.png" width="200px">
     </div>
@@ -1060,7 +1089,7 @@
             border: 1px solid #BCD4EF;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 80%;
+            width: 90%;
             margin: 20px auto;
             border-collapse: collapse;
         }
@@ -1083,6 +1112,9 @@
             text-align: left;
             border-bottom: 1px solid #E6ECF2;
         }
+        h2{
+            font-size: 24px !important;
+        }
         h2::after {
             content: "";
             display: block;
@@ -1091,6 +1123,10 @@
             background: #d40000; 
             margin-top: 5px;
             border-radius: 2px;
+        }
+        a{
+            color: #2196F3;
+            text-decoration: none;
         }
         .modal-body{
             text-align: center;

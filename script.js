@@ -147,6 +147,54 @@ $(document).ready(function() {
             }
         }
     }
+    function loadHlaseniPage(page, velStranky = 5) {
+        $.ajax({
+            url: "get_povoleni.php",
+            type: "POST",
+            data: { page: page, pageSize: velStranky, hlaseni: true },
+            dataType: "json",
+            success: function(response) {
+                if (response.success) {
+                    $("#hlaseniTable tbody").empty();
+                    response.data.forEach(function(hl) {
+                        $("#hlaseniTable tbody").append(`
+                            <tr>
+                                <td class="evc">${hl.EvidCislo ?? ''}</td>
+                                <td class="nazev">${hl.Nazev ?? ''}</td>
+                                <td class="nakls">${hl.NaklStredisko ?? ''}</td>
+                                <td class="umisteni">${hl.Umisteni ?? ''}</td>
+                                <td class="popis">${hl.Popis ?? ''}</td>
+                                <td><button type="submit" class="defButt" value="${hl.id_hlas}">Vybrat</button></td>
+                            </tr>
+                        `);
+                    });
+                    let strHTML = '';
+                    for (let i = 1; i <= response.pocetStran; i++) {
+                        strHTML += `<a href="#" class="page-link" data-page="${i}" style="margin:0 5px;${i === page ? 'font-weight:bold;' : ''}">${i}</a>`;
+                    }
+                    $('#strankovani').html(strHTML);
+                    strHTML = `
+                        <div style="margin-top: 10px;">
+                            <label for="maxZobrazeni">Zobrazit na stránce:</label>
+                            <select name="maxZobrazeni" id="maxZobrazeni">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="0">Vše</option>
+                            </select>
+                        </div>`;    
+                    $('#strankovani').append(strHTML);
+                    $('#maxZobrazeni').val(response.velStranky);                
+                }else {
+                    alert("Chyba při načítání dat! " + (response.message || "Neznámá chyba"));
+                }
+            },
+            error: function() {
+                alert("Chyba komunikace se serverem!");
+            }
+        });     
+    }
     initializeDatepicker('.date');
     initializeRange('#riziko', '#rizikoValue', '#rizikoInput');
 
@@ -200,7 +248,23 @@ $(document).ready(function() {
     initializeTitle("input");
     initializeTitle("textarea");
 
+    if (window.location.href.includes("nove.php")) {
+        $("#modalHlaseni").fadeIn(200).css("display", "flex");
+        loadHlaseniPage(1);
+    }
+       
     $(document).on('change', '#intro input[type="checkbox"]', zobrazTab);
+
+    $(document).on('click', '.page-link', function(e) {
+        e.preventDefault();
+        const newPage = $(this).data("page");
+        loadHlaseniPage(newPage);
+    });
+
+    $(document).on('change', '#maxZobrazeni', function() {
+        const velStranky = $(this).val();
+        loadHlaseniPage(1, velStranky);
+    });
     
     $(document).on('change', '#archiv', function() {
         $("#my select").each(function() {

@@ -349,7 +349,7 @@
         <?php endif; ?>
     </form>
     <div class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 400px;">
             <div class="modal-header">
                 <span id="closeBtn" class="close">&times;</span>
                 <h2>Povolení č. </h2>
