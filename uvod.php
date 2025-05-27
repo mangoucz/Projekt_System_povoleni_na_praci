@@ -49,9 +49,9 @@
         <img src="Indorama.png" class="logo">
         <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
         <div class="headerB">
-            <form action="nove.php" method="post" style="width: 60%;">
-                <input type="submit" value="Nové povolení" name="subNove" class="defButt">
-            </form>
+            <div style="width: 60%;">
+                <button type="button" id="subNove" class="defButt">Nové povolení</button>
+            </div>
             <div class="uziv">
                 <img src="user_icon.png" width="28%" style="margin-right: 2%;">
                 <div class="uziv_inf">

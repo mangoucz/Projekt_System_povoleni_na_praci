@@ -106,23 +106,34 @@
                 isset($ochrana['nohy']) ? $edit = true : $edit = false;
             }
         }
-        $sql = "SELECT * FROM Ochrana WHERE typ = ?;";
-        for ($i=0; $i < count($ochrana_typy); $i++) {   
-            $params = [$ochrana_typy[$i]];
+        else if (isset($_POST['subNov'])) {
+            $id_hlas = $_POST['id_hlas'] ?? null;
+            $sql = "SELECT * FROM Hlaseni WHERE id_hlas = ?;";
+            $params = [$id_hlas];
             $result = sqlsrv_query($conn, $sql, $params);
             if ($result === false) 
                 die(print_r(sqlsrv_errors(), true));
-
-            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-                $ochrany[$ochrana_typy[$i]][] = $row;
-            }
-            sqlsrv_free_stmt($result);
-        }  
-        if ($edit) {
-            $ochranaZDB = [$ochrana['nohy'], $ochrana['telo'], $ochrana['hlava'], $ochrana['oci'], $ochrana['dychadel'], $ochrana['pas'], $ochrana['rukavice']];
+            $hlaseni = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
         }
-        else
-            $ochranaZDB = [null, null, null, null, null, null, null];
+        if (!isset($_POST['subProdl'])) {
+            $sql = "SELECT * FROM Ochrana WHERE typ = ?;";
+            for ($i=0; $i < count($ochrana_typy); $i++) {   
+                $params = [$ochrana_typy[$i]];
+                $result = sqlsrv_query($conn, $sql, $params);
+                if ($result === false) 
+                    die(print_r(sqlsrv_errors(), true));
+    
+                while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                    $ochrany[$ochrana_typy[$i]][] = $row;
+                }
+                sqlsrv_free_stmt($result);
+            }  
+            if ($edit) {
+                $ochranaZDB = [$ochrana['nohy'], $ochrana['telo'], $ochrana['hlava'], $ochrana['oci'], $ochrana['dychadel'], $ochrana['pas'], $ochrana['rukavice']];
+            }
+            else
+                $ochranaZDB = [null, null, null, null, null, null, null];
+        }
     }
 ?>
 <!DOCTYPE html>
@@ -217,7 +228,7 @@
                     </tr>
                     <tr >
                         <th>Provoz</th>
-                        <td data-label="Provoz"><input type="text" name="provoz" title="Provoz" value="<?= $zaznam['provoz'] ?? null ?>"></td>
+                        <td data-label="Provoz"><input type="text" name="provoz" title="Provoz" value="<?= isset($hlaseni) ? $hlaseni['NaklStredisko'] : ($zaznam['provoz'] ?? null) ?>"></td>
                         <th>Název(číslo) objektu</th>
                         <td data-label="Název(číslo) objektu"><input type="text" name="objekt" title="Název nebo č. objektu" value="<?= $zaznam['objekt'] ?? null ?>"></td>
                         <td data-label="Od"><input type="text" name="hodOd" class="time" id="hodOd" title="Čas začátku platnosti" maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>></td>
@@ -1047,7 +1058,7 @@
         </div>
     </div>
     <div class="modal" id="modalHlaseni">
-        <form action="" method="post">
+        <form action="nove.php" method="post">
             <div class="modal-content" style="width: 90%; max-width: 1200px; height: 80vh;">  
                 <div class="modal-header">
                     <span id="closeBtn" class="close">&times;</span>
@@ -1057,11 +1068,11 @@
                     <Table id="hlaseniTable">
                         <thead>
                             <tr>
+                                <th colspan="2">Zadal</th>
                                 <th>Evid.č.</th>
+                                <th>Č.Povolení</th>
                                 <th>Název</th>
                                 <th>Nakl. stř.</th>
-                                <th>Umístění</th>
-                                <th>Popis</th>
                                 <th></th>
                             </tr>
                         </thead>

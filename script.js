@@ -159,12 +159,13 @@ $(document).ready(function() {
                     response.data.forEach(function(hl) {
                         $("#hlaseniTable tbody").append(`
                             <tr>
+                                <td class="evc">${hl.Zam ?? ''}</td>
+                                <td class="evc">${hl.Kdy ?? ''}</td>
                                 <td class="evc">${hl.EvidCislo ?? ''}</td>
+                                <td class="cpovol">${hl.CisPovolenky ?? ''}</td>
                                 <td class="nazev">${hl.Nazev ?? ''}</td>
                                 <td class="nakls">${hl.NaklStredisko ?? ''}</td>
-                                <td class="umisteni">${hl.Umisteni ?? ''}</td>
-                                <td class="popis">${hl.Popis ?? ''}</td>
-                                <td><button type="submit" class="defButt" value="${hl.id_hlas}">Vybrat</button></td>
+                                <td><button type="submit" name="id_hlas" class="defButt" value="${hl.id_hlas}">Vybrat</button></td>
                             </tr>
                         `);
                     });
@@ -248,17 +249,22 @@ $(document).ready(function() {
     initializeTitle("input");
     initializeTitle("textarea");
 
-    if (window.location.href.includes("nove.php")) {
+    if (window.location.href.includes("nove.php?nove=true")) {
         $("#modalHlaseni").fadeIn(200).css("display", "flex");
-        loadHlaseniPage(1);
+        loadHlaseniPage(1);   
     }
-       
+
     $(document).on('change', '#intro input[type="checkbox"]', zobrazTab);
+    
+    $(document).on('click', '#subNove', function(){
+        window.location.href = "nove.php?nove=true";
+    });
 
     $(document).on('click', '.page-link', function(e) {
         e.preventDefault();
         const newPage = $(this).data("page");
-        loadHlaseniPage(newPage);
+        const velStranky = $('#maxZobrazeni').val();
+        loadHlaseniPage(newPage, velStranky);
     });
 
     $(document).on('change', '#maxZobrazeni', function() {

@@ -70,7 +70,21 @@
             $offset = ($page - 1) * $pageSize;
 
             if ($pageSize <= 0) {
-                
+                $pocetStranek = 1;
+                $pageSize = 0;
+
+                $sql = "SELECT 
+                            h.EvidCislo,
+                            h.NaklStredisko,
+                            h.TypRes,
+                            h.Nazev,
+                            FORMAT(Kdy, 'dd. MM. yyyy') as Kdy,
+                            h.CisPovolenky,
+                            CONCAT(z.jmeno, ' ', z.prijmeni) as Zam
+                        FROM Hlaseni as h LEFT JOIN Zamestnanci as z ON h.id_zam = z.id_zam 
+                        WHERE Vyrizeno = 0 AND Odsunuto = 1 AND Prevzato = 0
+                        ORDER BY NaklStredisko ASC, Kdy DESC;";
+                $result = sqlsrv_query($conn, $sql);
             }
             else{
                 $sql = "SELECT COUNT(*) as total FROM Hlaseni
@@ -81,9 +95,18 @@
     
                 sqlsrv_free_stmt($result);
     
-                $sql = "SELECT * FROM Hlaseni
+                $sql = "SELECT
+                            h.id_hlas,
+                            h.EvidCislo,
+                            h.NaklStredisko,
+                            h.TypRes,
+                            h.Nazev,
+                            FORMAT(Kdy, 'dd. MM. yyyy') as Kdy,
+                            h.CisPovolenky,
+                            CONCAT(z.jmeno, ' ', z.prijmeni) as Zam
+                        FROM Hlaseni as h LEFT JOIN Zamestnanci as z ON h.id_zam = z.id_zam 
                         WHERE Vyrizeno = 0 AND Odsunuto = 1 AND Prevzato = 0
-                        ORDER BY NaklStredisko ASC, id_hlas DESC
+                        ORDER BY NaklStredisko ASC, Kdy DESC
                         OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
                 $params = [$offset, $pageSize];
                 $result = sqlsrv_query($conn, $sql, $params);
