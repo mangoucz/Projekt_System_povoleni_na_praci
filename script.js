@@ -20,6 +20,9 @@ $(document).ready(function() {
                 $(this).attr("disabled", true);            
             }
         });
+        $("#first select").each(function() {
+            $(this).attr("disabled", true);                
+        });
     }
     function updateIndex(selector) {
         $(selector).each(function(i) {
@@ -159,12 +162,11 @@ $(document).ready(function() {
                     response.data.forEach(function(hl) {
                         $("#hlaseniTable tbody").append(`
                             <tr>
-                                <td class="evc">${hl.Zam ?? ''}</td>
-                                <td class="evc">${hl.Kdy ?? ''}</td>
-                                <td class="evc">${hl.EvidCislo ?? ''}</td>
-                                <td class="cpovol">${hl.CisPovolenky ?? ''}</td>
-                                <td class="nazev">${hl.Nazev ?? ''}</td>
-                                <td class="nakls">${hl.NaklStredisko ?? ''}</td>
+                                <td>${hl.Zam ?? ''}</td>
+                                <td>${hl.Kdy ?? ''}</td>
+                                <td>${hl.CisPovolenky ?? ''}</td>
+                                <td>${hl.Nazev ?? ''}</td>
+                                <td>${hl.NaklStredisko ?? ''}</td>
                                 <td><button type="submit" name="id_hlas" class="defButt" value="${hl.id_hlas}">Vybrat</button></td>
                             </tr>
                         `);
@@ -219,7 +221,7 @@ $(document).ready(function() {
     $("#first, #third, #fourth, #fifth, #sixth").hide();
     const checkboxMap = {
         "prace_na_zarizeni": ["first", "third", "sixth"],
-        "svarovani_ohen": ["third", "fourth", "fifth"],
+        "svarovani_ohen": ["first", "third", "fourth", "fifth"],
         "vstup_zarizeni_teren": ["first", "third"],
         "prostredi_vybuch": ["third", "fifth"],
         "predani_prevzeti_zarizeni": [] 
@@ -255,13 +257,41 @@ $(document).ready(function() {
     }
 
     $(document).on('change', '#intro input[type="checkbox"]', zobrazTab);
-    
+
+    $(document).on('change', '#svarovani_ohen', function() {
+        if ($(this).is(':checked')) {
+            $('input[name="pozar_hlidka"]').trigger('click');
+            $('input[name="hasici_pristroj"]').trigger('click');
+        }
+    });
+
+    $(document).on('change', '#hasici_pristroj_druh', function() {
+        const id_och = $(this).val();
+        if (id_och){
+            $.ajax({
+                url: "get_povoleni.php",
+                type: "POST",
+                data: {id_och: id_och},
+                dataType: "json",
+                success: function(response) {
+                    if (response.success) {
+                        $("#hasici_pristroj_typ").val(response.data.typ);
+                    } else {
+                        alert("Chyba při načítání dat ochranných prostředků: " + (response.message || "Neznámá chyba"));
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("Chyba komunikace se serverem! (" + status + " " + error + " " + xhr.responseText + ")");
+                }
+            });
+        }
+    });
+
     $(document).on('click', '#subNove', function(){
         window.location.href = "nove.php?nove=true";
     });
 
-    $(document).on('click', '.page-link', function(e) {
-        e.preventDefault();
+    $(document).on('click', '.page-link', function() {
         const newPage = $(this).data("page");
         const velStranky = $('#maxZobrazeni').val();
         loadHlaseniPage(newPage, velStranky);
@@ -284,6 +314,13 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '#odeslat', function() {
+        const form = document.querySelector("#form");
+
+        if (!form.checkValidity()) {
+            form.reportValidity(); 
+            return;
+        }
+
         $("#form").find(".date").each(function() {
             const dateValue = $(this).val();
             if (dateValue) {
@@ -297,13 +334,13 @@ $(document).ready(function() {
         $.ajax({
             url: "sub_povoleni.php",
             type: "POST", 
-            data: formData,
+            data: formData, 
             dataType: "json",
             success: function(response) {
                 if (response.success) {
-                    $(".modal h2").text("Povolení č. " + response.data.ev_cislo);
-                    $(".modal input[type=hidden]").val(response.data.id);
-                    $(".modal").fadeIn(200).css("display", "flex");
+                    $("#modalOdeslano h2").text("Povolení č. " + response.data.ev_cislo);
+                    $("#modalOdeslano input[type=hidden]").val(response.data.id);
+                    $("#modalOdeslano").fadeIn(200).css("display", "flex");
                 } else {
                     alert("Chyba při odesílání povolení: " + (response.message || "Neznámá chyba") + response.error);
                 }
@@ -492,7 +529,7 @@ $(document).ready(function() {
             
     $(document).on('click', '#first input[type="checkbox"]', function() {
         const tr = $(this).closest('tr'); 
-        const inputs = tr.find('input[type="text"]'); 
+        const inputs = tr.find('input[type="text"], select'); 
                 
         if ($(this).is(':checked')){
             inputs.removeAttr("disabled"); 

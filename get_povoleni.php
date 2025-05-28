@@ -74,11 +74,10 @@
                 $pageSize = 0;
 
                 $sql = "SELECT 
-                            h.EvidCislo,
                             h.NaklStredisko,
                             h.TypRes,
                             h.Nazev,
-                            FORMAT(Kdy, 'dd. MM. yyyy') as Kdy,
+                            FORMAT(Kdy, 'dd.MM.yyyy') as Kdy,
                             h.CisPovolenky,
                             CONCAT(z.jmeno, ' ', z.prijmeni) as Zam
                         FROM Hlaseni as h LEFT JOIN Zamestnanci as z ON h.id_zam = z.id_zam 
@@ -101,7 +100,7 @@
                             h.NaklStredisko,
                             h.TypRes,
                             h.Nazev,
-                            FORMAT(Kdy, 'dd. MM. yyyy') as Kdy,
+                            FORMAT(Kdy, 'dd.MM.yyyy') as Kdy,
                             h.CisPovolenky,
                             CONCAT(z.jmeno, ' ', z.prijmeni) as Zam
                         FROM Hlaseni as h LEFT JOIN Zamestnanci as z ON h.id_zam = z.id_zam 
@@ -129,6 +128,25 @@
                     "pocetStran" => $pocetStranek,
                     "velStranky" => $pageSize
                 ]);
+        }
+        else if(isset($_POST['id_och'])){
+            $id_och = $_POST['id_och'];
+            $sql = "SELECT typ FROM Ochrana WHERE id_och = ?;";
+            $params = [$id_och];
+            $result = sqlsrv_query($conn, $sql, $params);
+            if ($result === false) {
+                echo json_encode([
+                    "success" => false,
+                    "message" => "Chyba SQL dotazu pro Typ ochrany!",
+                    "error" => sqlsrv_errors()
+                ]);     
+                exit;
+            }
+            $typ = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+            echo json_encode([
+                "success" => true,
+                "data" => $typ
+            ]);
         }
         else {
             echo json_encode(["success" => false, "message" => "Neplatné ID"]);

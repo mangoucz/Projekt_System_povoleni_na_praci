@@ -31,7 +31,7 @@
 
         if (isset($_POST['id'])) {
             $id = $_POST['id']; 
-            $ochrana_typy = ['nohy', 'telo', 'hlava', 'oci', 'dychadel', 'pas', 'rukavice', 'hasicak'];
+            $ochrany = ['nohy', 'telo', 'hlava', 'oci', 'dychadel', 'pas', 'rukavice', 'hasicak'];
             $rozbory = [];
             $svareci = [];
             $prodl = [];
@@ -68,15 +68,15 @@
                 }
                 sqlsrv_free_stmt($result);
             }
-            $sql = "SELECT ochrana from Pov_Ochran as po JOIN Ochrana as o ON po.id_och = o.id_och where id_pov = ? AND o.typ = ?;";
-            for ($i=0; $i < count($ochrana_typy); $i++) {   
-                $params = [$id, $ochrana_typy[$i]];
+            $sql = "SELECT druh from Pov_Ochran as po JOIN Ochrana as o ON po.id_och = o.id_och where id_pov = ? AND o.ochrana = ?;";
+            for ($i=0; $i < count($ochrany); $i++) {   
+                $params = [$id, $ochrany[$i]];
                 $result = sqlsrv_query($conn, $sql, $params);
                 if ($result === false) 
                     die(print_r(sqlsrv_errors(), true));
 
                 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-                    $ochrany[$ochrana_typy[$i]] = $row;
+                    $ochrany_druhy[$ochrany[$i]] = $row;
                 }
                 sqlsrv_free_stmt($result);
             }  
@@ -215,23 +215,23 @@
             </tr>
             <tr>
                 <td colspan="3">provoz:</td>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['provoz'] ?>"></td>
+                <td colspan="3"><input type="text" name="" value="<?= htmlspecialchars($zaznam['provoz']) ?>"></td>
                 <td colspan="2">název (číslo) objektu:</td>
-                <td colspan="2"><input type="text" name="" value="<?= $zaznam['objekt'] ?>"></td>
+                <td colspan="2"><input type="text" name="" value="<?= htmlspecialchars($zaznam['objekt']) ?>"></td>
                 <td colspan="2">číslo zařízení:</td>
-                <td colspan="3"><input type="text" name="" value="<?= $zaznam['c_zarizeni'] ?>"></td>
+                <td colspan="3"><input type="text" name="" value="<?= htmlspecialchars($zaznam['c_zarizeni']) ?>"></td>
             </tr>
             <tr>
                 <td colspan="5">název zařízení</td>
-                <td colspan="10"><input type="text" name="" value="<?= $zaznam['nazev_zarizeni'] ?>"></td>
+                <td colspan="10"><input type="text" name="" value="<?= htmlspecialchars($zaznam['nazev_zarizeni']) ?>"></td>
             </tr>
             <tr>
                 <td colspan="5">popis, druh a rozsah práce</td>
-                <td colspan="10"><input type="text" name="" value="<?= $zaznam['popis_prace'] ?>"></td>
+                <td colspan="10"><input type="text" name="" value="<?= htmlspecialchars($zaznam['popis_prace']) ?>"></td>
             </tr>
             <tr>
                 <td colspan="6">seznámení s riziky pracoviště dle karty č.:</td>
-                <td colspan="9"><input type="text" name="" value="<?= $zaznam['c_karty'] ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= htmlspecialchars($zaznam['c_karty']) ?>"></td>
             </tr>
             <tr>
                 <td colspan="9"><b>1. Příprava zařízení k opravě</b></td>
@@ -372,10 +372,10 @@
                 <td><input type="text" name="" value="<?= $zaznam['hasici_pristroj_typ'] ?>"></td>
             </tr>
             <tr>
-                <td style="text-align: center;">1.17</td>
-                <td><input type="checkbox" name="" <?= inputVal($zaznam['jine_zab_pozar'], 'check') ?>></td>
+                <td>1.17</td>
+                <td style="text-align: center;"><input type="checkbox" name="" <?= inputVal($zaznam['jine_zab_pozar'], 'check') ?>></td>
                 <td colspan="5">Jiné zabezpečení požární ochrany</td>
-                <td colspan="6"><input type="text" name="" value="<?= $zaznam['jine_zab_pozar'] ?>"></td>
+                <td colspan="6"><input type="text" name="" value="<?= $zaznam['jine_zab_pozar_kom'] ?>"></td>
             </tr>
             <tr>
                 <td colspan="15"><b>2. Vlastní zabezpečení prováděné práce</b></td>
@@ -385,37 +385,37 @@
                 <td rowspan="7" class="svisly-text">Osobní ochranné <br> pracovní prostředky</td>
                 <td>2.1</td>
                 <td colspan="3">Ochrana nohou - jaká</td>
-                <td colspan="9"><input type="text" name="" value="<?= $ochrany['nohy']['ochrana'] ?? null ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany_druhy['nohy']['druh'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.2</td>
                 <td colspan="3">Ochrana těla - jaká</td>
-                <td colspan="9"><input type="text" name="" value="<?= $ochrany['telo']['ochrana'] ?? null ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany_druhy['telo']['druh'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.3</td>
                 <td colspan="3">Ochrana hlavy - jaká</td>
-                <td colspan="9"><input type="text" name="" value="<?= $ochrany['hlava']['ochrana'] ?? null ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany_druhy['hlava']['druh'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.4</td>
                 <td colspan="3">Ochrana očí - jaká - druh</td>
-                <td colspan="9"><input type="text" name="" value="<?= $ochrany['oci']['ochrana'] ?? null ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany_druhy['oci']['druh'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.5</td>
                 <td colspan="3">Ochrana dýchadel - jaká</td>
-                <td colspan="9"><input type="text" name="" value="<?= $ochrany['dychadel']['ochrana'] ?? null ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany_druhy['dychadel']['druh'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.6</td>
                 <td colspan="3">Ochranný pás - druh</td>
-                <td colspan="9"><input type="text" name="" value="<?= $ochrany['pas']['ochrana'] ?? null ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany_druhy['pas']['druh'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.7</td>
                 <td colspan="3">Ochranné rukavice - druh</td>
-                <td colspan="9"><input type="text" name="" value="<?= $ochrany['rukavice']['ochrana'] ?? null ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= $ochrany_druhy['rukavice']['druh'] ?? null ?>"></td>
             </tr>
             <tr>
                 <td>2.8</td>

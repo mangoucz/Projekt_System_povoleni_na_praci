@@ -43,7 +43,7 @@
     
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $ochrana = [];
-        $ochrana_typy = ['nohy', 'telo', 'hlava', 'oci', 'dychadel', 'pas', 'rukavice', 'hasicak'];
+        $ochrany = ['nohy', 'telo', 'hlava', 'oci', 'dychadel', 'pas', 'rukavice', 'hasicak'];
         $edit = false;
 
         if(isset($_POST['subEdit']) || isset($_POST['subProdl'])){
@@ -73,7 +73,7 @@
                             WHERE Povolenka.id_pov = ?;";
                 $sql[1] = "SELECT * FROM Pov_Svar as ps LEFT JOIN Svareci AS s ON s.id_svar = ps.id_svar WHERE ps.id_pov = ?;"; 
                 $sql[2] = "SELECT * FROM Pov_Roz as pr LEFT JOIN Rozbory AS r ON r.id_roz = pr.id_roz WHERE pr.id_pov = ?;"; 
-                $sql[3] = "SELECT o.id_och, o.typ FROM Pov_Ochran as po LEFT JOIN Ochrana AS o ON o.id_och = po.id_och WHERE po.id_pov = ?;";
+                $sql[3] = "SELECT o.id_och, o.ochrana FROM Pov_Ochran as po LEFT JOIN Ochrana AS o ON o.id_och = po.id_och WHERE po.id_pov = ?;";
             }
             $params = [$id];
 
@@ -93,7 +93,7 @@
                         $rozbory[] = $row;
                     }
                    else if ($i === 3) {
-                        $ochrana[rtrim($row['typ'])] = $row['id_och'];
+                        $ochrana[rtrim($row['ochrana'])] = $row['id_och'];
                     }
 
                 }
@@ -106,7 +106,7 @@
                 isset($ochrana['nohy']) ? $edit = true : $edit = false;
             }
         }
-        else if (isset($_POST['subNov'])) {
+        else if (isset($_POST['id_hlas'])) {
             $id_hlas = $_POST['id_hlas'] ?? null;
             $sql = "SELECT * FROM Hlaseni WHERE id_hlas = ?;";
             $params = [$id_hlas];
@@ -116,23 +116,23 @@
             $hlaseni = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
         }
         if (!isset($_POST['subProdl'])) {
-            $sql = "SELECT * FROM Ochrana WHERE typ = ?;";
-            for ($i=0; $i < count($ochrana_typy); $i++) {   
-                $params = [$ochrana_typy[$i]];
+            $sql = "SELECT * FROM Ochrana WHERE ochrana = ?;";
+            for ($i=0; $i < count($ochrany); $i++) {   
+                $params = [$ochrany[$i]];
                 $result = sqlsrv_query($conn, $sql, $params);
                 if ($result === false) 
                     die(print_r(sqlsrv_errors(), true));
     
                 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-                    $ochrany[$ochrana_typy[$i]][] = $row;
+                    $ochrany_druhy[$ochrany[$i]][] = $row;
                 }
                 sqlsrv_free_stmt($result);
             }  
             if ($edit) {
-                $ochranaZDB = [$ochrana['nohy'], $ochrana['telo'], $ochrana['hlava'], $ochrana['oci'], $ochrana['dychadel'], $ochrana['pas'], $ochrana['rukavice']];
+                $ochranaZDB = [$ochrana['nohy'], $ochrana['telo'], $ochrana['hlava'], $ochrana['oci'], $ochrana['dychadel'], $ochrana['pas'], $ochrana['rukavice'], $ochrana['hasicak']];
             }
             else
-                $ochranaZDB = [null, null, null, null, null, null, null];
+                $ochranaZDB = [null, null, null, null, null, null, null, null];
         }
     }
 ?>
@@ -197,7 +197,7 @@
                             </div>
                         </td>
                         <td data-label="Interní"><input type="text" name="interni" title="Interní" value="<?= $zaznam['interni'] ?? null ?>"></td>
-                        <td data-label="Externí"><input type="text" name="externi" title="Externí" value="<?= $zaznam['externi'] ?? null ?>"></td>
+                        <td data-label="Externí"><input type="text" name="externi" title="Externí" <?= ($hlaseni['TypRes'] ?? null) == 'Externí' ? 'required' : '' ?> value="<?= $zaznam['externi'] ?? null ?>"></td>
                         <td data-label="Počet osob"><input type="number" name="pocetOs" title="Zadejte počet os." value="<?= $zaznam['pocet_osob'] ?? null ?>"></td>
                         <td data-label="Od"><input type="text" name="povolOd" id="povolOd" class="date" title="Datum začátku platnosti povolení" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
                         <td data-label="Do"><input type="text" name="povolDo" id="povolDo" class="date" title="Datum konce platnosti povolení (lze prodloužit)" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
@@ -228,21 +228,21 @@
                     </tr>
                     <tr >
                         <th>Provoz</th>
-                        <td data-label="Provoz"><input type="text" name="provoz" title="Provoz" value="<?= isset($hlaseni) ? $hlaseni['NaklStredisko'] : ($zaznam['provoz'] ?? null) ?>"></td>
+                        <td data-label="Provoz"><input type="text" name="provoz" title="Provoz" value="<?= isset($hlaseni['NaklStredisko']) ? htmlspecialchars($hlaseni['NaklStredisko']) : ($zaznam['provoz'] ?? null) ?>"></td>
                         <th>Název(číslo) objektu</th>
-                        <td data-label="Název(číslo) objektu"><input type="text" name="objekt" title="Název nebo č. objektu" value="<?= $zaznam['objekt'] ?? null ?>"></td>
+                        <td data-label="Název(číslo) objektu"><input type="text" name="objekt" title="Název nebo č. objektu" value="<?= isset($hlaseni['Umisteni']) ? htmlspecialchars($hlaseni['Umisteni']) : ($zaznam['objekt'] ?? null) ?>"></td>
                         <td data-label="Od"><input type="text" name="hodOd" class="time" id="hodOd" title="Čas začátku platnosti" maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>></td>
                         <td data-label="Do"><input type="text" name="hodDo" class="time" id="hodDo" title="Čas konce platnosti" maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>></td>
                     </tr>
                     <tr>
                         <th>Název zařízení</th>
-                        <td data-label="Název zařízení" colspan="2"><input type="text" name="NZarizeni" title="Název zařízení" value="<?= $zaznam['nazev_zarizeni'] ?? null ?>"></td>
+                        <td data-label="Název zařízení" colspan="2"><input type="text" name="NZarizeni" title="Název zařízení" value="<?= isset($hlaseni['Nazev']) ? htmlspecialchars($hlaseni['Nazev']) : ($zaznam['nazev_zarizeni'] ?? null) ?>"></td>
                         <th>Číslo zařízení</th>
-                        <td data-label="Číslo zařízení" colspan="2"><input type="text" name="CZarizeni" title="Číslo zařízení" value="<?= $zaznam['c_zarizeni'] ?? null ?>"></td>
+                        <td data-label="Číslo zařízení" colspan="2"><input type="text" name="CZarizeni" title="Číslo zařízení" value="<?= isset($hlaseni['EvidCislo']) ? htmlspecialchars($hlaseni['EvidCislo']) :($zaznam['c_zarizeni'] ?? null) ?>"></td>
                     </tr>
                     <tr>
                         <th>Popis, druh a rozsah práce</th>
-                        <td data-label="Popis, druh a rozsah práce" colspan="5"><input type="text" name="prace" title="Popis, druh a rozsah práce" value="<?= $zaznam['popis_prace'] ?? null ?>"></td>
+                        <td data-label="Popis, druh a rozsah práce" colspan="5"><input type="text" name="prace" title="Popis, druh a rozsah práce" value="<?= isset($hlaseni['Popis']) ? htmlspecialchars($hlaseni['Popis']) : ($zaznam['popis_prace'] ?? null) ?>"></td>
                     </tr>
                     <tr>
                         <th>Seznámení s riziky pracoviště dle karty č.</th>
@@ -438,9 +438,15 @@
                         <th>Počet</th>
                         <td data-label="Počet"><input type="text" name="hasici_pristroj_pocet" value="<?= $zaznam['hasici_pristroj_pocet'] ?? null ?>"></td>
                         <th>Druh</th>
-                        <td data-label="Druh"><input type="text" name="hasici_pristroj_druh" value="<?= $zaznam['hasici_pristroj_druh'] ?? null ?>"></td>
+                        <td data-label="Druh"><select name="hasici_pristroj_druh" id="hasici_pristroj_druh">
+                            <?php foreach ($ochrany_druhy['hasicak'] as $item): ?>
+                                <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[7]) ? 'selected' : $item['druh'][0] ?>>
+                                    <?= $item['druh'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select></td>
                         <th>Typ</th>
-                        <td data-label="Typ"><input type="text" name="hasici_pristroj_typ"  value="<?= $zaznam['hasici_pristroj_typ'] ?? null ?>"></td>
+                        <td data-label="Typ"><input type="text" name="hasici_pristroj_typ" id="hasici_pristroj_typ" value="<?= isset($ochrany_druhy['hasicak']) ? $ochrany_druhy['hasicak'][0]['typ'] : ($zaznam['hasici_pristroj_typ'] ?? null) ?>"></td>
                     </tr>
                     <tr>
                         <td>
@@ -466,9 +472,9 @@
                     <tr>
                         <th>2.1 Ochrana nohou - jaká</th>
                         <td data-label="2.1 Ochrana nohou - jaká" colspan="5"><select name="ochran_nohy">
-                            <?php foreach ($ochrany['nohy'] as $item): ?>
-                                <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[0]) ? 'selected' : $item['ochrana'][0] ?>>
-                                    <?= $item['ochrana'] ?>
+                            <?php foreach ($ochrany_druhy['nohy'] as $item): ?>
+                                <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[0]) ? 'selected' : $item['druh'][0] ?>>
+                                    <?= $item['druh'] ?>
                                 </option>
                             <?php endforeach; ?>
                         </select></td>
@@ -476,9 +482,9 @@
                     <tr>
                         <th>2.2 Ochrana těla - jaká</th>
                         <td data-label="2.2 Ochrana těla - jaká" colspan="6"><select name="ochran_telo">
-                            <?php foreach ($ochrany['telo'] as $item): ?>
-                                <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[1]) ? 'selected' : $item['ochrana'][0] ?>>
-                                    <?= $item['ochrana'] ?>
+                            <?php foreach ($ochrany_druhy['telo'] as $item): ?>
+                                <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[1]) ? 'selected' : $item['druh'][0] ?>>
+                                    <?= $item['druh'] ?>
                                 </option>
                             <?php endforeach; ?>
                         </select></td>
@@ -487,9 +493,9 @@
                         <th>2.3 Ochrana hlavy - jaká</th>
                         <td data-label="2.3 Ochrana hlavy - jaká" colspan="6">  
                             <select name="ochran_hlava">
-                                <?php foreach ($ochrany['hlava'] as $item): ?>
-                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[2]) ? 'selected' : $item['ochrana'][0] ?>>
-                                        <?= $item['ochrana'] ?>
+                                <?php foreach ($ochrany_druhy['hlava'] as $item): ?>
+                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[2]) ? 'selected' : $item['druh'][0] ?>>
+                                        <?= $item['druh'] ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -499,9 +505,9 @@
                         <th>2.4 Ochrana oči - jaká - druh</th>
                         <td data-label="2.4 Ochrana oči - jaká - druh" colspan="6">
                             <select name="ochran_oci">
-                                <?php foreach ($ochrany['oci'] as $item): ?>
-                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[3]) ? 'selected' : $item['ochrana'][0] ?>>
-                                        <?= $item['ochrana'] ?>
+                                <?php foreach ($ochrany_druhy['oci'] as $item): ?>
+                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[3]) ? 'selected' : $item['druh'][0] ?>>
+                                        <?= $item['druh'] ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -511,9 +517,9 @@
                         <th>2.5 Ochrana dýchadel - jaká</th>
                         <td data-label="2.5 Ochrana dýchadel - jaká" colspan="6">
                             <select name="ochran_dychadel">
-                                <?php foreach ($ochrany['dychadel'] as $item): ?>
-                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[4]) ? 'selected' : $item['ochrana'][0] ?>>
-                                        <?= $item['ochrana'] ?>
+                                <?php foreach ($ochrany_druhy['dychadel'] as $item): ?>
+                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[4]) ? 'selected' : $item['druh'][0] ?>>
+                                        <?= $item['druh'] ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -523,9 +529,9 @@
                         <th>2.6 Ochranný pás - druh</th>
                         <td data-label="2.6 Ochranný pás - druh" colspan="6">
                             <select name="ochran_pas">
-                                <?php foreach ($ochrany['pas'] as $item): ?>
-                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[5]) ? 'selected' : $item['ochrana'][0] ?>>
-                                        <?= $item['ochrana'] ?>
+                                <?php foreach ($ochrany_druhy['pas'] as $item): ?>
+                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[5]) ? 'selected' : $item['druh'][0] ?>>
+                                        <?= $item['druh'] ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -535,9 +541,9 @@
                         <th>2.7 Ochranné rukavice - druh</th>
                         <td data-label="2.7 Ochranné rukavice - druh" colspan="6">
                             <select name="ochran_rukavice">
-                                <?php foreach ($ochrany['rukavice'] as $item): ?>
-                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[6]) ? 'selected' : $item['ochrana'][0] ?>>
-                                        <?= $item['ochrana'] ?>
+                                <?php foreach ($ochrany_druhy['rukavice'] as $item): ?>
+                                    <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[6]) ? 'selected' : $item['druh'][0] ?>>
+                                        <?= $item['druh'] ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -1037,8 +1043,8 @@
             <input type="button" class="add" id="odeslat" value="Odeslat" name="subOdeslat" style="font-size: 16px;">
         </div>
     </form>
-    <div class="modal" id="modalOdeslano>
-        <div class="modal-content">
+    <div class="modal" id="modalOdeslano">
+        <div class="modal-content" style="width: 50vh; height: 30vh;">
             <div class="modal-header">
                 <span id="closeBtn" class="close">&times;</span>
                 <h2>Povolení č.</h2>
@@ -1059,7 +1065,7 @@
     </div>
     <div class="modal" id="modalHlaseni">
         <form action="nove.php" method="post">
-            <div class="modal-content" style="width: 90%; max-width: 1200px; height: 80vh;">  
+            <div class="modal-content" style="width: 140vh; height: 80vh;">  
                 <div class="modal-header">
                     <span id="closeBtn" class="close">&times;</span>
                     <h2>Vyberte hlášení</h2>
@@ -1069,7 +1075,6 @@
                         <thead>
                             <tr>
                                 <th colspan="2">Zadal</th>
-                                <th>Evid.č.</th>
                                 <th>Č.Povolení</th>
                                 <th>Název</th>
                                 <th>Nakl. stř.</th>
