@@ -413,6 +413,9 @@
             margin: 20px auto;
             max-width: 800px;
         }
+        select{
+            width: auto;
+        }
 
         .panel {
             padding: 10px 10px;

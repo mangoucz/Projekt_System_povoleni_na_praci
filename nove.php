@@ -66,10 +66,10 @@
             }
             else{
                 $sql[0] = "SELECT 
-                                Povolenka.*, 
+                                *, 
                                 (SELECT MAX(prd.do) FROM Prodlouzeni AS prd WHERE prd.id_pov = Povolenka.id_pov AND prd.typ = 'zařízení') AS prodlZarDo,
                                 (SELECT MAX(prd.do) FROM Prodlouzeni AS prd WHERE prd.id_pov = Povolenka.id_pov AND prd.typ = 'oheň') AS prodlOhDo    
-                            FROM Povolenka 
+                            FROM Povolenka JOIN Hlaseni AS h ON Povolenka.id_hlas = h.id_hlas
                             WHERE Povolenka.id_pov = ?;";
                 $sql[1] = "SELECT * FROM Pov_Svar as ps LEFT JOIN Svareci AS s ON s.id_svar = ps.id_svar WHERE ps.id_pov = ?;"; 
                 $sql[2] = "SELECT * FROM Pov_Roz as pr LEFT JOIN Rozbory AS r ON r.id_roz = pr.id_roz WHERE pr.id_pov = ?;"; 
@@ -199,8 +199,8 @@
                         <td data-label="Interní"><input type="text" name="interni" title="Interní" value="<?= $zaznam['interni'] ?? null ?>"></td>
                         <td data-label="Externí"><input type="text" name="externi" title="Externí" <?= ($hlaseni['TypRes'] ?? null) == 'Externí' ? 'required' : '' ?> value="<?= $zaznam['externi'] ?? null ?>"></td>
                         <td data-label="Počet osob"><input type="number" name="pocetOs" title="Zadejte počet os." value="<?= $zaznam['pocet_osob'] ?? null ?>"></td>
-                        <td data-label="Od"><input type="text" name="povolOd" id="povolOd" class="date" title="Datum začátku platnosti povolení" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
-                        <td data-label="Do"><input type="text" name="povolDo" id="povolDo" class="date" title="Datum konce platnosti povolení (lze prodloužit)" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
+                        <td data-label="Od"><input type="text" name="povolOd" id="povolOd" class="date" required title="Datum začátku platnosti povolení" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
+                        <td data-label="Do"><input type="text" name="povolDo" id="povolDo" class="date" required title="Datum konce platnosti povolení (lze prodloužit)" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
                         <td data-label="Povolení" rowspan="5">
                             <div class="panel">
                                 <label class="container">K práci na zařízení
@@ -228,25 +228,25 @@
                     </tr>
                     <tr >
                         <th>Provoz</th>
-                        <td data-label="Provoz"><input type="text" name="provoz" title="Provoz" value="<?= isset($hlaseni['NaklStredisko']) ? htmlspecialchars($hlaseni['NaklStredisko']) : ($zaznam['provoz'] ?? null) ?>"></td>
+                        <td data-label="Provoz"><input type="text" name="provoz" disabled title="Provoz" value="<?= isset($hlaseni['NaklStredisko']) ? htmlspecialchars($hlaseni['NaklStredisko']) : (htmlspecialchars($zaznam['NaklStredisko']) ?? null) ?>"></td>
                         <th>Název(číslo) objektu</th>
-                        <td data-label="Název(číslo) objektu"><input type="text" name="objekt" title="Název nebo č. objektu" value="<?= isset($hlaseni['Umisteni']) ? htmlspecialchars($hlaseni['Umisteni']) : ($zaznam['objekt'] ?? null) ?>"></td>
+                        <td data-label="Název(číslo) objektu"><input type="text" name="objekt" <?= isset($hlaseni['Umisteni']) || isset($zaznam['objekt']) ? 'disabled' : ''?> title="Název nebo č. objektu" value="<?= isset($hlaseni['Umisteni']) ? htmlspecialchars($hlaseni['Umisteni']) : (htmlspecialchars($zaznam['objekt']) ?? null) ?>"></td>
                         <td data-label="Od"><input type="text" name="hodOd" class="time" id="hodOd" title="Čas začátku platnosti" maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>></td>
                         <td data-label="Do"><input type="text" name="hodDo" class="time" id="hodDo" title="Čas konce platnosti" maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>></td>
                     </tr>
                     <tr>
                         <th>Název zařízení</th>
-                        <td data-label="Název zařízení" colspan="2"><input type="text" name="NZarizeni" title="Název zařízení" value="<?= isset($hlaseni['Nazev']) ? htmlspecialchars($hlaseni['Nazev']) : ($zaznam['nazev_zarizeni'] ?? null) ?>"></td>
+                        <td data-label="Název zařízení" colspan="2"><input type="text" name="NZarizeni" disabled title="Název zařízení" value="<?= isset($hlaseni['Nazev']) ? htmlspecialchars($hlaseni['Nazev']) : (htmlspecialchars($zaznam['Nazev']) ?? null) ?>"></td>
                         <th>Číslo zařízení</th>
-                        <td data-label="Číslo zařízení" colspan="2"><input type="text" name="CZarizeni" title="Číslo zařízení" value="<?= isset($hlaseni['EvidCislo']) ? htmlspecialchars($hlaseni['EvidCislo']) :($zaznam['c_zarizeni'] ?? null) ?>"></td>
+                        <td data-label="Číslo zařízení" colspan="2"><input type="text" name="CZarizeni" disabled title="Číslo zařízení" value="<?= isset($hlaseni['EvidCislo']) ? htmlspecialchars($hlaseni['EvidCislo']) :(htmlspecialchars($zaznam['EvidCislo']) ?? null) ?>"></td>
                     </tr>
                     <tr>
                         <th>Popis, druh a rozsah práce</th>
-                        <td data-label="Popis, druh a rozsah práce" colspan="5"><input type="text" name="prace" title="Popis, druh a rozsah práce" value="<?= isset($hlaseni['Popis']) ? htmlspecialchars($hlaseni['Popis']) : ($zaznam['popis_prace'] ?? null) ?>"></td>
+                        <td data-label="Popis, druh a rozsah práce" colspan="5"><input type="text" name="prace" title="Popis, druh a rozsah práce" value="<?= isset($hlaseni['Popis']) ? htmlspecialchars($hlaseni['Popis']) : (htmlspecialchars($zaznam['popis_prace']) ?? null) ?>"></td>
                     </tr>
                     <tr>
                         <th>Seznámení s riziky pracoviště dle karty č.</th>
-                        <td data-label="Seznámení s riziky pracov. dle karty č." colspan="5"><input type="number" name="rizikaPrac" title="Číslo karty" value="<?= $zaznam['c_karty'] ?? null ?>"></td>
+                        <td data-label="Seznámení s riziky pracov. dle karty č." colspan="5"><input type="text" name="rizikaPrac" title="Číslo karty" value="<?= $zaznam['c_karty'] ?? null ?>"></td>
                     </tr>   
                 </tbody>
             </table>
@@ -440,13 +440,13 @@
                         <th>Druh</th>
                         <td data-label="Druh"><select name="hasici_pristroj_druh" id="hasici_pristroj_druh">
                             <?php foreach ($ochrany_druhy['hasicak'] as $item): ?>
-                                <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[7]) ? 'selected' : $item['druh'][0] ?>>
+                                <option value="<?= $item['id_och'] ?>" <?= ($item['id_och'] == $ochranaZDB[7]) ? 'selected' : ''?>>
                                     <?= $item['druh'] ?>
                                 </option>
                             <?php endforeach; ?>
                         </select></td>
                         <th>Typ</th>
-                        <td data-label="Typ"><input type="text" name="hasici_pristroj_typ" id="hasici_pristroj_typ" value="<?= isset($ochrany_druhy['hasicak']) ? $ochrany_druhy['hasicak'][0]['typ'] : ($zaznam['hasici_pristroj_typ'] ?? null) ?>"></td>
+                        <td data-label="Typ"><input type="text" name="hasici_pristroj_typ" id="hasici_pristroj_typ" disabled value="<?php foreach($ochrany_druhy['hasicak'] as $item) {echo ($item['id_och'] == $ochranaZDB[7] ? $item['typ'] : '');} ?>"></td>
                     </tr>
                     <tr>
                         <td>
@@ -1038,6 +1038,7 @@
         </div>
         <div class="submit-container">
             <input type="hidden" name="id_pov" value="<?= isset($id) ? $id : ''?>">
+            <input type="hidden" name="id_hlas" value="<?= isset($id_hlas) ? $id_hlas : ''?>">
             <input type="hidden" name="ev_cislo" value="<?= isset($zaznam['ev_cislo']) ? $zaznam['ev_cislo'] : ''?>">
             <input type="hidden" name="prodl" value="<?= isset($_POST['subProdl']) ? 1 : 0?>">
             <input type="button" class="add" id="odeslat" value="Odeslat" name="subOdeslat" style="font-size: 16px;">

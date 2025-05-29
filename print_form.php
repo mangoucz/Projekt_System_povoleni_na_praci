@@ -36,7 +36,7 @@
             $svareci = [];
             $prodl = [];
             
-            $sql[0] = "SELECT * FROM Povolenka as p WHERE p.id_pov = ?;";
+            $sql[0] = "SELECT * FROM Povolenka as p JOIN Hlaseni as h ON p.id_hlas = h.id_hlas WHERE p.id_pov = ?;";
             $sql[1] = "SELECT * FROM Pov_Svar as ps LEFT JOIN Svareci AS s ON s.id_svar = ps.id_svar WHERE ps.id_pov = ?;"; 
             $sql[2] = "SELECT * FROM Pov_Roz as pr LEFT JOIN Rozbory AS r ON r.id_roz = pr.id_roz WHERE pr.id_pov = ?;"; 
             $sql[3] = "SELECT * FROM Prodlouzeni as prodl WHERE prodl.id_pov = ? ORDER BY prodl.typ DESC, prodl.od;";
@@ -46,7 +46,7 @@
 
             for ($i = 0; $i < count($sql); $i++) { 
                 $result = sqlsrv_query($conn, $sql[$i], $params);
-                if ($result === false) 
+                if ($result === false)
                     die(print_r(sqlsrv_errors(), true));
     
                 while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
@@ -68,7 +68,7 @@
                 }
                 sqlsrv_free_stmt($result);
             }
-            $sql = "SELECT druh from Pov_Ochran as po JOIN Ochrana as o ON po.id_och = o.id_och where id_pov = ? AND o.ochrana = ?;";
+            $sql = "SELECT druh, typ from Pov_Ochran as po JOIN Ochrana as o ON po.id_och = o.id_och where id_pov = ? AND o.ochrana = ?;";
             for ($i=0; $i < count($ochrany); $i++) {   
                 $params = [$id, $ochrany[$i]];
                 $result = sqlsrv_query($conn, $sql, $params);
@@ -215,15 +215,15 @@
             </tr>
             <tr>
                 <td colspan="3">provoz:</td>
-                <td colspan="3"><input type="text" name="" value="<?= htmlspecialchars($zaznam['provoz']) ?>"></td>
+                <td colspan="3"><input type="text" name="" value="<?= htmlspecialchars($zaznam['NaklStredisko']) ?>"></td>
                 <td colspan="2">název (číslo) objektu:</td>
                 <td colspan="2"><input type="text" name="" value="<?= htmlspecialchars($zaznam['objekt']) ?>"></td>
                 <td colspan="2">číslo zařízení:</td>
-                <td colspan="3"><input type="text" name="" value="<?= htmlspecialchars($zaznam['c_zarizeni']) ?>"></td>
+                <td colspan="3"><input type="text" name="" value="<?= htmlspecialchars($zaznam['EvidCislo']) ?>"></td>
             </tr>
             <tr>
                 <td colspan="5">název zařízení</td>
-                <td colspan="10"><input type="text" name="" value="<?= htmlspecialchars($zaznam['nazev_zarizeni']) ?>"></td>
+                <td colspan="10"><input type="text" name="" value="<?= htmlspecialchars($zaznam['Nazev']) ?>"></td>
             </tr>
             <tr>
                 <td colspan="5">popis, druh a rozsah práce</td>
@@ -367,9 +367,9 @@
                 <td>počet</td>
                 <td><input type="text" name="" value="<?= $zaznam['hasici_pristroj_pocet'] ?>"></td>
                 <td>druh</td>
-                <td><input type="text" name="" value="<?= $zaznam['hasici_pristroj_druh'] ?>"></td>
+                <td><input type="text" name="" value="<?= $ochrany_druhy['hasicak']['druh'] ?>"></td>
                 <td>typ</td>
-                <td><input type="text" name="" value="<?= $zaznam['hasici_pristroj_typ'] ?>"></td>
+                <td><input type="text" name="" value="<?= $ochrany_druhy['hasicak']['typ'] ?>"></td>
             </tr>
             <tr>
                 <td>1.17</td>
@@ -509,7 +509,6 @@
             </tr>
         </tbody>
     </table>
-
     <table id="secPage">
         <tbody>
             <tr>
@@ -676,7 +675,7 @@
             <?php endfor; ?>
             <tr>
                 <td>13.2</td>
-                <td colspan="13">Pro práci s otevřeným ohněm</td>
+                <td colspan="13">Pro práci s otevřeným ohněm 'Svařování'</td>
             </tr>
             <tr>
                 <td colspan="3" style="text-align: center;">Datum</td>

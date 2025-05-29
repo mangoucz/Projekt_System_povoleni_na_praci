@@ -15,14 +15,7 @@ $(document).ready(function() {
             else 
                 $(this).stop().fadeOut(250);
         });
-        $("#first input[type='text']").each(function() {
-            if ($(this).val() == "") {
-                $(this).attr("disabled", true);            
-            }
-        });
-        $("#first select").each(function() {
-            $(this).attr("disabled", true);                
-        });
+        $("#first input[type='checkbox']").trigger('change');
     }
     function updateIndex(selector) {
         $(selector).each(function(i) {
@@ -164,9 +157,9 @@ $(document).ready(function() {
                             <tr>
                                 <td>${hl.Zam ?? ''}</td>
                                 <td>${hl.Kdy ?? ''}</td>
-                                <td>${hl.CisPovolenky ?? ''}</td>
-                                <td>${hl.Nazev ?? ''}</td>
-                                <td>${hl.NaklStredisko ?? ''}</td>
+                                <td style="text-align: center;">${hl.CisPovolenky ?? ''}</td>
+                                <td style="text-align: center;">${hl.Nazev ?? ''}</td>
+                                <td style="text-align: center;">${hl.NaklStredisko ?? ''}</td>
                                 <td><button type="submit" name="id_hlas" class="defButt" value="${hl.id_hlas}">Vybrat</button></td>
                             </tr>
                         `);
@@ -179,7 +172,7 @@ $(document).ready(function() {
                     strHTML = `
                         <div style="margin-top: 10px;">
                             <label for="maxZobrazeni">Zobrazit na stránce:</label>
-                            <select name="maxZobrazeni" id="maxZobrazeni">
+                            <select name="maxZobrazeni" id="maxZobrazeni" style="width: auto;">
                                 <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="15">15</option>
@@ -527,7 +520,7 @@ $(document).ready(function() {
         }
     });
             
-    $(document).on('click', '#first input[type="checkbox"]', function() {
+    $(document).on('change', '#first input[type="checkbox"]', function() {
         const tr = $(this).closest('tr'); 
         const inputs = tr.find('input[type="text"], select'); 
                 

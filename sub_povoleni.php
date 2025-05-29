@@ -51,6 +51,7 @@
 
         if ($_POST['prodl'] == 0) {
             $id_pov = inputCheck($_POST['id_pov']);
+            $id_hlas = inputCheck($_POST['id_hlas']);
             $svareciPocet = $_POST['svareciPocet'];
             $rozboryPocet = $_POST['rozboryPocet'];
             //INTRO 
@@ -117,8 +118,6 @@
             $pozar_hlidka_jmeno = $_POST['pozar_hlidka_jmeno'] ?? null;
             $hasici_pristroj = $_POST['hasici_pristroj'] ?? 0;
             $hasici_pristroj_pocet = $_POST['hasici_pristroj_pocet'] ?? null;
-            $hasici_pristroj_druh = $_POST['hasici_pristroj_druh'] ?? null;
-            $hasici_pristroj_typ = $_POST['hasici_pristroj_typ'] ?? null;
             $jine_zab_pozar = $_POST['jine_zab_pozar'] ?? 0;
             $jine_zab_pozar_kom = $_POST['jine_zab_pozar_kom'] ?? null;
             // TAB 2 1-8 Osobní ochranné pracovní prostředky
@@ -129,7 +128,8 @@
                 $_POST['ochran_oci'] ?? null,
                 $_POST['ochran_dychadel'] ?? null,
                 $_POST['ochran_pas'] ?? null,
-                $_POST['ochran_rukavice'] ?? null
+                $_POST['ochran_rukavice'] ?? null,
+                $_POST['hasici_pristroj_druh'] ?? null
             ];           
             $ochran_dozor = inputCheck($_POST['ochran_dozor']);
             // TAB 2 9-14 Jiné příkazy
@@ -191,7 +191,7 @@
                                 upraveno = GETDATE(),
                                 rizikovost = ?, interni = ?, externi = ?, pocet_osob = ?, prace_na_zarizeni = ?, svarovani_ohen = ?, vstup_zarizeni_teren = ?, prostredi_vybuch = ?, predani_prevzeti_zarizeni = ?, provoz = ?, objekt = ?, c_zarizeni = ?, nazev_zarizeni = ?, popis_prace = ?, c_karty = ?,
                                 vycisteni = ?, vycisteni_kom = ?, vyparene = ?, vyparene_hod = ?, vyparene_kom = ?, vyplachnute = ?, vyplachnute_kom = ?, plyn_vytesnen = ?, plyn_vytesnen_kom = ?, vyvetrane = ?, vyvetrane_hod = ?, vyvetrane_kom = ?, profouk_dusik = ?, profouk_dusik_hod = ?, profouk_dusik_kom = ?, profouk_vzd = ?, profouk_vzd_hod = ?, profouk_vzd_kom = ?, odpojeno_od_el = ?, odpojeno_od_el_kym = ?, oddelene_zaslep = ?, oddelene_zaslep_kym = ?, jinak_zab = ?, jinak_zab_jak = ?,
-                                nejiskrive_naradi = ?, nejiskrive_naradi_kom = ?, zkrapet_vetrat = ?, zkrapet_vetrat_pocet = ?, zkrapet_vetrat_hod = ?, zkrapet_vetrat_misto = ?, rozbor_ovzdusi = ?, rozbor_ovzdusi_misto = ?, rozbor_ovzdusi_cas = ?, rozbor_ovzdusi_vysl = ?, zab_dozor = ?, zab_dozor_pocet = ?, pozar_hlidka = ?, pozar_hlidka_pocet = ?, pozar_hlidka_jmeno = ?, hasici_pristroj = ?, hasici_pristroj_pocet = ?, hasici_pristroj_druh = ?, hasici_pristroj_typ = ?, jine_zab_pozar = ?, jine_zab_pozar_kom = ?,
+                                nejiskrive_naradi = ?, nejiskrive_naradi_kom = ?, zkrapet_vetrat = ?, zkrapet_vetrat_pocet = ?, zkrapet_vetrat_hod = ?, zkrapet_vetrat_misto = ?, rozbor_ovzdusi = ?, rozbor_ovzdusi_misto = ?, rozbor_ovzdusi_cas = ?, rozbor_ovzdusi_vysl = ?, zab_dozor = ?, zab_dozor_pocet = ?, pozar_hlidka = ?, pozar_hlidka_pocet = ?, pozar_hlidka_jmeno = ?, hasici_pristroj = ?, hasici_pristroj_pocet = ?, jine_zab_pozar = ?, jine_zab_pozar_kom = ?,
                                 dozor = ?,
                                 jine_prikazy = ?, U_220V = ?, U_24V = ?, kryt = ?, bez_krytu = ?, bez_krytu_kom = ?, bez_krytu_kom2 = ?, odpovida = ?, dat_odpovedny = ?, osvedceni_ma = ?,
                                 dat_odpov_provoz = ?, dat_odpov_GB_exter = ?, prohl_obvod = ?, dat_vedouci = ?,
@@ -207,7 +207,7 @@
                         WHERE id_pov = ?;";
                 $params = [$riziko, $interni, $externi, $pocetOs, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $provoz, $objekt, $CZarizeni, $NZarizeni, $prace, $rizikaPrac,
                         $vycisteni, $vycisteni_kom, $vyparene, $vyparene_hod, $vyparene_kom, $vyplachnute, $vyplachnute_kom, $plyn_vytesnen, $plyn_vytesnen_kom, $vyvetrane, $vyvetrane_hod, $vyvetrane_kom, $profouk_dusik, $profouk_dusik_hod, $profouk_dusik_kom, $profouk_vzd, $profouk_vzd_hod, $profouk_vzd_kom, $odpojeno_od_el, $odpojeno_od_el_kym, $oddelene_zaslep, $oddelene_zaslep_kym, $jinak_zab, $jinak_zab_jak,
-                        $nejiskrive_naradi, $nejiskrive_naradi_kom, $zkrapet_vetrat, $zkrapet_vetrat_pocet, $zkrapet_vetrat_hod, $zkrapet_vetrat_misto, $rozbor_ovzdusi, $rozbor_ovzdusi_misto, $rozbor_ovzdusi_cas, $rozbor_ovzdusi_vysl, $zab_dozor, $zab_dozor_pocet, $pozar_hlidka, $pozar_hlidka_pocet, $pozar_hlidka_jmeno, $hasici_pristroj, $hasici_pristroj_pocet, $hasici_pristroj_druh, $hasici_pristroj_typ, $jine_zab_pozar, $jine_zab_pozar_kom,
+                        $nejiskrive_naradi, $nejiskrive_naradi_kom, $zkrapet_vetrat, $zkrapet_vetrat_pocet, $zkrapet_vetrat_hod, $zkrapet_vetrat_misto, $rozbor_ovzdusi, $rozbor_ovzdusi_misto, $rozbor_ovzdusi_cas, $rozbor_ovzdusi_vysl, $zab_dozor, $zab_dozor_pocet, $pozar_hlidka, $pozar_hlidka_pocet, $pozar_hlidka_jmeno, $hasici_pristroj, $hasici_pristroj_pocet, $jine_zab_pozar, $jine_zab_pozar_kom,
                         $ochran_dozor,
                         $jine_prikazy, $U_220, $U_24, $kryt, $bez_krytu, $bez_krytu_kom, $bez_krytu_kom2, $za_praci_odpovida, $odpovednost_dat, $osvedceny_prac,
                         $prohl_prac_dat, $prohl_exter_dat, $prohl_obvod, $prohl_vedouci_dat,
@@ -232,11 +232,53 @@
                     exit;
                 }        
                 sqlsrv_free_stmt($result); 
+
+                //TAB 2
+                $sql = "DELETE FROM Pov_Ochran WHERE Pov_Ochran.id_pov = ?;";
+                $params = [$id_pov];
+                $result = sqlsrv_query($conn, $sql, $params);
+                if ($result === FALSE) {
+                    echo json_encode([
+                        "success" => false,
+                        "message" => "Chyba SQL dotazu pro DELETE Pov_Ochran!",
+                        "error" => sqlsrv_errors()
+                    ]);
+                    exit;
+                }
+                sqlsrv_free_stmt($result);
+
+                $sql = "DELETE FROM Pov_Svar WHERE Pov_svar.id_pov = ?;";
+                $params = [$id_pov];
+                $result = sqlsrv_query($conn, $sql, $params);
+                if ($result === FALSE) {
+                    echo json_encode([
+                        "success" => false,
+                        "message" => "Chyba SQL dotazu!",
+                        "error" => sqlsrv_errors()
+                    ]);
+                    exit;
+                }
+                sqlsrv_free_stmt($result);
+
+                //TAB 5
+                $sql = "DELETE FROM Pov_Roz WHERE Pov_Roz.id_pov = ?;";
+                $params = [$id_pov];
+                $result = sqlsrv_query($conn, $sql, $params);
+                if ($result === FALSE) {
+                    echo json_encode([
+                        "success" => false,
+                        "message" => "Chyba SQL dotazu!",
+                        "error" => sqlsrv_errors()
+                    ]);
+                    exit;
+                }
+                sqlsrv_free_stmt($result);
+
             }//INSERT
             else{
-                $sql = "INSERT INTO Povolenka (id_zam, ev_cislo, rizikovost, interni, externi, pocet_osob, povol_od, povol_do, prace_na_zarizeni, svarovani_ohen, vstup_zarizeni_teren, prostredi_vybuch, predani_prevzeti_zarizeni, provoz, objekt, c_zarizeni, nazev_zarizeni, popis_prace, c_karty,
+                $sql = "INSERT INTO Povolenka (id_zam, id_hlas, ev_cislo, rizikovost, interni, externi, pocet_osob, povol_od, povol_do, prace_na_zarizeni, svarovani_ohen, vstup_zarizeni_teren, prostredi_vybuch, predani_prevzeti_zarizeni, provoz, objekt, c_zarizeni, nazev_zarizeni, popis_prace, c_karty,
                                             vycisteni, vycisteni_kom, vyparene, vyparene_hod, vyparene_kom, vyplachnute, vyplachnute_kom, plyn_vytesnen, plyn_vytesnen_kom, vyvetrane, vyvetrane_hod, vyvetrane_kom, profouk_dusik, profouk_dusik_hod, profouk_dusik_kom, profouk_vzd, profouk_vzd_hod, profouk_vzd_kom, odpojeno_od_el, odpojeno_od_el_kym, oddelene_zaslep, oddelene_zaslep_kym, jinak_zab, jinak_zab_jak,
-                                            nejiskrive_naradi, nejiskrive_naradi_kom, zkrapet_vetrat, zkrapet_vetrat_pocet, zkrapet_vetrat_hod, zkrapet_vetrat_misto, rozbor_ovzdusi, rozbor_ovzdusi_misto, rozbor_ovzdusi_cas, rozbor_ovzdusi_vysl, zab_dozor, zab_dozor_pocet, pozar_hlidka, pozar_hlidka_pocet, pozar_hlidka_jmeno, hasici_pristroj, hasici_pristroj_pocet, hasici_pristroj_druh, hasici_pristroj_typ, jine_zab_pozar, jine_zab_pozar_kom,
+                                            nejiskrive_naradi, nejiskrive_naradi_kom, zkrapet_vetrat, zkrapet_vetrat_pocet, zkrapet_vetrat_hod, zkrapet_vetrat_misto, rozbor_ovzdusi, rozbor_ovzdusi_misto, rozbor_ovzdusi_cas, rozbor_ovzdusi_vysl, zab_dozor, zab_dozor_pocet, pozar_hlidka, pozar_hlidka_pocet, pozar_hlidka_jmeno, hasici_pristroj, hasici_pristroj_pocet, jine_zab_pozar, jine_zab_pozar_kom,
                                             dozor,
                                             jine_prikazy, U_220V, U_24V, kryt, bez_krytu, bez_krytu_kom, bez_krytu_kom2, odpovida, dat_odpovedny, osvedceni_ma,
                                             dat_odpov_provoz, dat_odpov_GB_exter, prohl_obvod, dat_vedouci,
@@ -250,9 +292,9 @@
                                             kontrola_dat, kontrola_zjisteno, kontrola_jm,
                                             doplnky,
                                             odeslano) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                             ?,
                             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                             ?, ?, ?, ?,
@@ -266,9 +308,9 @@
                             ?, ?, ?,
                             ?,
                             GETDATE());";
-                $params = [$uziv, $ev_cislo, $riziko, $interni, $externi, $pocetOs, $povolOd, $povolDo, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $provoz, $objekt, $CZarizeni, $NZarizeni, $prace, $rizikaPrac,
+                $params = [$uziv, $id_hlas, $ev_cislo, $riziko, $interni, $externi, $pocetOs, $povolOd, $povolDo, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $provoz, $objekt, $CZarizeni, $NZarizeni, $prace, $rizikaPrac,
                         $vycisteni, $vycisteni_kom, $vyparene, $vyparene_hod, $vyparene_kom, $vyplachnute, $vyplachnute_kom, $plyn_vytesnen, $plyn_vytesnen_kom, $vyvetrane, $vyvetrane_hod, $vyvetrane_kom, $profouk_dusik, $profouk_dusik_hod, $profouk_dusik_kom, $profouk_vzd, $profouk_vzd_hod, $profouk_vzd_kom, $odpojeno_od_el, $odpojeno_od_el_kym, $oddelene_zaslep, $oddelene_zaslep_kym, $jinak_zab, $jinak_zab_jak,
-                        $nejiskrive_naradi, $nejiskrive_naradi_kom, $zkrapet_vetrat, $zkrapet_vetrat_pocet, $zkrapet_vetrat_hod, $zkrapet_vetrat_misto, $rozbor_ovzdusi, $rozbor_ovzdusi_misto, $rozbor_ovzdusi_cas, $rozbor_ovzdusi_vysl, $zab_dozor, $zab_dozor_pocet, $pozar_hlidka, $pozar_hlidka_pocet, $pozar_hlidka_jmeno, $hasici_pristroj, $hasici_pristroj_pocet, $hasici_pristroj_druh, $hasici_pristroj_typ, $jine_zab_pozar, $jine_zab_pozar_kom,
+                        $nejiskrive_naradi, $nejiskrive_naradi_kom, $zkrapet_vetrat, $zkrapet_vetrat_pocet, $zkrapet_vetrat_hod, $zkrapet_vetrat_misto, $rozbor_ovzdusi, $rozbor_ovzdusi_misto, $rozbor_ovzdusi_cas, $rozbor_ovzdusi_vysl, $zab_dozor, $zab_dozor_pocet, $pozar_hlidka, $pozar_hlidka_pocet, $pozar_hlidka_jmeno, $hasici_pristroj, $hasici_pristroj_pocet, $jine_zab_pozar, $jine_zab_pozar_kom,
                         $ochran_dozor,
                         $jine_prikazy, $U_220, $U_24, $kryt, $bez_krytu, $bez_krytu_kom, $bez_krytu_kom2, $za_praci_odpovida, $odpovednost_dat, $osvedceny_prac,
                         $prohl_prac_dat, $prohl_exter_dat, $prohl_obvod, $prohl_vedouci_dat,
@@ -308,19 +350,6 @@
                 $id_pov = $zaznam['id_pov'];
             }
             //TAB 2
-            $sql = "DELETE FROM Pov_Ochran WHERE Pov_Ochran.id_pov = ?;";
-                $params = [$id_pov];
-                $result = sqlsrv_query($conn, $sql, $params);
-                if ($result === FALSE) {
-                    echo json_encode([
-                        "success" => false,
-                        "message" => "Chyba SQL dotazu pro DELETE Pov_Ochran!",
-                        "error" => sqlsrv_errors()
-                    ]);
-                    exit;
-                }
-                sqlsrv_free_stmt($result);
-
             for ($i = 0; $i < count($ochrana); $i++) {
                 $sql = "INSERT INTO Pov_Ochran (id_pov, id_och) VALUES (?, ?);";
                 $params = [$id_pov, $ochrana[$i]];
@@ -335,19 +364,6 @@
                 }
                 sqlsrv_free_stmt($result);
             }
-
-            $sql = "DELETE FROM Pov_Svar WHERE Pov_svar.id_pov = ?;";
-                $params = [$id_pov];
-                $result = sqlsrv_query($conn, $sql, $params);
-                if ($result === FALSE) {
-                    echo json_encode([
-                        "success" => false,
-                        "message" => "Chyba SQL dotazu!",
-                        "error" => sqlsrv_errors()
-                    ]);
-                    exit;
-                }
-                sqlsrv_free_stmt($result);
             for ($i = 0; $i < $svareciPocet; $i++) {
                 $svarecJmeno = $_POST['svarec'][$i]['jmeno'];
                 $svarecPrijmeni = $_POST['svarec'][$i]['prijmeni'];
@@ -406,7 +422,7 @@
                         ]);
                         exit;
                     }
-                   $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+                    $zaznam = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
                     sqlsrv_free_stmt($result);
                     $svarecID = $zaznam['id_svar'];
                 }
@@ -424,21 +440,7 @@
                 }
                 sqlsrv_free_stmt($result);
             }
-            
-            //TAB 5
-            $sql = "DELETE FROM Pov_Roz WHERE Pov_Roz.id_pov = ?;";
-                $params = [$id_pov];
-                $result = sqlsrv_query($conn, $sql, $params);
-                if ($result === FALSE) {
-                    echo json_encode([
-                        "success" => false,
-                        "message" => "Chyba SQL dotazu!",
-                        "error" => sqlsrv_errors()
-                    ]);
-                    exit;
-                }
-                sqlsrv_free_stmt($result);
-                
+            //TAB 5    
             for ($i = 0; $i < $rozboryPocet; $i++) {
                 $rozborNazev = $_POST['rozbor'][$i]['nazev'];
                 $rozborDat = $_POST['rozbor'][$i]['dat'];
@@ -505,22 +507,7 @@
                 }
                 sqlsrv_free_stmt($result);
             }
-            if($rozboryPocet == 0) {
-                $sql = "DELETE FROM Pov_Roz WHERE Pov_Roz.id_pov = ?;";
-                $params = [$id_pov];
-                $result = sqlsrv_query($conn, $sql, $params);
-                if ($result === FALSE) {
-                    echo json_encode([
-                        "success" => false,
-                        "message" => "Chyba SQL dotazu!",
-                        "error" => sqlsrv_errors()
-                    ]);
-                    exit;
-                }
-                sqlsrv_free_stmt($result);
-            }
-        }
-        //TAB 13
+        }//TAB 13
         else{
             $id_pov = $_POST['id_pov'];
             $ev_cislo = $_POST['ev_cislo'];
