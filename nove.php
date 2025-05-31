@@ -1,5 +1,5 @@
 <?php
-    function inputVal($el, $typ) : string {
+    function inputVal($el, $typ = "") : string {
         if (!isset($el)) {
             return "";
         } 
@@ -16,7 +16,6 @@
         return "";
     }
     session_start();
-
     if (isset($_SESSION['uziv']))
         $uziv = $_SESSION['uziv'];
     else{
@@ -43,6 +42,7 @@
     
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $ochrana = [];
+        $hlaseni = [];
         $ochrany = ['nohy', 'telo', 'hlava', 'oci', 'dychadel', 'pas', 'rukavice', 'hasicak'];
         $edit = false;
 
@@ -127,9 +127,18 @@
                     $ochrany_druhy[$ochrany[$i]][] = $row;
                 }
                 sqlsrv_free_stmt($result);
-            }  
+            }
+            $sql = "SELECT * FROM Karty_Rizik;";
+            $result = sqlsrv_query($conn, $sql);
+            if ($result === false) 
+                die(print_r(sqlsrv_errors(), true));
+            while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                $karty[] = $row;
+            }
+            sqlsrv_free_stmt($result);
+
             if ($edit) {
-                $ochranaZDB = [$ochrana['nohy'], $ochrana['telo'], $ochrana['hlava'], $ochrana['oci'], $ochrana['dychadel'], $ochrana['pas'], $ochrana['rukavice'], $ochrana['hasicak']];
+                $ochranaZDB = [$ochrana['nohy'], $ochrana['telo'], $ochrana['hlava'], $ochrana['oci'], $ochrana['dychadel'], $ochrana['pas'], $ochrana['rukavice'], $ochrana['hasicak'] ?? null];
             }
             else
                 $ochranaZDB = [null, null, null, null, null, null, null, null];
@@ -139,7 +148,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Systém povolení na práci</title>
     <link rel="stylesheet" href="style.css">
@@ -163,7 +172,7 @@
                     <p style="font-size: 12px; margin-left: 1px;"><?= $funkce; ?></p>
                 </div>
             </div>
-            <a href="login.php">
+            <a id="logout">
                 <img src="logout_icon.png" width="78%" style="cursor: pointer;">
             </a>
         </div>
@@ -228,25 +237,31 @@
                     </tr>
                     <tr >
                         <th>Provoz</th>
-                        <td data-label="Provoz"><input type="text" name="provoz" disabled title="Provoz" value="<?= isset($hlaseni['NaklStredisko']) ? htmlspecialchars($hlaseni['NaklStredisko']) : (htmlspecialchars($zaznam['NaklStredisko']) ?? null) ?>"></td>
+                        <td data-label="Provoz"><input type="text" name="provoz" disabled title="Provoz" value="<?= isset($hlaseni['NaklStredisko']) ? htmlspecialchars($hlaseni['NaklStredisko']) : htmlspecialchars($zaznam['NaklStredisko'] ?? '') ?>"></td>
                         <th>Název(číslo) objektu</th>
-                        <td data-label="Název(číslo) objektu"><input type="text" name="objekt" <?= isset($hlaseni['Umisteni']) || isset($zaznam['objekt']) ? 'disabled' : ''?> title="Název nebo č. objektu" value="<?= isset($hlaseni['Umisteni']) ? htmlspecialchars($hlaseni['Umisteni']) : (htmlspecialchars($zaznam['objekt']) ?? null) ?>"></td>
+                        <td data-label="Název(číslo) objektu"><input type="text" name="objekt" <?= isset($hlaseni['Umisteni']) || isset($zaznam['objekt']) ? 'readonly' : ''?> title="Název nebo č. objektu" value="<?= isset($hlaseni['Umisteni']) ? htmlspecialchars($hlaseni['Umisteni']) : htmlspecialchars($zaznam['objekt'] ?? '') ?>"></td>
                         <td data-label="Od"><input type="text" name="hodOd" class="time" id="hodOd" title="Čas začátku platnosti" maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>></td>
                         <td data-label="Do"><input type="text" name="hodDo" class="time" id="hodDo" title="Čas konce platnosti" maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>></td>
                     </tr>
                     <tr>
                         <th>Název zařízení</th>
-                        <td data-label="Název zařízení" colspan="2"><input type="text" name="NZarizeni" disabled title="Název zařízení" value="<?= isset($hlaseni['Nazev']) ? htmlspecialchars($hlaseni['Nazev']) : (htmlspecialchars($zaznam['Nazev']) ?? null) ?>"></td>
+                        <td data-label="Název zařízení" colspan="2"><input type="text" name="NZarizeni" disabled title="Název zařízení" value="<?= isset($hlaseni['Nazev']) ? htmlspecialchars($hlaseni['Nazev']) : htmlspecialchars($zaznam['Nazev'] ?? '') ?>"></td>
                         <th>Číslo zařízení</th>
-                        <td data-label="Číslo zařízení" colspan="2"><input type="text" name="CZarizeni" disabled title="Číslo zařízení" value="<?= isset($hlaseni['EvidCislo']) ? htmlspecialchars($hlaseni['EvidCislo']) :(htmlspecialchars($zaznam['EvidCislo']) ?? null) ?>"></td>
+                        <td data-label="Číslo zařízení" colspan="2"><input type="text" name="CZarizeni" disabled title="Číslo zařízení" value="<?= isset($hlaseni['EvidCislo']) ? htmlspecialchars($hlaseni['EvidCislo']) : htmlspecialchars($zaznam['EvidCislo'] ?? '') ?>"></td>
                     </tr>
                     <tr>
                         <th>Popis, druh a rozsah práce</th>
-                        <td data-label="Popis, druh a rozsah práce" colspan="5"><input type="text" name="prace" title="Popis, druh a rozsah práce" value="<?= isset($hlaseni['Popis']) ? htmlspecialchars($hlaseni['Popis']) : (htmlspecialchars($zaznam['popis_prace']) ?? null) ?>"></td>
+                        <td data-label="Popis, druh a rozsah práce" colspan="5"><input type="text" name="prace" title="Popis, druh a rozsah práce" value="<?= isset($hlaseni['Popis']) ? htmlspecialchars($hlaseni['Popis']) : htmlspecialchars($zaznam['popis_prace'] ?? '') ?>"></td>
                     </tr>
                     <tr>
                         <th>Seznámení s riziky pracoviště dle karty č.</th>
-                        <td data-label="Seznámení s riziky pracov. dle karty č." colspan="5"><input type="text" name="rizikaPrac" title="Číslo karty" value="<?= $zaznam['c_karty'] ?? null ?>"></td>
+                        <td data-label="Seznámení s riziky pracov. dle karty č." colspan="5"><select name="id_kar">
+                            <?php foreach ($karty as $karty): ?>
+                                <option value="<?= $karty['id_kar'] ?>" <?= (isset($zaznam['id_kar']) && $karty['id_kar'] == $zaznam['id_kar']) ? 'selected' : '' ?>>
+                                    <?= $karty['karta'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select></td>
                     </tr>   
                 </tbody>
             </table>
@@ -271,7 +286,7 @@
                                 <span class="checkbox"></span>
                             </label>
                         </td>
-                        <td colspan="6"><input type="text" name="vycisteni_kom" value="<?= $zaznam['vycisteni_kom'] ?? null ?>"></td>
+                        <td colspan="6"><input type="text" name="vycisteni_kom" disabled value="<?= $zaznam['vycisteni_kom'] ?? null ?>"></td>
                     </tr>
                     <tr>
                         <td>
@@ -281,7 +296,7 @@
                             </label>
                         </td>
                         <th>Hodin</th>
-                        <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="vyparene_hod"  value="<?= inputVal($zaznam['vyparene_hod'] ?? null, 'cas') ?>"></td>
+                        <td data-label="Hodin"><input type="number" maxlength="2" name="vyparene_hod" value="<?= $zaznam['vyparene_hod'] ?? null ?>"></td>
                         <td colspan="4"><input type="text" name="vyparene_kom" value="<?= $zaznam['vyparene_kom'] ?? null ?>"></td>
                     </tr>
                     <tr>
@@ -310,7 +325,7 @@
                             </label>
                         </td>
                         <th>Hodin</th>
-                        <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="vyvetrane_hod" value="<?= inputVal($zaznam['vyvetrane_hod'] ?? null, 'cas') ?>"></td>
+                        <td data-label="Hodin"><input type="number" maxlength="2"  name="vyvetrane_hod" value="<?= $zaznam['vyvetrane_hod'] ?? null ?>"></td>
                         <td colspan="4"><input type="text" name="vyvetrane_kom" value="<?= $zaznam['vyvetrane_kom'] ?? null ?>"></td>
                     </tr>
                     <tr>
@@ -321,7 +336,7 @@
                             </label>
                         </td>
                         <th>Hodin</th>
-                        <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="profouk_dusik_hod" value="<?= inputVal($zaznam['profouk_dusik_hod'] ?? null, 'cas') ?>"></td>
+                        <td data-label="Hodin"><input type="number" maxlength="2" name="profouk_dusik_hod" value="<?= $zaznam['profouk_dusik_hod'] ?? null ?>"></td>
                         <td colspan="4"><input type="text" name="profouk_dusik_kom" value="<?= $zaznam['profouk_dusik_kom'] ?? null ?>"></td>
                     </tr>
                     <tr>
@@ -332,7 +347,7 @@
                             </label>
                         </td>
                         <th>Hodin</th>
-                        <td data-label="Hodin"><input type="text" class="time" maxlength="5" placeholder="00:00" name="profouk_vzd_hod" value="<?= inputVal($zaznam['profouk_vzd_hod'] ?? null, 'cas') ?>"></td>
+                        <td data-label="Hodin"><input type="number" maxlength="2" name="profouk_vzd_hod" value="<?= $zaznam['profouk_vzd_hod'] ?? null ?>"></td>
                         <td colspan="4"><input type="text" name="profouk_vzd_kom" value="<?= $zaznam['profouk_vzd_kom'] ?? null ?>"></td>
                     </tr>
                     <tr>

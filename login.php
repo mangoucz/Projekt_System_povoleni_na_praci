@@ -21,6 +21,13 @@
             else 
                 $error = "Uživatel nenalezen!";
             sqlsrv_free_stmt($result);
+        }//Logout
+        else{
+            session_start();
+            session_unset();
+            session_destroy();
+            echo json_encode(["success" => true]);
+            exit();
         }
     }
 ?>

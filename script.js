@@ -1,4 +1,11 @@
 $(document).ready(function() {
+    function ochrana(){
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted || (window.performance && window.performance.getEntriesByType("navigation")[0].type === 'back_forward')) {
+                window.location.reload();
+            }
+        });
+    }
     function zobrazTab() {
         const visibleTables = {};
     
@@ -15,7 +22,11 @@ $(document).ready(function() {
             else 
                 $(this).stop().fadeOut(250);
         });
-        $("#first input[type='checkbox']").trigger('change');
+        if ($("#first").is(":visible")) {
+            $("#first input[type='checkbox']").each(function() {
+                inputSwitch.call(this);
+            });
+         }
     }
     function updateIndex(selector) {
         $(selector).each(function(i) {
@@ -33,9 +44,12 @@ $(document).ready(function() {
             .html(html);
     }
     function closeModal() {
-        $(".modal").fadeOut(200).css("display", "none");
-        if (!window.location.href.includes("uvod.php")) {
-            window.location.href = "uvod.php";            
+        if($(".modal").is(":visible")) {
+            if (!window.location.href.includes("uvod.php")) {
+                window.location.replace("uvod.php");
+                return;    
+            }
+            $(".modal").fadeOut(200).css("display", "none");
         }
     }
     function initializeDatepicker(selector) {
@@ -191,14 +205,25 @@ $(document).ready(function() {
             }
         });     
     }
+    function inputSwitch() {
+        const tr = $(this).closest('tr'); 
+        const inputs = tr.find('input[type="text"], input[type="number"], select'); 
+                
+        if ($(this).is(':checked')){
+            inputs.removeAttr("disabled"); 
+            inputs.attr("required", true);
+        }
+        else{
+            inputs.attr("disabled", true).val("");
+            inputs.removeAttr("required"); 
+        }
+    }
+    ochrana();
     initializeDatepicker('.date');
     initializeRange('#riziko', '#rizikoValue', '#rizikoInput');
+    initializeTitle("input");
+    initializeTitle("textarea");
 
-    $(document).on('focus', '.date', function () {
-        if (!$(this).hasClass('hasDatepicker')) {
-            initializeDatepicker(this);
-        }
-    });
 
     if($(".respons").css("display") == "none"){
         $(".respons input, .respons textarea").each(function() {
@@ -241,15 +266,34 @@ $(document).ready(function() {
     $("#rozborAdd input[type=hidden]").attr("value", index);
     updateIndex("tr.rozboryTR[data-index]");
 
-    initializeTitle("input");
-    initializeTitle("textarea");
-
     if (window.location.href.includes("nove.php?nove=true")) {
         $("#modalHlaseni").fadeIn(200).css("display", "flex");
         loadHlaseniPage(1);   
     }
 
     $(document).on('change', '#intro input[type="checkbox"]', zobrazTab);
+    $(document).on('change', '#first input[type="checkbox"]', inputSwitch);
+
+    $(document).on('click', '#closeBtn', closeModal);
+
+    $(document).on('click', '#logout', function() {
+        if (confirm("Opravdu se chcete odhlásit?")) {
+            $.ajax({
+                url: "login.php",
+                type: "POST",
+                data: { action: "logout" },
+                success: function() {
+                    window.location.replace("login.php");
+                },
+            });
+        }
+    });
+
+    $(document).on('focus', '.date', function () {
+        if (!$(this).hasClass('hasDatepicker')) {
+            initializeDatepicker(this);
+        }
+    });
 
     $(document).on('change', '#svarovani_ohen', function() {
         if ($(this).is(':checked')) {
@@ -378,8 +422,6 @@ $(document).ready(function() {
             }
         });        
     }); 
-
-    $(document).on('click', '#closeBtn', closeModal);
     
     $(document).on('keydown', function (e) {
         if (e.key === "Escape") { 
@@ -519,21 +561,7 @@ $(document).ready(function() {
             $(this).hide();
         }
     });
-            
-    $(document).on('change', '#first input[type="checkbox"]', function() {
-        const tr = $(this).closest('tr'); 
-        const inputs = tr.find('input[type="text"], select'); 
-                
-        if ($(this).is(':checked')){
-            inputs.removeAttr("disabled"); 
-            inputs.attr("required", true);
-        }
-        else{
-            inputs.attr("disabled", true).val("");
-            inputs.removeAttr("required"); 
-        }
-    });
-            
+                        
     $(document).on('click', '.svarecDel', function() {
         $(this).closest('tr').remove();
         updateIndex("tr.svareciTR[data-index]");

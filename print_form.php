@@ -36,7 +36,7 @@
             $svareci = [];
             $prodl = [];
             
-            $sql[0] = "SELECT * FROM Povolenka as p JOIN Hlaseni as h ON p.id_hlas = h.id_hlas WHERE p.id_pov = ?;";
+            $sql[0] = "SELECT * FROM (Povolenka as p JOIN Hlaseni as h ON p.id_hlas = h.id_hlas) LEFT JOIN Karty_Rizik as kr ON p.id_kar = kr.id_kar WHERE p.id_pov = ?;";
             $sql[1] = "SELECT * FROM Pov_Svar as ps LEFT JOIN Svareci AS s ON s.id_svar = ps.id_svar WHERE ps.id_pov = ?;"; 
             $sql[2] = "SELECT * FROM Pov_Roz as pr LEFT JOIN Rozbory AS r ON r.id_roz = pr.id_roz WHERE pr.id_pov = ?;"; 
             $sql[3] = "SELECT * FROM Prodlouzeni as prodl WHERE prodl.id_pov = ? ORDER BY prodl.typ DESC, prodl.od;";
@@ -231,7 +231,7 @@
             </tr>
             <tr>
                 <td colspan="6">seznámení s riziky pracoviště dle karty č.:</td>
-                <td colspan="9"><input type="text" name="" value="<?= htmlspecialchars($zaznam['c_karty']) ?>"></td>
+                <td colspan="9"><input type="text" name="" value="<?= htmlspecialchars($zaznam['karta']) ?>"></td>
             </tr>
             <tr>
                 <td colspan="9"><b>1. Příprava zařízení k opravě</b></td>
@@ -250,7 +250,7 @@
                 <td style="text-align: center;"><input type="checkbox" name="" <?= inputVal($zaznam['vyparene'], 'check') ?>></td>
                 <td colspan="3">Vypařené</td>
                 <td style="text-align: right;">hodin:</td>
-                <td><input type="text" name="" value="<?= inputVal($zaznam['vyparene_hod'], 'cas') ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['vyparene_hod'] ?>"></td>
                 <td colspan="6"><input type="text" name="" value="<?= $zaznam['vyparene_kom'] ?>"></td>
             </tr>
             <tr>
@@ -270,7 +270,7 @@
                 <td style="text-align: center;"><input type="checkbox" name="" <?= inputVal($zaznam['vyvetrane'], 'check') ?>></td>
                 <td colspan="3">Vyvětrané</td>
                 <td style="text-align: right;">hodin:</td>
-                <td><input type="text" name="" value="<?= inputVal($zaznam['vyvetrane_hod'], 'cas')?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['vyvetrane_hod'] ?>"></td>
                 <td colspan="6"><input type="text" name="" value="<?= $zaznam['vyvetrane_kom'] ?>"></td>
             </tr>
             <tr>
@@ -278,7 +278,7 @@
                 <td style="text-align: center;"><input type="checkbox" name="" <?= inputVal($zaznam['profouk_dusik'], 'check') ?>></td>
                 <td colspan="3">Profoukané dusíkem</td>
                 <td style="text-align: right;">hodin:</td>
-                <td><input type="text" name="" value="<?= inputVal($zaznam['profouk_dusik_hod'], 'cas') ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['profouk_dusik_hod'] ?>"></td>
                 <td colspan="6"><input type="text" name="" value="<?= $zaznam['profouk_dusik_kom'] ?>"></td>
             </tr>
             <tr>
@@ -286,7 +286,7 @@
                 <td style="text-align: center;"><input type="checkbox" name="" <?= inputVal($zaznam['profouk_vzd'], 'check') ?>></td>
                 <td colspan="3">Profoukané vzduchem</td>
                 <td style="text-align: right;">hodin:</td>
-                <td><input type="text" name="" value="<?= inputVal($zaznam['profouk_vzd_hod'], 'cas') ?>"></td>
+                <td><input type="text" name="" value="<?= $zaznam['profouk_vzd_hod'] ?>"></td>
                 <td colspan="6"><input type="text" name="" value="<?= $zaznam['profouk_vzd_kom'] ?>"></td>
             </tr>
             <tr>

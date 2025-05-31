@@ -59,7 +59,7 @@
                     <p style="font-size: 12px; margin-left: 1px;"><?php echo $funkce; ?></p>
                 </div>
             </div>
-            <a href="login.php">
+            <a id="logout">
                 <img src="logout_icon.png" width="78%" style="cursor: pointer;">
             </a>
         </div>

@@ -69,12 +69,9 @@
             $vstup_zarizeni_teren = $_POST['vstup_zarizeni_teren'] ?? 0;
             $prostredi_vybuch = $_POST['prostredi_vybuch'] ?? 0;
             $predani_prevzeti_zarizeni = $_POST['predani_prevzeti_zarizeni'] ?? 0;
-            $provoz = inputCheck($_POST['provoz']);
             $objekt = inputCheck($_POST['objekt']);
-            $NZarizeni = inputCheck($_POST['NZarizeni']);
-            $CZarizeni = inputCheck($_POST['CZarizeni']);
             $prace = inputCheck($_POST['prace']);
-            $rizikaPrac = inputCheck($_POST['rizikaPrac']);
+            $id_kar = inputCheck($_POST['id_kar']);
             //TAB 1 1-10 Zařízení bylo
             $vycisteni = $_POST['vycisteni'] ?? 0;
             $vycisteni_kom = $_POST['vycisteni_kom'] ?? null;
@@ -189,7 +186,7 @@
             if ($id_pov != null) {
                 $sql = "UPDATE Povolenka SET 
                                 upraveno = GETDATE(),
-                                rizikovost = ?, interni = ?, externi = ?, pocet_osob = ?, prace_na_zarizeni = ?, svarovani_ohen = ?, vstup_zarizeni_teren = ?, prostredi_vybuch = ?, predani_prevzeti_zarizeni = ?, provoz = ?, objekt = ?, c_zarizeni = ?, nazev_zarizeni = ?, popis_prace = ?, c_karty = ?,
+                                rizikovost = ?, interni = ?, externi = ?, pocet_osob = ?, prace_na_zarizeni = ?, svarovani_ohen = ?, vstup_zarizeni_teren = ?, prostredi_vybuch = ?, predani_prevzeti_zarizeni = ?, objekt = ?, popis_prace = ?,  id_kar = ?,
                                 vycisteni = ?, vycisteni_kom = ?, vyparene = ?, vyparene_hod = ?, vyparene_kom = ?, vyplachnute = ?, vyplachnute_kom = ?, plyn_vytesnen = ?, plyn_vytesnen_kom = ?, vyvetrane = ?, vyvetrane_hod = ?, vyvetrane_kom = ?, profouk_dusik = ?, profouk_dusik_hod = ?, profouk_dusik_kom = ?, profouk_vzd = ?, profouk_vzd_hod = ?, profouk_vzd_kom = ?, odpojeno_od_el = ?, odpojeno_od_el_kym = ?, oddelene_zaslep = ?, oddelene_zaslep_kym = ?, jinak_zab = ?, jinak_zab_jak = ?,
                                 nejiskrive_naradi = ?, nejiskrive_naradi_kom = ?, zkrapet_vetrat = ?, zkrapet_vetrat_pocet = ?, zkrapet_vetrat_hod = ?, zkrapet_vetrat_misto = ?, rozbor_ovzdusi = ?, rozbor_ovzdusi_misto = ?, rozbor_ovzdusi_cas = ?, rozbor_ovzdusi_vysl = ?, zab_dozor = ?, zab_dozor_pocet = ?, pozar_hlidka = ?, pozar_hlidka_pocet = ?, pozar_hlidka_jmeno = ?, hasici_pristroj = ?, hasici_pristroj_pocet = ?, jine_zab_pozar = ?, jine_zab_pozar_kom = ?,
                                 dozor = ?,
@@ -205,7 +202,7 @@
                                 kontrola_dat= ?, kontrola_zjisteno= ?, kontrola_jm= ?,
                                 doplnky= ?
                         WHERE id_pov = ?;";
-                $params = [$riziko, $interni, $externi, $pocetOs, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $provoz, $objekt, $CZarizeni, $NZarizeni, $prace, $rizikaPrac,
+                $params = [$riziko, $interni, $externi, $pocetOs, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $objekt, $prace, $id_kar,
                         $vycisteni, $vycisteni_kom, $vyparene, $vyparene_hod, $vyparene_kom, $vyplachnute, $vyplachnute_kom, $plyn_vytesnen, $plyn_vytesnen_kom, $vyvetrane, $vyvetrane_hod, $vyvetrane_kom, $profouk_dusik, $profouk_dusik_hod, $profouk_dusik_kom, $profouk_vzd, $profouk_vzd_hod, $profouk_vzd_kom, $odpojeno_od_el, $odpojeno_od_el_kym, $oddelene_zaslep, $oddelene_zaslep_kym, $jinak_zab, $jinak_zab_jak,
                         $nejiskrive_naradi, $nejiskrive_naradi_kom, $zkrapet_vetrat, $zkrapet_vetrat_pocet, $zkrapet_vetrat_hod, $zkrapet_vetrat_misto, $rozbor_ovzdusi, $rozbor_ovzdusi_misto, $rozbor_ovzdusi_cas, $rozbor_ovzdusi_vysl, $zab_dozor, $zab_dozor_pocet, $pozar_hlidka, $pozar_hlidka_pocet, $pozar_hlidka_jmeno, $hasici_pristroj, $hasici_pristroj_pocet, $jine_zab_pozar, $jine_zab_pozar_kom,
                         $ochran_dozor,
@@ -276,7 +273,7 @@
 
             }//INSERT
             else{
-                $sql = "INSERT INTO Povolenka (id_zam, id_hlas, ev_cislo, rizikovost, interni, externi, pocet_osob, povol_od, povol_do, prace_na_zarizeni, svarovani_ohen, vstup_zarizeni_teren, prostredi_vybuch, predani_prevzeti_zarizeni, provoz, objekt, c_zarizeni, nazev_zarizeni, popis_prace, c_karty,
+                $sql = "INSERT INTO Povolenka (id_zam, id_hlas, ev_cislo, rizikovost, interni, externi, pocet_osob, povol_od, povol_do, prace_na_zarizeni, svarovani_ohen, vstup_zarizeni_teren, prostredi_vybuch, predani_prevzeti_zarizeni, objekt, popis_prace, id_kar,
                                             vycisteni, vycisteni_kom, vyparene, vyparene_hod, vyparene_kom, vyplachnute, vyplachnute_kom, plyn_vytesnen, plyn_vytesnen_kom, vyvetrane, vyvetrane_hod, vyvetrane_kom, profouk_dusik, profouk_dusik_hod, profouk_dusik_kom, profouk_vzd, profouk_vzd_hod, profouk_vzd_kom, odpojeno_od_el, odpojeno_od_el_kym, oddelene_zaslep, oddelene_zaslep_kym, jinak_zab, jinak_zab_jak,
                                             nejiskrive_naradi, nejiskrive_naradi_kom, zkrapet_vetrat, zkrapet_vetrat_pocet, zkrapet_vetrat_hod, zkrapet_vetrat_misto, rozbor_ovzdusi, rozbor_ovzdusi_misto, rozbor_ovzdusi_cas, rozbor_ovzdusi_vysl, zab_dozor, zab_dozor_pocet, pozar_hlidka, pozar_hlidka_pocet, pozar_hlidka_jmeno, hasici_pristroj, hasici_pristroj_pocet, jine_zab_pozar, jine_zab_pozar_kom,
                                             dozor,
@@ -292,7 +289,7 @@
                                             kontrola_dat, kontrola_zjisteno, kontrola_jm,
                                             doplnky,
                                             odeslano) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                             ?,
@@ -308,7 +305,7 @@
                             ?, ?, ?,
                             ?,
                             GETDATE());";
-                $params = [$uziv, $id_hlas, $ev_cislo, $riziko, $interni, $externi, $pocetOs, $povolOd, $povolDo, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $provoz, $objekt, $CZarizeni, $NZarizeni, $prace, $rizikaPrac,
+                $params = [$uziv, $id_hlas, $ev_cislo, $riziko, $interni, $externi, $pocetOs, $povolOd, $povolDo, $prace_na_zarizeni, $svarovani_ohen, $vstup_zarizeni_teren, $prostredi_vybuch, $predani_prevzeti_zarizeni, $objekt, $prace, $id_kar,
                         $vycisteni, $vycisteni_kom, $vyparene, $vyparene_hod, $vyparene_kom, $vyplachnute, $vyplachnute_kom, $plyn_vytesnen, $plyn_vytesnen_kom, $vyvetrane, $vyvetrane_hod, $vyvetrane_kom, $profouk_dusik, $profouk_dusik_hod, $profouk_dusik_kom, $profouk_vzd, $profouk_vzd_hod, $profouk_vzd_kom, $odpojeno_od_el, $odpojeno_od_el_kym, $oddelene_zaslep, $oddelene_zaslep_kym, $jinak_zab, $jinak_zab_jak,
                         $nejiskrive_naradi, $nejiskrive_naradi_kom, $zkrapet_vetrat, $zkrapet_vetrat_pocet, $zkrapet_vetrat_hod, $zkrapet_vetrat_misto, $rozbor_ovzdusi, $rozbor_ovzdusi_misto, $rozbor_ovzdusi_cas, $rozbor_ovzdusi_vysl, $zab_dozor, $zab_dozor_pocet, $pozar_hlidka, $pozar_hlidka_pocet, $pozar_hlidka_jmeno, $hasici_pristroj, $hasici_pristroj_pocet, $jine_zab_pozar, $jine_zab_pozar_kom,
                         $ochran_dozor,
