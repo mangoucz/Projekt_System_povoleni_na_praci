@@ -124,21 +124,22 @@ $(document).ready(function() {
         const dateOd = parseDate(inputOd.val());
         const min = typeof $(inputOd).attr("data-min") !== "undefined" ? new Date($(inputOd).attr("data-min")) : new Date();
         if (dateOd < min) {
-            inputOd.val(min.toLocaleDateString('cs-CZ'));
+            inputOd.val(min.getDate().toString().padStart(2, '0') + '. ' + 
+                      (min.getMonth() + 1).toString().padStart(2, '0') + '. ' + 
+                      min.getFullYear());
         }
-        
         if (inputDo.val()) {
             const dateDo = parseDate(inputDo.val());
             if (dateDo < min) {
-                inputDo.val(min.toLocaleDateString('cs-CZ'));
+                inputDo.val(min.getDate().toString().padStart(2, '0') + '. ' + 
+                      (min.getMonth() + 1).toString().padStart(2, '0') + '. ' + 
+                      min.getFullYear());
             }
-            if (dateOd > dateDo) {
+            if (dateOd > dateDo)
                 inputDo.val(inputOd.val());
-            }
         }
-        else {
+        else 
             inputDo.val(inputOd.val());
-        }
     }
     function timeCheck(inputOd, inputDo, hodOd, hodDo) {
         const min = typeof $(inputOd).attr("data-min") !== "undefined" ? new Date($(inputOd).attr("data-min")) : new Date();

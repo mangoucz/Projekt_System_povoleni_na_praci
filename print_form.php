@@ -97,7 +97,7 @@
 <script>
     window.onload = function() {
         window.print();
-    };
+    }
 </script>
 <style>
     body {
