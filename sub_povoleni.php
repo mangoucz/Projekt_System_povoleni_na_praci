@@ -138,45 +138,45 @@
             $bez_krytu_kom = inputCheck($_POST['bez_krytu1']);
             $bez_krytu_kom2 = inputCheck($_POST['bez_krytu2']);
             $za_praci_odpovida = inputCheck($_POST['za_praci_odpovida']);
-            $odpovednost_dat = $_POST['odpovednost_dat'] . ' ' . $_POST['odpovednost_cas'];
+            $odpovednost_dat = ($_POST['odpovednost_dat'] && $_POST['odpovednost_cas']) ? $_POST['odpovednost_dat'] . ' ' . $_POST['odpovednost_cas'] : null;
             $osvedceny_prac = inputCheck($_POST['osvedceny_prac']);
             // TAB 3
-            $prohl_prac_dat = $_POST['prohl_prac_dat'];
-            $prohl_exter_dat = $_POST['prohl_exter_dat'];
+            $prohl_prac_dat = !empty($_POST['prohl_prac_dat']) ? $_POST['prohl_prac_dat'] : null;
+            $prohl_exter_dat = !empty($_POST['prohl_exter_dat']) ? $_POST['prohl_exter_dat'] : null;
             $prohl_obvod = inputCheck($_POST['prohl_obvod']);
-            $prohl_vedouci_dat = $_POST['prohl_vedouci_dat'];
+            $prohl_vedouci_dat = !empty($_POST['prohl_vedouci_dat']) ? $_POST['prohl_vedouci_dat'] : null;
             // TAB 4
             $podminky = inputCheck($_POST['podminky']);
             $podminky_jm = inputCheck($_POST['podminky_jm']);
-            $ohen_dat = $_POST['ohen_dat'] . ' ' . $_POST['ohen_cas'];
+            $ohen_dat = ($_POST['ohen_dat'] && $_POST['ohen_cas']) ? $_POST['ohen_dat'] . ' ' . $_POST['ohen_cas'] : null;
             $zkontroloval_jm = inputCheck($_POST['zkontroloval_jm']);
             // TAB 6 (5 jsou rozbory)
             $dalsi_jine = inputCheck($_POST['dalsi_jine']);
             $dalsi_jine_stanovil = inputCheck($_POST['dalsi_jine_stanovil']);
             $dalsi_jine_jm = inputCheck($_POST['dalsi_jine_jm']);
-            $dalsi_jine_dat = $_POST['dalsi_jine_dat'] . ' ' . $_POST['dalsi_jine_cas'];
+            $dalsi_jine_dat = ($_POST['dalsi_jine_dat'] && $_POST['dalsi_jine_cas']) ? $_POST['dalsi_jine_dat'] . ' ' . $_POST['dalsi_jine_cas'] : null;
             // TAB 7
-            $nutna_dat = $_POST['nutna_dat'];
+            $nutna_dat = !empty($_POST['nutna_dat']) ? $_POST['nutna_dat'] : null;
             $nutna_opatreni = inputCheck($_POST['nutna_opatreni']);
             // TAB 8
-            $oprava_protokol = $_POST['oprava_protokol'];
-            $oprava_dat = $_POST['oprava_dat'] . ' ' . $_POST['oprava_cas'];
+            $oprava_protokol = !empty($_POST['oprava_protokol']) ? $_POST['oprava_protokol'] : null;
+            $oprava_dat = ($_POST['oprava_dat'] && $_POST['oprava_cas']) ? $_POST['oprava_dat'] . ' ' . $_POST['oprava_cas'] : null;
             $oprava_predal = inputCheck($_POST['oprava_predal']);
             $oprava_prevzal =inputCheck($_POST['oprava_prevzal']);
             // TAB 9
-            $z_opravy_dat = $_POST['z_opravy_dat'] . ' ' . $_POST['z_opravy_cas'];
+            $z_opravy_dat = ($_POST['z_opravy_dat'] && $_POST['z_opravy_cas']) ? $_POST['z_opravy_dat'] . ' ' . $_POST['z_opravy_cas'] : null;
             $z_opravy_predal = inputCheck($_POST['z_opravy_predal']);
             $z_opravy_prevzal = inputCheck($_POST['z_opravy_prevzal']);
             // TAB 10
-            $svarec_ukon_dat = $_POST['svarec_ukon_dat'] . ' ' . $_POST['svarec_ukon_cas'];
+            $svarec_ukon_dat = ($_POST['svarec_ukon_dat']&& $_POST['svarec_ukon_cas']) ? $_POST['svarec_ukon_dat'] . ' ' . $_POST['svarec_ukon_cas'] : null;
             $svarec_ukon_predal = inputCheck($_POST['svarec_predal']);
             $svarec_ukon_prevzal = inputCheck($_POST['svarec_prevzal']);
             // TAB 11
-            $dozor_od = $_POST['dozor_od'];
-            $dozor_do = $_POST['dozor_do'];
+            $dozor_od = !empty($_POST['dozor_od']) ? $_POST['dozor_od'] : null;
+            $dozor_do = !empty($_POST['dozor_do']) ? $_POST['dozor_do'] : null;
             $dozor_jm = inputCheck($_POST['dozor_jm']);
             // TAB 12
-            $kontrola_dat = $_POST['kontrola_dat'] . ' ' . $_POST['kontrola_cas'];
+            $kontrola_dat = ($_POST['kontrola_dat'] && $_POST['kontrola_cas']) ? $_POST['kontrola_dat'] . ' ' . $_POST['kontrola_cas'] : null;
             $kontrola_zjisteno = inputCheck($_POST['kontrola_zjisteno']);
             $kontrola_jm = inputCheck($_POST['kontrola_jm']);
             // TAB 14

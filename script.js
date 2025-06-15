@@ -213,10 +213,12 @@ $(document).ready(function() {
         if ($(this).is(':checked')){
             inputs.removeAttr("disabled"); 
             inputs.attr("required", true);
+            $(inputs).css("border", "1px solid red");
         }
         else{
             inputs.attr("disabled", true).val("");
             inputs.removeAttr("required"); 
+            $(inputs).css("border", "1px solid #BCD4EF");
         }
     }
     ochrana();

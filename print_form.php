@@ -367,9 +367,9 @@
                 <td>počet</td>
                 <td><input type="text" name="" value="<?= $zaznam['hasici_pristroj_pocet'] ?>"></td>
                 <td>druh</td>
-                <td><input type="text" name="" value="<?= $ochrany_druhy['hasicak']['druh'] ?>"></td>
+                <td><input type="text" name="" value="<?= $ochrany_druhy['hasicak']['druh'] ?? '' ?>"></td>
                 <td>typ</td>
-                <td><input type="text" name="" value="<?= $ochrany_druhy['hasicak']['typ'] ?>"></td>
+                <td><input type="text" name="" value="<?= $ochrany_druhy['hasicak']['typ'] ?? '' ?>"></td>
             </tr>
             <tr>
                 <td>1.17</td>

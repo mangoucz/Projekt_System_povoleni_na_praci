@@ -206,8 +206,8 @@
                             </div>
                         </td>
                         <td data-label="Interní"><input type="text" name="interni" title="Interní" value="<?= $zaznam['interni'] ?? null ?>"></td>
-                        <td data-label="Externí"><input type="text" name="externi" title="Externí" <?= ($hlaseni['TypRes'] ?? null) == 'Externí' ? 'required' : '' ?> value="<?= $zaznam['externi'] ?? null ?>"></td>
-                        <td data-label="Počet osob"><input type="number" name="pocetOs" title="Zadejte počet os." value="<?= $zaznam['pocet_osob'] ?? null ?>"></td>
+                        <td data-label="Externí"><input type="text" name="externi" title="Externí společnost" <?= ($hlaseni['TypRes'] ?? null) == 'Externí' ? 'required' : '' ?> value="<?= $zaznam['externi'] ?? null ?>"></td>
+                        <td data-label="Počet osob"><input type="number" name="pocetOs" title="Výchozí 1" value="<?= $zaznam['pocet_osob'] ?? null ?>"></td>
                         <td data-label="Od"><input type="text" name="povolOd" id="povolOd" class="date" required title="Datum začátku platnosti povolení" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
                         <td data-label="Do"><input type="text" name="povolDo" id="povolDo" class="date" required title="Datum konce platnosti povolení (lze prodloužit)" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
                         <td data-label="Povolení" rowspan="5">
@@ -240,8 +240,8 @@
                         <td data-label="Provoz"><input type="text" name="provoz" disabled title="Provoz" value="<?= isset($hlaseni['NaklStredisko']) ? htmlspecialchars($hlaseni['NaklStredisko']) : htmlspecialchars($zaznam['NaklStredisko'] ?? '') ?>"></td>
                         <th>Název(číslo) objektu</th>
                         <td data-label="Název(číslo) objektu"><input type="text" name="objekt" <?= isset($hlaseni['Umisteni']) || isset($zaznam['objekt']) ? 'readonly' : ''?> title="Název nebo č. objektu" value="<?= isset($hlaseni['Umisteni']) ? htmlspecialchars($hlaseni['Umisteni']) : htmlspecialchars($zaznam['objekt'] ?? '') ?>"></td>
-                        <td data-label="Od"><input type="text" name="hodOd" class="time" id="hodOd" title="Čas začátku platnosti" maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>></td>
-                        <td data-label="Do"><input type="text" name="hodDo" class="time" id="hodDo" title="Čas konce platnosti" maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>></td>
+                        <td data-label="Od"><input type="text" name="hodOd" class="time" id="hodOd" title="Čas začátku platnosti" required maxlength="5" placeholder="00:00" value="<?= inputVal($zaznam['povol_od'] ?? null, "cas") ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?>></td>
+                        <td data-label="Do"><input type="text" name="hodDo" class="time" id="hodDo" title="Čas konce platnosti" required maxlength="5" placeholder="00:00" value="<?= inputVal($nejDo ?? null, "cas") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?>></td>
                     </tr>
                     <tr>
                         <th>Název zařízení</th>
@@ -786,7 +786,7 @@
                 <thead class="origo">
                     <tr>
                         <th colspan="3">8. Předání do opravy - protokol č.</th>
-                        <th><input type="text" name="oprava_protokol" value="<?= $zaznam['oprava_protokol'] ?? null ?>"></th>
+                        <th><input type="number" name="oprava_protokol" value="<?= $zaznam['oprava_protokol'] ?? null ?>"></th>
                         <th colspan="4">10. Práce svářečské ukončeny</th>
                         <th colspan="4">12. Kontrola BT, PO, jiného orgánu</th>
                     </tr>
@@ -937,16 +937,21 @@
             <table id="thirteenth">
                 <?php 
                     $prodlZarDo = isset($zaznam['prodlZarDo']) && $zaznam['prodlZarDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['prodlZarDo']->format("Y-m-d") : date("Y-m-d");
-                    $prodlZarHodDo = isset($zaznam['prodlZarDo']) && $zaznam['prodlZarDo']->format("H:i") > date("H:i") ? $zaznam['prodlZarDo']->format("H:i") : date("H:i");
+                    $prodlZarHodDo = isset($zaznam['prodlZarDo']) && $zaznam['prodlZarDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['prodlZarDo']->format("H:i") : date("H:i");
+                    $prodlZarHodDo = isset($zaznam['prodlZarDo']) && $zaznam['prodlZarDo']->format("Y-m-d") == date("Y-m-d") ? $zaznam['prodlZarDo']->format("H:i") > date("H:i") ? $zaznam['prodlZarDo']->format("H:i") : date("H:i") : $prodlZarHodDo;
+
                     $prodlOhDo = isset($zaznam['prodlOhDo']) && $zaznam['prodlOhDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['prodlOhDo']->format("Y-m-d") : date("Y-m-d"); 
                     $prodlOhHodDo = isset($zaznam['prodlOhDo']) && $zaznam['prodlOhDo']->format("H:i") > date("H:i") ? $zaznam['prodlOhDo']->format("H:i") : date("H:i");
+                    $prodlOhHodDo = isset($zaznam['prodlOhDo']) && $zaznam['prodlOhDo']->format("Y-m-d") == date("Y-m-d") ? $zaznam['prodlOhDo']->format("H:i") > date("H:i") ? $zaznam['prodlOhDo']->format("H:i") : date("H:i") : $prodlOhHodDo;
+                    
                     $povolDo = isset($zaznam['povolDo']) && $zaznam['povolDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['povolDo']->format("Y-m-d") : date("Y-m-d");
-                    $povolHodDo = isset($zaznam['povolDo']) && $zaznam['povolDo']->format("H:i") > date("H:i") ? $zaznam['povolDo']->format("H:i") : date("H:i");
+                    $povolHodDo = isset($zaznam['povolDo']) && $zaznam['povolDo']->format("Y-m-d") > date("Y-m-d") ? $zaznam['povolDo']->format("H:i") : date("H:i");
+                    $povolHodDo = isset($zaznam['povolDo']) && $zaznam['povolDo']->format("Y-m-d") == date("Y-m-d") ? $zaznam['povolDo']->format("H:i") > date("H:i") ? $zaznam['povolDo']->format("H:i") : date("H:i") : $povolHodDo;
                     
                     $zarMin = max($prodlZarDo, $povolDo);
                     $ohMin = max($prodlOhDo, $povolDo);
-                    $zarHodMin = max($prodlZarHodDo, $povolHodDo);
-                    $ohHodMin = max($prodlOhHodDo, $povolHodDo);
+                    $zarHodMin = isset($zaznam['prodlZarDo']) || (isset($zaznam['povolDo']) && $zaznam['povolDo']->format("Y-m-d") < date("Y-m-d"))  ? $prodlZarHodDo : $povolHodDo;
+                    $ohHodMin = isset($zaznam['prodlOhDo']) || (isset($zaznam['povolDo']) && $zaznam['povolDo']->format("Y-m-d") < date("Y-m-d")) ? $prodlOhHodDo : $povolHodDo;
                 ?>
                 <thead>
                     <tr>
@@ -967,19 +972,19 @@
                     </tr>
                     <tr class="prodlZarTR">
                         <td data-label="Od" rowspan="2">
-                            <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" data-min="<?= $zarMin ?>" placeholder="Vyberte datum" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
-                            <input type="text" name="prodluzZarhodOd" class="time" id="prodluzZarhodOd" data-min="<?= $zarHodMin ?>" maxlength="5" placeholder="00:00" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
+                            <input type="text" name="prodluzZarOd" id="prodluzZarOd" class="date" data-min="<?= $zarMin ?>" placeholder="Vyberte datum" value="<?= ($zaznam['zar'] == 1) ? date('d. m. Y', strtotime($zarMin)) : '' ?>" <?= ($zaznam['zar'] == 0) ? 'disabled' : 'required'; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzZarhodOd" class="time" id="prodluzZarhodOd" data-min="<?= $zarHodMin ?>" maxlength="5" placeholder="00:00" value="<?= ($zaznam['zar'] == 1) ? $zarHodMin : '' ?>" <?= ($zaznam['zar'] == 0) ? 'disabled' : 'required'; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
-                            <input type="text" name="prodluzZarDo" id="prodluzZarDo" class="date" placeholder="Vyberte datum" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
-                            <input type="text" name="prodluzZarhodDo" class="time" id="prodluzZarhodDo" maxlength="5" placeholder="00:00" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>>
+                            <input type="text" name="prodluzZarDo" id="prodluzZarDo" class="date" placeholder="Vyberte datum" <?= ($zaznam['zar'] == 0) ? 'disabled' : 'required'; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzZarhodDo" class="time" id="prodluzZarhodDo" maxlength="5" placeholder="00:00" <?= ($zaznam['zar'] == 0) ? 'disabled' : 'required'; ?>>
                         </td>
                         <th>Přestávka</th>
-                        <td data-label="Přestávka"><input type="text" name="prodluz_zar_prestavka" id="prodluzZarPrestavka" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>></td>
+                        <td data-label="Přestávka"><input type="text" name="prodluz_zar_prestavka" id="prodluzZarPrestavka" <?= ($zaznam['zar'] == 0) ? 'disabled' : 'required'; ?>></td>
                     </tr>
                     <tr>
                         <th>Počet osob</th>
-                        <td data-label="Počet osob"><input type="text" name="prodluz_zar_os" id="prodluzZarOs" <?= ($zaznam['zar'] == 0) ? 'disabled' : ''; ?>></td>
+                        <td data-label="Počet osob"><input type="text" name="prodluz_zar_os" id="prodluzZarOs" <?= ($zaznam['zar'] == 0) ? 'disabled' : 'required'; ?>></td>
                     </tr>
                     <tr>
                         <th colspan="4">13.2 Pro práci s otevřeným ohněm</th>
@@ -991,11 +996,11 @@
                     </tr>
                     <tr class="prodlOhTR">
                         <td data-label="Od" rowspan="2">
-                            <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" data-min="<?= $ohMin ?>" placeholder="Vyberte datum" min="<?= $ohMin; ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
-                            <input type="text" name="prodluzOhHodOd" class="time" id="prodluzOhHodOd" data-min="<?= $ohHodMin ?>" maxlength="5" placeholder="00:00" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
+                            <input type="text" name="prodluzOhOd" id="prodluzOhOd" class="date" data-min="<?= $ohMin ?>" placeholder="Vyberte datum" value="<?= ($zaznam['oh'] == 1) ?  date('d. m. Y', strtotime($ohMin)) : ''?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzOhHodOd" class="time" id="prodluzOhHodOd" data-min="<?= $ohHodMin ?>" maxlength="5" placeholder="00:00" value="<?= ($zaznam['oh'] == 1) ? $ohHodMin : '' ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <td data-label="Do" rowspan="2">
-                            <input type="text" name="prodluzOhDo" id="prodluzOhDo" class="date" placeholder="Vyberte datum" min="<?= date("Y-m-d") ?>" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
+                            <input type="text" name="prodluzOhDo" id="prodluzOhDo" class="date" placeholder="Vyberte datum" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?> style="margin-bottom: 10%;">
                             <input type="text" name="prodluzOhHodDo" class="time" id="prodluzOhHodDo" maxlength="5" placeholder="00:00" <?= ($zaznam['oh'] == 0) ? 'disabled' : ''; ?>>
                         </td>
                         <th>Přestávka</th>
@@ -1312,18 +1317,18 @@
             display: none;
         }
 
-        <?php if(isset($_POST['subProdl'])){ ?>
+        <?php if(isset($_POST['subProdl'])): ?>
             table:not(#thirteenth):not(.ui-datepicker-calendar){
                 display: none;
             }
             #thirteenth{
                 display: table;
             }
-        <?php } else{ ?>
+        <?php else: ?>
             #thirteenth{
                 display: none;
             }
-        <?php }?>
+        <?php endif;?>
                 
         @media (max-width: 660px) {
             .header {
@@ -1392,5 +1397,24 @@
             }
         } 
     </style>
+    <script>
+        <?php if(isset($_POST['subProdl'])): ?>
+            $(document).ready(function() {
+                $('table:not(#thirteenth)').each(function() {
+                    $(this).find('input, select, textarea').each(function() {
+                        $(this).prop('required', false);
+                    });
+                });
+            });
+        <?php else: ?>
+            $(document).ready(function() {
+                $('#thirteenth').each(function() {
+                    $(this).find('input').each(function() {
+                        $(this).prop('required', false);
+                    });
+                });
+            });
+        <?php endif; ?>
+    </script>
 </body>
 </html>

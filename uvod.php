@@ -184,28 +184,28 @@
                                     $povolDo = $zaznam['prodlOhDo'];
                                 }
                                 else 
-                                    $povolDo = $zaznam['povol_do'];
+                                    $povolDo = $zaznam['povol_do']; ?>
 
-                                echo'<div class="prehled">';
-                                echo '<div class="prehled-head">';
-                                echo '<p>Ev. č. ' . $zaznam['ev_cislo'] . '</p>';
-                                echo '</div>';
-                                echo '<div class="prehled-body">';
-                                echo '<div>';
-                                echo '<p>Podal: ' . $zaznam['Zam'] . '</p>';
-                                echo '<p>Na: '. $zaznam['povol_od']->format("d.m.Y") . ' - ' . $povolDo->format("d.m.Y") . '</p>';
-                                echo '<div class="stav">';
-                                echo '<p>Stav: <span class="status">Odesláno</span></p>';
-                                echo '<span class="icon"></span>';
-                                echo '<p class="odeslano">' . $zaznam['odeslano']->format('d.m.Y') . '</p>';
-                                echo '</div>';
-                                echo '</div>';
-                                echo '<div>';
-                                echo '<a class="link" id="' . $zaznam['id_pov'] . '" style="cursor: pointer;">Podrobnosti &gt;</a>';
-                                echo '</div>';
-                                echo '</div>';
-                                echo '</div>';
-                            }
+                                <div class="prehled">
+                                    <div class="prehled-head">
+                                        <p>Ev. č. <?= $zaznam['ev_cislo'] ?></p>
+                                    </div>
+                                    <div class="prehled-body">
+                                        <div>
+                                            <p>Podal: <?= $zaznam['Zam'] ?></p>
+                                            <p>Na: <?= $zaznam['povol_od']->format("d.m.Y") . ' - ' . $povolDo->format("d.m.Y") ?></p>
+                                            <div class="stav">
+                                                <p>Stav: <span class="status">Odesláno</span></p>
+                                                <span class="icon"></span>
+                                                <p class="odeslano"><?= $zaznam['odeslano']->format('d.m.Y') ?></p>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a class="link" id="<?= $zaznam['id_pov'] ?>" style="cursor: pointer;">Podrobnosti &gt;</a>
+                                        </div>
+                                    </div>
+                                </div>
+                    <?php   }
                         }
                         sqlsrv_free_stmt($result);
                     ?>
@@ -318,28 +318,28 @@
                                         $povolDo = $zaznam['prodlOhDo'];
                                     }
                                     else 
-                                        $povolDo = $zaznam['povol_do'];
-
-                                    echo'<div class="prehled">';
-                                    echo '<div class="prehled-head">';
-                                    echo '<p>Ev. č. ' . $zaznam['ev_cislo'] . '</p>';
-                                    echo '</div>';
-                                    echo '<div class="prehled-body">';
-                                    echo '<div>';
-                                    echo '<p>Podal: ' . $zaznam['Zam'] . '</p>';
-                                    echo '<p>Na: '. $zaznam['povol_od']->format("d.m.Y") . ' - ' . $povolDo->format("d.m.Y") . '</p>';
-                                    echo '<div class="stav">';
-                                    echo '<p>Stav: <span class="status">Odesláno</span></p>';
-                                    echo '<span class="icon"></span>';
-                                    echo '<p class="odeslano">' . $zaznam['odeslano']->format('d.m.Y') . '</p>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                    echo '<div>';
-                                    echo '<a class="link" id="' . $zaznam['id_pov'] . '" style="cursor: pointer;">Podrobnosti &gt;</a>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                }
+                                        $povolDo = $zaznam['povol_do']; 
+                            ?>
+                            <div class="prehled">
+                                <div class="prehled-head">
+                                    <p>Ev. č. <?= $zaznam['ev_cislo'] ?></p>
+                                </div>
+                                <div class="prehled-body">
+                                    <div>
+                                        <p>Podal: <?= $zaznam['Zam'] ?></p>
+                                        <p>Na: <?= $zaznam['povol_od']->format("d.m.Y") . ' - ' . $povolDo->format("d.m.Y") ?></p>
+                                        <div class="stav">
+                                            <p>Stav: <span class="status">Odesláno</span></p>
+                                            <span class="icon"></span>
+                                            <p class="odeslano"><?= $zaznam['odeslano']->format('d.m.Y') ?></p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <a class="link" id="<?= $zaznam['id_pov'] ?>" style="cursor: pointer;">Podrobnosti &gt;</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php   }
                             }
                             sqlsrv_free_stmt($result);
                         ?>
