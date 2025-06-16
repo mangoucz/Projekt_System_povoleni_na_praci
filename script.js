@@ -26,7 +26,11 @@ $(document).ready(function() {
             $("#first input[type='checkbox']").each(function() {
                 inputSwitch.call(this);
             });
-         }
+        }
+        $("input").each(function() {
+            if ($(this).attr("required") && !$(this).attr("disabled")) 
+                $(this).css("border", "1px solid red");
+        });
     }
     function updateIndex(selector) {
         $(selector).each(function(i) {

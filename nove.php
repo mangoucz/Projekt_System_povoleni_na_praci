@@ -206,7 +206,7 @@
                             </div>
                         </td>
                         <td data-label="Interní"><input type="text" name="interni" title="Interní" value="<?= $zaznam['interni'] ?? null ?>"></td>
-                        <td data-label="Externí"><input type="text" name="externi" title="Externí společnost" <?= ($hlaseni['TypRes'] ?? null) == 'Externí' ? 'required' : '' ?> value="<?= $zaznam['externi'] ?? null ?>"></td>
+                        <td data-label="Externí"><input type="text" name="externi" title="Externí společnost" <?= (($hlaseni['TypRes'] ?? null) == 'Externí') || (($zaznam['TypRes'] ?? null) == 'Externí' ) ? 'required' : '' ?> value="<?= $zaznam['externi'] ?? null ?>"></td>
                         <td data-label="Počet osob"><input type="number" name="pocetOs" title="Výchozí 1" value="<?= $zaznam['pocet_osob'] ?? null ?>"></td>
                         <td data-label="Od"><input type="text" name="povolOd" id="povolOd" class="date" required title="Datum začátku platnosti povolení" value="<?= inputVal($zaznam['povol_od'] ?? null, 'dat'); ?>" <?= isset($zaznam['povol_od']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
                         <td data-label="Do"><input type="text" name="povolDo" id="povolDo" class="date" required title="Datum konce platnosti povolení (lze prodloužit)" value="<?= inputVal($nejDo ?? null, "dat") ?>" <?= isset($zaznam['povol_do']) ? 'disabled' : '' ?> placeholder="Vyberte datum"></td>
@@ -1065,7 +1065,7 @@
         </div>
     </form>
     <div class="modal" id="modalOdeslano">
-        <div class="modal-content" style="width: 50vh; height: 30vh;">
+        <div class="modal-content" style="width: 50vh;">
             <div class="modal-header">
                 <span id="closeBtn" class="close">&times;</span>
                 <h2>Povolení č.</h2>
@@ -1086,12 +1086,12 @@
     </div>
     <div class="modal" id="modalHlaseni">
         <form action="nove.php" method="post">
-            <div class="modal-content" style="width: 140vh; height: 80vh;">  
+            <div class="modal-content">  
                 <div class="modal-header">
                     <span id="closeBtn" class="close">&times;</span>
                     <h2>Vyberte hlášení</h2>
                 </div>
-                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <div class="modal-body" style="max-height: 65vh; overflow-y: auto;">
                     <Table id="hlaseniTable">
                         <thead>
                             <tr>
@@ -1313,6 +1313,11 @@
             margin: 20px 0 100px 0; 
         }
 
+        #hlaseniTable .modal-content{
+            width: 140vh;
+            height: 80vh;
+        }
+
         .footer, .respons{
             display: none;
         }
@@ -1359,7 +1364,7 @@
             tbody th, .logo, .origo {
                 display: none !important;
             }
-            table:not(.ui-datepicker-calendar), table:not(.ui-datepicker-calendar) thead, table:not(.ui-datepicker-calendar)  thead th, table:not(.ui-datepicker-calendar) tbody, table:not(.ui-datepicker-calendar) tr, table:not(.ui-datepicker-calendar) td, .respons {
+            table:not(.ui-datepicker-calendar):not(#hlaseniTable), table:not(.ui-datepicker-calendar):not(#hlaseniTable) *, .respons {
                 display: block;
             }
             table:not(.ui-datepicker-calendar) tbody{
@@ -1394,6 +1399,10 @@
             }
             .svareciTR, .rozboryTR, .prodlZarTR, .prodlOhTR{
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            #hlaseniTable .modal-content{
+                width: unset;
+                height: unset;
             }
         } 
     </style>
