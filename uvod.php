@@ -10,7 +10,8 @@
 
     $sql = "SELECT
                 CONCAT(z.jmeno, ' ', z.prijmeni) AS jmeno,
-                z.funkce
+                z.funkce,
+                z.uziv_jmeno
             FROM Zamestnanci AS z
             WHERE z.id_zam = ?;";
     $params = [$uziv];
@@ -23,6 +24,21 @@
 
     $jmeno = $zaznam['jmeno'];
     $funkce = $zaznam['funkce'];
+    $uziv_jmeno = $zaznam['uziv_jmeno'];
+
+    switch ($uziv_jmeno) {
+        case 'admin':
+            $admin = true;
+            break;
+        case 'kucera':
+            $admin = true;
+            break;
+        default:
+            $admin = false;
+            break;
+    }
+    if ($admin) 
+        $_SESSION['admin'] = true;
 
     $sql = "SELECT s.id_schval FROM Schvalovani as s WHERE s.id_schval = ?;";
     $result = sqlsrv_query($conn, $sql, $params);
@@ -50,7 +66,7 @@
         <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
         <div class="headerB">
             <div style="width: 60%;">
-                <button type="button" id="subAdmin" class="defButt" onclick="window.location.href='admin.php'">Administrace</button>
+                <?php if ($admin) : ?><button type="button" id="subAdmin" class="defButt" onclick="window.location.href='admin.php'">Administrace</button><?php endif; ?>
                 <button type="button" id="subNove" class="defButt" onclick="window.location.href='nove.php?nove=true'">Nové povolení</button>
             </div>
             <div class="uziv">

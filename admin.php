@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if (isset($_SESSION['uziv'])) //+ ověření na práva
+    if (isset($_SESSION['uziv']) && isset($_SESSION['admin']) && $_SESSION['admin'] == true)
         $uziv = $_SESSION['uziv'];
     else{
         header("Location: login.php");
@@ -23,6 +23,19 @@
 
     $jmeno = $zaznam['jmeno'];
     $funkce = $zaznam['funkce'];
+
+    $sql = "SELECT ochrana FROM Ochrana GROUP BY ochrana;";
+    $result = sqlsrv_query($conn, $sql);
+    if ($result === FALSE)
+        die(print_r(sqlsrv_errors(), true));
+    
+    $ochrany = [];
+    while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+        $ochrany[] = $row['ochrana'];
+    }
+    sqlsrv_free_stmt($result);
+
+    $sql = "SELECT * FROM Ochrana;";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,5 +69,42 @@
             </a>
         </div>
     </div>
+    <table>
+        <thead>
+            <tr>
+                <th colspan="">Ochrané prostředky</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($ochrany as $och): ?>
+                <tr>
+                    <td id="<?= $och ?>"><?= htmlspecialchars($och); ?></td>
+                </tr>
+            <?php endforeach; ?>
+            <?php if (empty($ochrany)): ?>
+                <tr>
+                    <td colspan="1">Žádné ochranné prostředky nejsou k dispozici.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        td {
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+    </style>
 </body>
 </html>
