@@ -163,10 +163,14 @@ $(document).ready(function() {
         }
     }
     function loadHlaseniPage(page, velStranky = 5) {
+        let searchValue = '';
+        if($("#searchHlaseni").val()) 
+            searchValue = $("#searchHlaseni").val().toLowerCase();
+
         $.ajax({
             url: "get_povoleni.php",
             type: "POST",
-            data: { page: page, pageSize: velStranky, hlaseni: true },
+            data: { page: page, pageSize: velStranky, search: searchValue, hlaseni: true },
             dataType: "json",
             success: function(response) {
                 if (response.success) {
@@ -346,6 +350,11 @@ $(document).ready(function() {
         loadHlaseniPage(1, velStranky);
     });
     
+    $(document).on('input', '#searchHlaseni', function() {
+        const velStranky = $('#maxZobrazeni').val();
+        loadHlaseniPage(1, velStranky);
+    });
+
     $(document).on('change', '#archiv', function() {
         $("#my select").each(function() {
             $(this).attr("disabled", !$(this).is(":disabled"));

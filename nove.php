@@ -1092,6 +1092,9 @@
                     <h2>Vyberte hlášení</h2>
                 </div>
                 <div class="modal-body" style="max-height: 65vh; overflow-y: auto;">
+                    <div class="search">
+                        <input type="search" id="searchHlaseni" placeholder="Hledat podle názvu nebo čísla povolení...">
+                    </div>
                     <Table id="hlaseniTable">
                         <thead>
                             <tr>
@@ -1165,15 +1168,7 @@
             color: #2196F3;
             text-decoration: none;
         }
-        .modal-body{
-            text-align: center;
-        }
-        .podnadpis{
-            font-weight: bold;
-            padding: 1% 0 1% 1%;
-            background: #EEEEEE;
-        }
-
+       
         .riziko-container{
             display: flex;
             align-items: center;
@@ -1192,15 +1187,7 @@
         input[type="text"],
         input[type="number"] {
             width: 100%;
-            padding: 8px;
-            margin: 2px 0;
-            box-sizing: border-box;
-            border: 1px solid #BCD4EF;
             border-radius: 4px;
-            font-size: 14px;
-            outline: none;
-            display: block;
-            transition: border-color 0.2s ease;
         }
         input[type="text"]:hover,
         input[type="number"]:hover{

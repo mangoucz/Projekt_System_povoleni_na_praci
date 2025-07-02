@@ -68,6 +68,8 @@
             $page = (int)$_POST['page'] ?? 1;
             $pageSize = (int)$_POST['pageSize'] ?? 5;
             $offset = ($page - 1) * $pageSize;
+            $search = $_POST['search'] ?? '';
+            $search = "%$search%";
 
             if ($pageSize <= 0) {
                 $pocetStranek = 1;
@@ -81,14 +83,16 @@
                             h.CisPovolenky,
                             CONCAT(z.jmeno, ' ', z.prijmeni) as Zam
                         FROM Hlaseni as h LEFT JOIN Zamestnanci as z ON h.id_zam = z.id_zam 
-                        WHERE Vyrizeno = 0 AND Odsunuto = 1 AND Prevzato = 0
+                        WHERE Vyrizeno = 0 AND Odsunuto = 1 AND Prevzato = 0 AND (Nazev LIKE ? OR CisPovolenky LIKE ?)
                         ORDER BY NaklStredisko ASC, Kdy DESC;";
-                $result = sqlsrv_query($conn, $sql);
+                $params = [$search, $search];
+                $result = sqlsrv_query($conn, $sql, $params);
             }
-            else{
+            else{   
                 $sql = "SELECT COUNT(*) as total FROM Hlaseni
-                        WHERE Vyrizeno = 0 AND Odsunuto = 1 AND Prevzato = 0;";
-                $result = sqlsrv_query($conn, $sql);
+                        WHERE Vyrizeno = 0 AND Odsunuto = 1 AND Prevzato = 0 AND (Nazev LIKE ? OR CisPovolenky LIKE ?);";
+                $params = [$search, $search];
+                $result = sqlsrv_query($conn, $sql, $params);
                 $pocetHlaseni = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)['total'];
                 $pocetStranek = ceil($pocetHlaseni / $pageSize);
     
@@ -104,10 +108,10 @@
                             h.CisPovolenky,
                             CONCAT(z.jmeno, ' ', z.prijmeni) as Zam
                         FROM Hlaseni as h LEFT JOIN Zamestnanci as z ON h.id_zam = z.id_zam 
-                        WHERE Vyrizeno = 0 AND Odsunuto = 1 AND Prevzato = 0
+                        WHERE Vyrizeno = 0 AND Odsunuto = 1 AND Prevzato = 0 AND (Nazev LIKE ? OR CisPovolenky LIKE ?)
                         ORDER BY NaklStredisko ASC, Kdy DESC
                         OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
-                $params = [$offset, $pageSize];
+                $params = [$search, $search, $offset, $pageSize];
                 $result = sqlsrv_query($conn, $sql, $params);
             }
             if ($result === false) {

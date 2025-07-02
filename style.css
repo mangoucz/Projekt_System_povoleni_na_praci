@@ -15,6 +15,20 @@ h2 {
     height: 34px;
 }
 
+input{
+    padding: 8px;
+    margin: 2px 0;
+    box-sizing: border-box;
+    border: 1px solid #BCD4EF;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+input[type="search"] {
+    width: 40%;
+    border-radius: 20px;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -193,23 +207,12 @@ select:hover {
 .logo{
     margin-left: 1%; 
     max-width: 200px;
-}  
+} 
 
-.defButt {
-    background: #003366; 
-    color: #FFFFFF;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-.defButt:hover {
-    background: #d40000;
-}
-.defButt:active{
-    box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
+.podnadpis{
+    font-weight: bold;
+    padding: 1% 0 1% 1%;
+    background: #EEEEEE;
 }
 
 .footer{
@@ -256,6 +259,7 @@ select:hover {
     padding: 15px 0;
     background: #f9f9f9;
     border-radius: 10px;
+    text-align: center;
 }
 .info-row {
     display: flex;
@@ -288,6 +292,23 @@ select:hover {
     justify-content: space-evenly;
     border-top: 1px solid #ddd;
     padding-top: 10px;
+}
+
+.defButt {
+    background: #003366; 
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+.defButt:hover {
+    background: #d40000;
+}
+.defButt:active{
+    box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
 }
 
 .defButt.edit {
