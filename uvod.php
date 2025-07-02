@@ -50,7 +50,8 @@
         <h1>SYSTÉM POVOLENÍ NA PRÁCI</h1>
         <div class="headerB">
             <div style="width: 60%;">
-                <button type="button" id="subNove" class="defButt">Nové povolení</button>
+                <button type="button" id="subAdmin" class="defButt" onclick="window.location.href='admin.php'">Administrace</button>
+                <button type="button" id="subNove" class="defButt" onclick="window.location.href='nove.php?nove=true'">Nové povolení</button>
             </div>
             <div class="uziv">
                 <img src="user_icon.png" width="28%" style="margin-right: 2%;">
